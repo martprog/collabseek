@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {  addMessage } from "./redux/messages/slice";
-import { getPrivateMessages } from "./redux/private-messages/slice";
+// import {   } from "./redux/messages/slice";
+import { getPrivateMessages, addMessage } from "./redux/private-messages/slice";
 import { getUserId } from "./redux/sessionId/slice";
 // import { getOnlineUsers } from "./redux/online-users/slice";
 import { Link } from "react-router-dom";
@@ -56,10 +56,23 @@ export default function Conversation() {
         }
     }, [privateMsgs]);
 
-    function handleSubmit(e) {
+    async function handleSubmit(e) {
+        const newMsg = e.target.text.value;
         e.preventDefault();
         
+        const res = await fetch(`/users/newMsg/${otherUserId}`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({msg: newMsg}),
+        });
+        const data = await res.json();
+        
+        dispatch(addMessage(data));
+        
     }
+
 
     const msgs = privateMsgs.map((message) => {
         return (

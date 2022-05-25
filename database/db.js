@@ -226,11 +226,25 @@ const getAllConversations = (id) => {
         
     `;
     return db.query(query, [id]).then((results) => {
-        return results.rows.filter((element) => {
+        const otherUsers = results.rows.filter((element) => {
             if (element.userid !== id) {
                 return element;
             }
         });
+        const uniqueIds = [];
+
+        const unique = otherUsers.filter((element) => {
+            const isDuplicate = uniqueIds.includes(element.userid);
+
+            if (!isDuplicate) {
+                uniqueIds.push(element.userid);
+
+                return true;
+            }
+
+            return false;
+        });
+        return unique;
     });
 };
 
@@ -264,14 +278,41 @@ const getAllMessages = (userId, otherUserId) => {
 };
 
 // users.profile_picture_url,
-const createNewMsg = (id, text) => {
+const createNewMsg = (id, otherUserId, text) => {
     const query = `
-        INSERT INTO chat_messages(sender_id, text)
-        VALUES($1, $2)
+        INSERT INTO messages(artist, sender_id, recipient_id, text)
+        VALUES($2, $1, $2, $3)
         RETURNING *
     `;
 
-    const params = [id, text];
+    const params = [id, otherUserId, text];
+
+    return db.query(query, params).then((results) => {
+        return results.rows[0];
+    });
+};
+
+const createNewMsgArtist = (id, otherUserId, text) => {
+    const query = `
+        INSERT INTO messages(artist, sender_id, recipient_id, text)
+        VALUES($1, $1, $2, $3)
+        RETURNING *
+    `;
+
+    const params = [id, otherUserId, text];
+
+    return db.query(query, params).then((results) => {
+        return results.rows[0];
+    });
+};
+
+const isArtist = (id) => {
+    const query = `
+        SELECT * FROM artists
+        WHERE artist_id=$1
+    `;
+
+    const params = [id];
 
     return db.query(query, params).then((results) => {
         return results.rows[0];
@@ -318,6 +359,8 @@ module.exports = {
     getAllConversations,
     getAllMessages,
     createNewMsg,
+    createNewMsgArtist,
     getUsersByIds,
     newArtistRequest,
+    isArtist,
 };

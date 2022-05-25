@@ -11,10 +11,10 @@
 export function privateMsgsReducer(privateMsgs = [], action) {
     if (action.type === "privateMsgs: uploaded") {
         privateMsgs = action.payload.privateMsgs;
+    
+    } else if (action.type === "newMessage: uploaded") {
+        privateMsgs = [...privateMsgs, action.payload.msg];
     }
-    // } else if (action.type === "newMessage: uploaded") {
-    //     allChatMessages = [...allChatMessages, action.payload.msg];
-    // }
     return privateMsgs;
 }
 

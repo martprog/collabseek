@@ -27,7 +27,7 @@ export default function Request() {
     // }, [search]);
 
     function onSubmit(e) {
-        const newText = e.target.text.value
+        const newText = e.target.text.value;
         e.preventDefault();
         
         fetch(`/users/request/${otherUserId}`, {
@@ -41,6 +41,7 @@ export default function Request() {
             .then((res) => res.json())
             .then((results) => {
                 console.log(results);
+                location.replace(`/conversation/${otherUserId}`);
             });
         console.log("submit request!");
     }

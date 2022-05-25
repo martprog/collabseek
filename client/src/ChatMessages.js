@@ -37,10 +37,11 @@ export default function ChatMessages() {
         (async () => {
             const res = await fetch("/users/conversations/all");
             const data = await res.json();
-            console.log(data);
+            console.log('some data:', data);
             dispatch(getMessages(data));
+            
         })();
-    }, []);
+    }, [chatMessages]);
 
     const msgs = chatMessages.map((message) => {
         return (
@@ -127,9 +128,7 @@ export default function ChatMessages() {
                 </div>
                 <div className="chat-inpBtn"></div>
 
-                <div onClick={handleIsOpen} className="online-multiwrapper">
-                    {/* <Conversation></Conversation> */}
-                </div>
+                
             </div>
         </>
     );
