@@ -1,7 +1,22 @@
 import ReactDOM from "react-dom";
+import Welcome from "./Welcome";
+import App from "./App";
+import { Provider } from "react-redux";
+import { createStore, applyMiddleware } from "redux";
+import reducer from "./redux/reducer";
+import { composeWithDevTools } from "redux-devtools-extension";
+import * as immutableState from "redux-immutable-state-invariant";
+import { init } from "./socketInit";
 
-ReactDOM.render(<HelloWorld />, document.querySelector("main"));
+const store = createStore(
+    reducer,
+    composeWithDevTools(applyMiddleware(immutableState.default()))
+);
 
-function HelloWorld() {
-    return <div>Last project!</div>;
-}
+init(store);
+ReactDOM.render(
+    <Provider store={store}>
+        <App />
+    </Provider>,
+    document.querySelector("main")
+);
