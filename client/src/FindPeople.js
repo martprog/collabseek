@@ -4,8 +4,10 @@ import { Link } from "react-router-dom";
 export default function FindPeople() {
     const [search, setSearch] = useState("");
     const [users, setUsers] = useState([]);
+    const [isFocused, setIsFocused] = useState(false);
 
     const handleChange = (e) => {
+        setIsFocused(true);
         setSearch(e.target.value);
     };
 
@@ -31,7 +33,7 @@ export default function FindPeople() {
                         style={{ textDecoration: "none" }}
                         to={`/users/${user.id}`}
                     >
-                        <div className={!search ? "usersFind" : "searchedFind"}>
+                        <div className="finded-users-search-bar">
                             <img
                                 src={
                                     user.profile_picture_url || "./default.png"
@@ -47,38 +49,43 @@ export default function FindPeople() {
         });
     };
 
-    const people = !search ? "These people just joined in" : "Your results";
+    // let showResults = !isFocused ? "hidden-results" : search ? "results": "hidden-results";
+    let showResults = !search ? "hidden-results" : "results";
+
+    function onSubmit(e) {
+        e.preventDefault();
+        fetch(`/users?search=${search}`)
+            .then((res) => res.json())
+            .then((results) => {
+                setUsers(results);
+                location.replace("/users");
+            });
+    }
 
     return (
         <>
-            <div className="find-megawrapper">
-                <h1>Find people</h1>
-                <div
-                    className={
-                        location.pathname == "/find"
-                            ? "findWrapper"
-                            : "profiles"
-                    }
-                >
-                    <p>Are you looking for someone?</p>
-                    <input onChange={handleChange}></input>
-                    <h2>{people}</h2>
-
-                    <div
-                        className={
-                            !search
-                                ? "allResults"
-                                : location.pathname == "/find"
-                                ? "searched"
-                                : "new"
-                        }
-                    >
-                        {users.length >= 1 ? (
-                            mappedUsers()
-                        ) : (
-                            <p>no matches found</p>
-                        )}
-                    </div>
+            <form></form>
+            <div className="form-group fg--search">
+                <input
+                    className="searchbar search-field"
+                    onBlur={(e) => {
+                        setIsFocused(false);
+                    }}
+                    onChange={handleChange}
+                    placeholder="Search artist"
+                ></input>
+                <button className="search-button" type="submit">
+                    <img src="./search.png" className="fa fa-search" />
+                </button>
+            </div>
+            {/* <button onSubmit={onSubmit}>go!</button> */}
+            <div className="results-wrapper">
+                <div className={showResults}>
+                    {users.length >= 1 ? (
+                        mappedUsers()
+                    ) : (
+                        <p>no matches found</p>
+                    )}
                 </div>
             </div>
         </>

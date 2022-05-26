@@ -36,15 +36,13 @@ export default class ProfilePic extends Component {
     render() {
         return (
             <>
-                
                 <img
                     onMouseOver={this.onHover}
                     onMouseLeave={this.offHover}
                     className="profilePic"
-                    src={this.props.url}
+                    src={this.props.url || ".default/png"}
                     onClick={this.props.openModal}
                 />
-                {this.state.hovered && <p className="hovered">change foto</p>}
             </>
         );
     }

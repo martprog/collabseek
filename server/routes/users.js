@@ -21,15 +21,22 @@ router.get("/users", (req, res) => {
     const { userId } = req.session;
 
     if (!search) {
-        getLatestUsers().then((users) => {
-            res.json(users);
-        });
+        // getLatestUsers().then((users) => {
+        //     res.json(users);
+        // });
         return;
-    } else {
-        getUsersByQuery(search, userId).then((users) => {
-            res.json(users);
+    } else if (search) {
+        getUsersByQuery(search).then((users) => {
+            const filteredId = users.filter((user) => user.id !== userId);
+            res.json(filteredId);
         });
     }
+});
+
+router.get("/users/newartists", (req, res) => {
+    getLatestUsers().then((users) => {
+        res.json(users);
+    });
 });
 
 router.get("/api/users/:otherUserId", (req, res) => {

@@ -33,31 +33,25 @@ export default function RequestsPage() {
         (async () => {
             const res = await fetch("/users/conversations/all");
             const data = await res.json();
-            console.log("some data:", data);
+
             dispatch(getMessages(data));
-            // location.replace(`/conversation/${+data.userid}`);
-            
-
+            if (chatMessages) {
+                // console.log(chatMessages[0].userid);
+                location.replace(`/conversation/${+chatMessages[0].userid}`);
+            }
         })();
-    }, []);
-
-    useEffect(() => {
-         if (chatMessages) {
-             location.replace(`/conversation/${chatMessages.userid}`);
-             console.log("console: ", chatMessages);
-         }
     }, [chatMessages]);
+    //render thousands of times!
+    // }, [chatMessages]);
 
-    console.log('prueg', chatMessages[0]);
-    if (chatMessages[0].userid) {
-        location.replace(`/conversation/${chatMessages[0].userid}`);
-        console.log('console: ', chatMessages);
-    }
+
+    
 
     return (
         <>
             <h1>Messages</h1>
             <div className="msg-page">
+                
                 <ChatMessages />
                 {/* <Conversation /> */}
             </div>

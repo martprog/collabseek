@@ -62,32 +62,33 @@ export default class ArtistPost extends Component {
                                         Oops, something went wrong!
                                     </p>
                                 )}
-                                <form
-                                    className="form"
-                                    onSubmit={this.handleSubmit}
-                                >
-                                    <input
-                                        onChange={this.handleChange}
-                                        placeholder="tell us about yourself"
-                                        type="text"
-                                        name="bio"
-                                    ></input>
-                                    <input
-                                        onChange={this.handleChange}
-                                        placeholder="spotify"
-                                        type="text"
-                                        name="spotify"
-                                    ></input>
-                                    <input
-                                        onChange={this.handleChange}
-                                        placeholder="youtube"
-                                        type="email"
-                                        name="youtube"
-                                    ></input>
+                                <div className="form-artist-wrapper">
+                                    <form
+                                        className="form"
+                                        onSubmit={this.handleSubmit}
+                                    >
+                                        <input
+                                            onChange={this.handleChange}
+                                            placeholder="tell us about yourself"
+                                            type="text"
+                                            name="bio"
+                                        ></input>
+                                        <input
+                                            onChange={this.handleChange}
+                                            placeholder="spotify"
+                                            type="text"
+                                            name="spotify"
+                                        ></input>
+                                        <input
+                                            onChange={this.handleChange}
+                                            placeholder="youtube"
+                                            type="email"
+                                            name="youtube"
+                                        ></input>
 
-                                    <button id="submitReg">Submit</button>
-                                </form>
-                                
+                                        <button id="submitReg">SUBMIT</button>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </CSSTransition>

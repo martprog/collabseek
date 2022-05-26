@@ -12,10 +12,11 @@ import ChatMessages from "./ChatMessages";
 import Registration from "./registration";
 import Login from "./login";
 import ResetPass from "./ResetPassword";
-import Request  from "./Request";
+import Request from "./Request";
 import RequestsPage from "./RequestsPage";
 import Conversation from "./Conversation";
 import ArtistPost from "./ArtistPost";
+import SearchResult from "./SearchResult"
 
 export default class App extends Component {
     constructor(props) {
@@ -34,7 +35,8 @@ export default class App extends Component {
         this.onUpload = this.onUpload.bind(this);
         this.onBioUpload = this.onBioUpload.bind(this);
         this.menuList = this.menuList.bind(this);
-        this.renderList = this.renderList.bind(this);
+        this.renderOnlineList = this.renderOnlineList.bind(this);
+        this.renderOfflineList = this.renderOfflineList.bind(this);
     }
 
     componentDidMount() {
@@ -89,7 +91,7 @@ export default class App extends Component {
         }
     }
 
-    renderList() {
+    renderOnlineList() {
         return (
             <>
                 <CSSTransition
@@ -97,7 +99,65 @@ export default class App extends Component {
                     timeout={400}
                     classNames="list-transition"
                     appear
-                ></CSSTransition>
+                >
+                    <div className="header-list-menu" onClose={this.menuList}>
+                        <div>
+                            <Link
+                                style={{ textDecoration: "none" }}
+                                onClick={this.menuList}
+                                to="/requests/all"
+                            >
+                                Your Inbox
+                            </Link>
+                        </div>
+                        <div>
+                            <Link
+                                style={{ textDecoration: "none" }}
+                                onClick={this.menuList}
+                                to="/"
+                            >
+                                Edit your profile
+                            </Link>
+                        </div>
+                        <div>
+                            <a href="/logout">Logout</a>
+                        </div>
+                    </div>
+                </CSSTransition>
+            </>
+        );
+    }
+
+    renderOfflineList() {
+        return (
+            <>
+                <CSSTransition
+                    in={this.state.clicked}
+                    timeout={400}
+                    classNames="list-transition"
+                    appear
+                >
+                    <div className="header-list-menu" onClose={this.menuList}>
+                        <div>
+                            <Link
+                                style={{ textDecoration: "none" }}
+                                onClick={this.menuList}
+                                to="/register"
+                            >
+                                Register
+                            </Link>
+                        </div>
+                        <div>
+                            <Link
+                                style={{ textDecoration: "none" }}
+                                onClick={this.menuList}
+                                to="/login"
+                            >
+                                Login
+                            </Link>
+                        </div>
+                    </div>
+                </CSSTransition>
             </>
         );
     }
@@ -106,91 +166,141 @@ export default class App extends Component {
         return (
             <>
                 <BrowserRouter>
-                    {/* <div
+                    <div
                         onClick={this.state.clicked ? this.menuList : () => {}}
                         className="wrapper"
                     >
-                        <ProfilePic
-                            url={this.state.profile_picture_url}
-                            openModal={this.openModal}
-                        />
-                    </div>
-                    {this.state.modalOn && (
-                        <Uploader
-                            onUpload={this.onUpload}
-                            closeModal={this.closeModal}
-                        />
-                    )} */}
-                    <div className="multi-wrapper">
-                        <div className="wrapperRouter">
-                            <Route exact path="/">
-                                <Main
-                                    {...this.state}
-                                    onBioUpload={this.onBioUpload}
-                                    openModal={this.openModal}
-                                />
-                            </Route>
-                            <Route  path="/artists/post">
-                                <ArtistPost
-                                    {...this.state}
-                                    onBioUpload={this.onBioUpload}
-                                    openModal={this.openModal}
-                                />
-                            </Route>
-                            <a href="/logout">logout</a>
-                            <Route path="/findusers">
+                        <div className="header">
+                            <Link to={"/"}>
+                                <div>
+                                    {/* <img
+                                    onClick={this.menuList}
+                                    className="logo"
+                                    src="/peanut.png"
+                                /> */}
+                                    <h1>COLLABSEEK</h1>
+                                </div>
+                            </Link>
+
+                            {!this.state.clicked
+                                ? ""
+                                : this.state.isConnected
+                                ? this.renderOnlineList()
+                                : this.renderOfflineList()}
+                            <div className="find-people-search">
                                 <FindPeople
                                     {...this.state}
                                     onBioUpload={this.onBioUpload}
                                     openModal={this.openModal}
                                 />
-                            </Route>
-                            <Route path="/users/:otherUserId">
-                                <OtherProfile />
-                            </Route>
-                            
-                            <Route path="/aboutme">
-                                <Profile
-                                    {...this.state}
-                                    onBioUpload={this.onBioUpload}
-                                    openModal={this.openModal}
-                                />
-                            </Route>
-                            <div>
-
-                                <Link to={"/artists/post"}>Get your artist Page!</Link>
                             </div>
-                            {this.state.isConnected ? (
-                                <>
-                                    <Route path="/friends">
-                                        <Friends />
-                                    </Route>
-                                    <Route path="/chatroom">
-                                        <ChatMessages />
-                                    </Route>
-                                    <Route path="/requests/all">
-                                        <RequestsPage />
-                                    </Route>
-                                    <Route path="/request/:otherUserId">
-                                        <Request />
-                                    </Route>
-                                    <Route path="/conversation/:otherUserId">
-                                        <Conversation />
-                                    </Route>
-                                </>
-                            ) : (
-                                <>
-                                    <Route exact path="/register">
-                                        <Registration />
-                                    </Route>
-                                    <Route path="/login">
-                                        <Login />
-                                    </Route>
-                                    <Route path="/reset">
-                                        <ResetPass />
-                                    </Route>
-                                </>
-                            )}
+                            <nav className="nav-wrapper">
+                                <div>
+                                    <Link to="/artists/post">
+                                        Make an artist page
+                                    </Link>
+                                </div>
+                                <div>
+                                    <Link
+                                        to="/chatroom"
+                                        style={{ textDecoration: "none" }}
+                                    >
+                                        Chat
+                                    </Link>
+                                </div>
+                                <div>
+                                    <Link
+                                        to="/friends"
+                                        style={{ textDecoration: "none" }}
+                                    >
+                                        Friends
+                                    </Link>
+                                </div>
+
+                                <div
+                                    className="select-list"
+                                    onClick={this.menuList}
+                                >
+                                    <img src="./hamburguer-menu.jpeg" />
+
+                                    <ProfilePic
+                                        url={this.state.profile_picture_url}
+                                        openModal={this.openModal}
+                                    />
+                                </div>
+                            </nav>
+                        </div>
+                        <div className="multi-wrapper">
+                            <div className="wrapperRouter">
+                                <Route exact path="/">
+                                    <Main
+                                        {...this.state}
+                                        onBioUpload={this.onBioUpload}
+                                        openModal={this.openModal}
+                                    />
+                                </Route>
+                                <Route path="/artists/post">
+                                    <ArtistPost
+                                        {...this.state}
+                                        onBioUpload={this.onBioUpload}
+                                        openModal={this.openModal}
+                                    />
+                                </Route>
+
+                                <Route path="/users/:otherUserId">
+                                    <OtherProfile />
+                                </Route>
+                                <Route path="/users/searchresult">
+                                    <SearchResult />
+                                </Route>
+
+                                <Route path="/aboutme">
+                                    <Profile
+                                        {...this.state}
+                                        onBioUpload={this.onBioUpload}
+                                        openModal={this.openModal}
+                                    />
+                                </Route>
+                                {/* <Route path="/findusers">
+                                    <FindPeople
+                                        {...this.state}
+                                        onBioUpload={this.onBioUpload}
+                                        openModal={this.openModal}
+                                    />
+                                </Route> */}
+
+                                {this.state.isConnected ? (
+                                    <>
+                                        <Route path="/friends">
+                                            <Friends />
+                                        </Route>
+                                        <Route path="/chatroom">
+                                            <ChatMessages />
+                                        </Route>
+                                        <Route path="/requests/all">
+                                            <RequestsPage />
+                                        </Route>
+                                        <Route path="/request/:otherUserId">
+                                            <Request />
+                                        </Route>
+                                        <Route path="/conversation/:otherUserId">
+                                            <Conversation />
+                                        </Route>
+                                    </>
+                                ) : (
+                                    <>
+                                        <Route exact path="/register">
+                                            <Registration />
+                                        </Route>
+                                        <Route path="/login">
+                                            <Login />
+                                        </Route>
+                                        <Route path="/reset">
+                                            <ResetPass />
+                                        </Route>
+                                    </>
+                                )}
+                            </div>
                         </div>
                     </div>
                 </BrowserRouter>

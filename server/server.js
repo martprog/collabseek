@@ -116,7 +116,7 @@ app.post("/users/request/:otherUserId", (req, res) => {
     const { otherUserId } = req.params;
     const { userId } = req.session;
     newArtistRequest(otherUserId, userId, text).then((data) => {
-        console.log(data);
+        // console.log(data);
         res.json({ message: "ok" });
     });
 });
@@ -136,13 +136,13 @@ app.post("/users/newMsg/:otherUserId", (req, res) => {
     isArtist(userId).then((data) => {
         if (!data) {
             createNewMsg(userId, parseInt(otherUserId), msg).then((data) => {
-                console.log(data);
+                
                 res.json(data);
             });
             return;
         }else{
             createNewMsgArtist(userId, parseInt(otherUserId), msg).then((data) => {
-                console.log(data);
+                
                 res.json(data);
             });
         }
@@ -152,7 +152,7 @@ app.post("/users/newMsg/:otherUserId", (req, res) => {
 app.get("/users/conversations/all", (req, res) => {
     const { userId } = req.session;
     getAllConversations(userId).then((data) => {
-        console.log('all conversations:', data);
+        // console.log('all conversations:', data);
         res.json(data);
     });
 });

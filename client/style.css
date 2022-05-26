@@ -1,3 +1,252 @@
+* {
+    box-sizing: border-box;
+}
+
 body {
-    background-color: ghostwhite;
+    /* background-color: ghostwhite; */
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    height: 85px;
+    border: 1px solid;
+}
+
+.nav-wrapper {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.nav-wrapper div{
+    display: flex;
+    height: 100%;
+    align-items: center;
+    cursor: pointer;
+    padding: 12px;
+
+}
+
+.results-wrapper {
+    position: absolute;
+    top: 70px;
+    width: 100%;
+    overflow: scroll;
+    height: 300px;
+    z-index: 10;
+}
+
+.find-people-search {
+    display: flex;
+    position: relative;
+   
+
+    /* flex-direction: column; */
+    align-items: center;
+}
+
+.hidden-results {
+    visibility: hidden;
+}
+
+.results {
+    background-color: rgb(219, 208, 208);
+
+    border: 1px solid;
+}
+
+.search-button {
+  background: transparent;
+  border: none;
+  outline: none;
+  position: absolute;
+  top: 30px;
+  margin-left: -33px;
+}
+
+.search-button img {
+  width: 20px;
+  height: 20px;
+  object-fit: cover;
+}
+
+.searchbar {
+    outline: none;
+    border: none;
+    height: 30px;
+    width: 250px;
+    padding: 12px;
+    border: 1px solid gray; 
+    border-radius: 25px;
+    z-index: 10;
+}
+
+input:focus {
+    outline: 7px solid rgb(6, 127, 202);
+    transition: all 200ms;
+}
+
+.finded-users-search-bar{
+    display: flex;
+    gap: 5px;
+}
+
+.finded-users-search-bar img{
+    border-radius: 50%;
+    height: 40px;
+    width: 40px;
+}
+
+
+
+.finded-users {
+    display: flex;
+    gap: 5px;
+    border-radius: 5px solid;
+}
+
+.finded-users img {
+    height: 40px;
+    width: 40px;
+}
+
+.select-list {
+    position: relative;
+    display: flex;
+    border: 1px solid gray;
+}
+
+.select-list img {
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.header-list-menu {
+    position: absolute;
+    top: 85px;
+    right: 35px;
+    display: flex;
+    flex-direction: column;
+    height: 200px;
+    width: 300px;
+    border: 2px solid;
+    background-color: beige;
+}
+
+.inbox-wrapper{
+    display: flex;
+    justify-content: space-between;
+    height: 400px
+}
+
+.msg-container, .private-msg-container{
+    display: flex;
+    border-top: 1px solid;
+    align-items: center;
+}
+
+.private-msg-container{
+        width: 100%;
+
+}
+
+.chat-wrapper{
+    overflow: scroll;
+
+}
+
+.chatroom-wrapper{
+    /* width: 250px; */
+    height: 300px;
+    overflow: scroll;
+
+}
+
+.chat-inpBtn input{
+    outline: none;
+    border: none;
+    height: 30px;
+    width: 250px;
+    padding: 12px;
+    border: 1px solid gray;
+    
+    border-radius: 25px;
+    z-index: 10;
+}
+
+.private-msgs-wrapper{
+    width: 350px;
+    overflow: scroll;
+    border: 1px solid pink;
+}
+
+.msg-container img, .private-msg-container img{
+   height: 60px;
+    width: 60px; 
+    border-radius: 50%;
+}
+
+.msg-details, .private-msg-details{
+    display: flex;
+    flex-direction: column;
+}
+
+.form-artist-wrapper{
+    display: flex;
+    gap: 10px;
+}
+
+.form-artist-wrapper input{
+    outline: none;
+    border: none;
+    height: 30px;
+    width: 250px;
+    padding: 12px;
+    border: 1px solid gray;
+    border-radius: 25px;
+    z-index: 10;
+}
+
+#submitReg{
+    padding: 7px;
+    outline: none;
+    border: none;
+    width: 120px;
+    border-radius: 12px;
+    color: white;
+    cursor: pointer;
+    background: linear-gradient(to right,#FF4B2B,#FF416C)
+}
+
+.profile-card-main{
+    width: 300px;
+    border: 1px solid yellowgreen;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.finded-users{
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+
+.profile-card-main img{
+    height: 400px;
+    width: 250px;
+}
+
+.profile-card-main-btn{
+    outline: none;
+    border: none;
+    width: 160px;
+    border-radius: 15px;
+    color: white;
+    cursor: pointer;
+    padding: 5px;
+    background: linear-gradient(to right,#FF4B2B,#FF416C)
 }

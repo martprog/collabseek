@@ -163,14 +163,14 @@ const getLatestUsers = () => {
     });
 };
 
-const getUsersByQuery = (search, id) => {
+const getUsersByQuery = (search) => {
     const query = `
         SELECT * FROM  USERS
         WHERE first ILIKE $1 
-        AND id not in($2)
     `;
+        // AND id not in($2)
 
-    return db.query(query, [search + "%", id]).then((results) => {
+    return db.query(query, [search + "%"]).then((results) => {
         return results.rows;
     });
 };
@@ -216,7 +216,7 @@ const sendFriendship = (userId, otherUserId) => {
 
 const getAllConversations = (id) => {
     const query = `
-        SELECT users.id as userid, users.first, users.last,  messages.id, messages.sender_id, messages.recipient_id, messages.text, messages.created_at FROM messages
+        SELECT users.id as userid, users.first, users.last, users.profile_picture_url,  messages.id, messages.sender_id, messages.recipient_id, messages.text, messages.created_at FROM messages
          JOIN users
         ON messages.sender_id=users.id or messages.recipient_id=users.id
          JOIN artists
@@ -250,7 +250,7 @@ const getAllConversations = (id) => {
 
 const getAllMessages = (userId, otherUserId) => {
     const query = `
-        SELECT users.id as userid, users.first, users.last,  messages.id, messages.sender_id, messages.recipient_id, messages.text, messages.created_at FROM messages
+        SELECT users.id as userid, users.first, users.last, users.profile_picture_url,  messages.id, messages.sender_id, messages.recipient_id, messages.text, messages.created_at FROM messages
          JOIN users
         ON messages.sender_id=users.id or messages.recipient_id=users.id
         

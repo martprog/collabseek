@@ -37,11 +37,14 @@ export default function ChatMessages() {
         (async () => {
             const res = await fetch("/users/conversations/all");
             const data = await res.json();
-            console.log('some data:', data);
-            dispatch(getMessages(data));
             
+            dispatch(getMessages(data));
+
         })();
-    }, [chatMessages]);
+    }, []);
+
+    // }, [chatMessages]);
+
 
     const msgs = chatMessages.map((message) => {
         return (
@@ -51,36 +54,19 @@ export default function ChatMessages() {
                 ref={lastMessageRef}
             >
                 <img src={message.profile_picture_url} />
-                {onlineUsers.find(
-                    (element) =>
-                        element.id === message.userid ||
-                        message.isOnline === true
-                ) ? (
-                    <span className="dot"></span>
-                ) : (
-                    <span className="red-dot"></span>
-                )}
+
                 <div className="msg-details">
                     <Link
                         style={{ textDecoration: "none" }}
-                        to={
-                             `/conversation/${message.userid}`
-                        }
+                        to={`/conversation/${message.userid}`}
                     >
                         <div>
                             {message.first}
                             {message.last}
                         </div>
                         <div className="msg-row">
-                            <p>
-                                {userId == message.sender_id ? (
-                                    <strong>You</strong>
-                                ) : (
-                                    <strong>
-                                        {message.first} {message.last}
-                                    </strong>
-                                )}
-                            </p>
+                            <p>{message.text}</p>
+
                             <p
                                 className="datechat"
                                 style={{
@@ -94,41 +80,40 @@ export default function ChatMessages() {
                             </p>
                         </div>
                     </Link>
-                    <p>{message.text}</p>
                 </div>
             </div>
         );
     });
 
-    const displayOnline = onlineUsers.map((user) => {
-        return (
-            <div className="online-wrapper" key={user.id}>
-                <img src={user.profile_picture_url} />
-                <p>
-                    {user.first} {user.last}{" "}
-                </p>
-            </div>
-        );
-    });
+    // const displayOnline = onlineUsers.map((user) => {
+    //     return (
+    //         <div className="online-wrapper" key={user.id}>
+    //             <img src={user.profile_picture_url} />
+    //             <p>
+    //                 {user.first} {user.last}{" "}
+    //             </p>
+    //         </div>
+    //     );
+    // });
 
-    function handleIsOpen() {
-        if (!isOpen) {
-            setIsOpen(true);
-        } else {
-            setIsOpen(false);
-        }
-    }
+    // function handleIsOpen() {
+    //     if (!isOpen) {
+    //         setIsOpen(true);
+    //     } else {
+    //         setIsOpen(false);
+    //     }
+    // }
 
     return (
         <>
-            <h1>Your conversations</h1>
-            <div className="chatroom-wrapper">
-                <div className="chat-wrapper">
-                    {chatMessages.length >= 1 ? msgs : <h2>no messages</h2>}
+            <div className="chatroom-multiwrapper">
+                    <h3>Your conversations</h3>
+                <div className="chatroom-wrapper">
+                    <div className="chat-wrapper">
+                        {chatMessages.length >= 1 ? msgs : <h2>no messages</h2>}
+                    </div>
+                    <div className="chat-inpBtn"></div>
                 </div>
-                <div className="chat-inpBtn"></div>
-
-                
             </div>
         </>
     );

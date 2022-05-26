@@ -4,7 +4,7 @@ import { useParams, useHistory } from "react-router";
 
 import { CSSTransition } from "react-transition-group";
 import FriendButton from "./FriendButton";
-import { getUserId } from "./redux/sessionId/slice";
+// import { getUserId } from "./redux/sessionId/slice";
 import { useDispatch, useSelector } from "react-redux";
 // import FriendsOtherProfile from "./FriendsOtherProfile";
 
@@ -14,15 +14,15 @@ export default function OtherProfile() {
     const [transition, setTransition] = useState(true);
 
     const { otherUserId } = useParams();
-    const userId = useSelector((state) => state.userId && state.userId);
+    // const userId = useSelector((state) => state.userId && state.userId);
 
-    useEffect(() => {
-        (async () => {
-            const res = await fetch("/user/id.json");
-            const data = await res.json();
-            dispatch(getUserId(data.userId));
-        })();
-    }, []);
+    // useEffect(() => {
+    //     (async () => {
+    //         const res = await fetch("/user/id.json");
+    //         const data = await res.json();
+    //         dispatch(getUserId(data.userId));
+    //     })();
+    // }, []);
 
     const history = useHistory();
 
@@ -36,7 +36,7 @@ export default function OtherProfile() {
                 }
                 setOtherProfile(data);
             });
-    }, []);
+    }, [otherProfile]);
 
     return (
         <>

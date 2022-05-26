@@ -29,7 +29,7 @@ export default function Conversation() {
 
     const userId = useSelector((state) => state.userId && state.userId);
     
-    console.log(privateMsgs);
+    
 
     useEffect(() => {
         (async () => {
@@ -73,16 +73,17 @@ export default function Conversation() {
         
     }
 
+    console.log('private msgs:', privateMsgs);
 
     const msgs = privateMsgs.map((message) => {
         return (
             <div
-                className="msg-container"
+                className="private-msg-container"
                 key={message.id}
                 ref={lastMessageRef}
             >
                 <img src={message.profile_picture_url} />
-                
+
                 <div className="msg-details">
                     <Link
                         style={{ textDecoration: "none" }}
@@ -102,11 +103,12 @@ export default function Conversation() {
                                     </strong>
                                 )}
                             </p>
+                            <p>{message.text}</p>
+
                             <p
                                 className="datechat"
                                 style={{
                                     marginLeft: ".8rem",
-                                   
                                 }}
                             >
                                 <font size="1">
@@ -115,39 +117,55 @@ export default function Conversation() {
                             </p>
                         </div>
                     </Link>
-                    <p>{message.text}</p>
                 </div>
             </div>
         );
     });
 
+    let chatUser;
+    const chatUsermethod =  privateMsgs.filter((msg)=>{
+        if (msg.userid !== userId){
+            return  chatUser = msg.first
+        }});
+                                                                 
 
-   
+  
 
     return (
         <>
             <h1>Chat Room</h1>
-            <div className="chatroom-wrapper">
-                <form onSubmit={handleSubmit}>
-                    <div className="chat-wrapper">
-                        {privateMsgs.length >= 1 ? msgs : <h2>no messages</h2>}
-                    </div>
-                    <div className="chat-inpBtn">
-                        <input
-                            type="text"
-                            name="text"
-                            required
-                            autoComplete="off"
-                            placeholder="write something"
-                        />
-                        <div className="textareaBtns">
-                            <button className="btns">Done!</button>
+            <div className="inbox-wrapper">
+                <ChatMessages></ChatMessages>
+                <div>
+                    <h3>{chatUser}</h3>
+                    <div className="private-msgs-wrapper">
+                        <div className="chatroom-wrapper">
+                            <div className="chat-wrapper">
+                                {privateMsgs.length >= 1 ? (
+                                    msgs
+                                ) : (
+                                    <h2>no messages</h2>
+                                )}
+                            </div>
                         </div>
-                        <ChatMessages></ChatMessages>
                     </div>
-                </form>
-                
-                
+                    <form onSubmit={handleSubmit}>
+                        <div className="chat-inpBtn">
+                            <input
+                                type="text"
+                                name="text"
+                                required
+                                autoComplete="off"
+                                placeholder="write something"
+                            />
+                            <div className="textareaBtns">
+                                <button className="btns">Done!</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div>Other module</div>
             </div>
         </>
     );
