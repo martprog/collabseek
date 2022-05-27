@@ -341,6 +341,28 @@ const newArtistRequest = (otherUserId, userId, text) => {
     });
 };
 
+const getTagsBySearch = (search) =>{
+    const query = `
+    SELECT * from TAGS 
+    WHERE tag ILIKE $1`;
+    
+    return db.query(query, [search + "%"]).then((results) => {
+        return results.rows;
+    });
+};
+
+const addTagInTagsTable = (id, tag) => {
+    const query = `
+    INSERT INTO tags (artist_id, tag)
+    VALUES ($1, $2)
+    RETURNING *
+    `;
+
+    return db.query(query, [tag]).then((results) => {
+        return results.rows;
+    });
+};
+
 module.exports = {
     createUser,
     login,
@@ -363,4 +385,6 @@ module.exports = {
     getUsersByIds,
     newArtistRequest,
     isArtist,
+    getTagsBySearch,
+    addTagInTagsTable
 };

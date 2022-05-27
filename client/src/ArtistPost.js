@@ -5,15 +5,23 @@ import { CSSTransition } from "react-transition-group";
 export default class ArtistPost extends Component {
     constructor() {
         super();
-        this.state = { isOn: true };
+        this.state = { isOn: true, search: "", isOpen: false };
         this.handleChange = this.handleChange.bind(this);
+        this.handleTagChange = this.handleTagChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.mappedUsers = this.mappedUsers.bind(this);
     }
 
     handleChange(e) {
+        this.setState({
+            [e.target.name]: e.target.value,
+        });
+    }
+
+    handleTagChange(e) {
         this.setState(
             {
-                [e.target.name]: e.target.value,
+                tag: e.target.value,
             },
             () => console.log(this.state)
         );
@@ -32,10 +40,10 @@ export default class ArtistPost extends Component {
         })
             .then((res) => res.json())
             .then((result) => {
-                if (result.message == 'error') {
+                if (result.message == "error") {
                     this.setState({ error: true });
                 }
-                if (result.message == 'ok') {
+                if (result.message == "ok") {
                     location.replace("/");
                     this.setState({ error: false });
                 }
@@ -43,8 +51,31 @@ export default class ArtistPost extends Component {
             .catch((e) => console.log("oops,", e));
     }
 
+    componentDidUpdate(prevProps, prevState) {
+        if (prevState.tag !== this.state.tag) {
+            fetch(`/users/tags?search=${this.state.tag}`)
+                .then((res) => res.json())
+                .then((results) => {
+                    console.log("tag ", results);
+                    this.setState({ resTags: results });
+                    this.setState({ isOpen: true });
+                });
+        }
+    }
+
+    mappedUsers() {
+        return this.state.resTags.map((user) => {
+            return (
+                <div key={user.id}>
+                    <div className="finded-users-search-bar">
+                        <h3>{user.tag}</h3>
+                    </div>
+                </div>
+            );
+        });
+    }
+
     render() {
-        
         return (
             <>
                 {this.state.isOn && (
@@ -85,6 +116,30 @@ export default class ArtistPost extends Component {
                                             type="email"
                                             name="youtube"
                                         ></input>
+                                        <input
+                                            onChange={this.handleTagChange}
+                                            onBlur={(e) => {
+                                                this.setState({
+                                                    isOpen: false,
+                                                });
+                                            }}
+                                            onFocus={(e) => {
+                                                this.setState({ isOpen: true });
+                                            }}
+                                            placeholder="tags"
+                                            type="tag"
+                                            name="tag"
+                                        ></input>
+                                        <div
+                                            className={
+                                                this.state.isOpen
+                                                    ? "active"
+                                                    : "hidden"
+                                            }
+                                        >
+                                            {this.state.resTags &&
+                                                this.mappedUsers()}
+                                        </div>
 
                                         <button id="submitReg">SUBMIT</button>
                                     </form>

@@ -23,6 +23,8 @@ const {
     createNewMsg,
     createNewMsgArtist,
     isArtist,
+    getTagsBySearch,
+    addTagInTagsTable
 } = require("../database/db");
 const multer = require("multer");
 const uidSafe = require("uid-safe");
@@ -155,6 +157,23 @@ app.get("/users/conversations/all", (req, res) => {
         // console.log('all conversations:', data);
         res.json(data);
     });
+});
+
+app.get("/users/tags", (req, res) => {
+    const search = req.query.search;
+    const { userId } = req.session;
+
+    if (!search) {
+        // getLatestUsers().then((users) => {
+        //     res.json(users);
+        // });
+        return;
+    } else if (search) {
+        getTagsBySearch(search).then((users) => {
+            const filteredId = users.filter((user) => user.id !== userId);
+            res.json(filteredId);
+        });
+    }
 });
 
 app.get("*", function (req, res) {

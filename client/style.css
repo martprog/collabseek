@@ -250,3 +250,11 @@ input:focus {
     padding: 5px;
     background: linear-gradient(to right,#FF4B2B,#FF416C)
 }
+
+.hidden{
+    visibility: hidden;
+}
+
+.active{
+    visibility: visible;
+}

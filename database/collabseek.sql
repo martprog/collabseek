@@ -2,6 +2,8 @@ DROP TABLE IF EXISTS messages;
 DROP TABLE IF EXISTS artists;
 DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS gencodes;
+DROP TABLE IF EXISTS tags;
+
 
 
 CREATE TABLE users (
@@ -30,8 +32,13 @@ CREATE TABLE artists (
      spotify_link VARCHAR,
      instagram_link VARCHAR,
      created_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
 
 
+CREATE TABLE tags (
+     id SERIAL PRIMARY KEY,
+     artist_id INT REFERENCES artists(artist_id) NOT NULL,
+     tag text
 );
 
 CREATE TABLE messages (
