@@ -36,7 +36,13 @@ export default function OtherProfile() {
                 }
                 setOtherProfile(data);
             });
-    }, [otherProfile]);
+    }, []);
+
+    // }, [otherProfile]);
+
+    const tags = otherProfile.tags && otherProfile.tags.map((tag, i) => {
+        return <div className="tags-in-profile" key={i}>{tag}</div>;
+    });
 
     return (
         <>
@@ -64,6 +70,8 @@ export default function OtherProfile() {
                             </h2>
                             <p>ABOUT ME</p>
                             <p>{otherProfile.bio}</p>
+                            <div className="tags-profile-wrapper">{otherProfile.tags ? tags: ""}</div>
+
                             <FriendButton otherUserId={otherUserId} />
                         </div>
                     </div>

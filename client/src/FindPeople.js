@@ -1,15 +1,18 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
+
 export default function FindPeople() {
     const [search, setSearch] = useState("");
     const [users, setUsers] = useState([]);
     const [isFocused, setIsFocused] = useState(false);
 
     const handleChange = (e) => {
+        console.log(e.target.value);
         setIsFocused(true);
         setSearch(e.target.value);
     };
+    
 
     useEffect(() => {
         let abort = false;
@@ -52,15 +55,9 @@ export default function FindPeople() {
     // let showResults = !isFocused ? "hidden-results" : search ? "results": "hidden-results";
     let showResults = !search ? "hidden-results" : "results";
 
-    function onSubmit(e) {
-        e.preventDefault();
-        fetch(`/users?search=${search}`)
-            .then((res) => res.json())
-            .then((results) => {
-                setUsers(results);
-                location.replace("/users");
-            });
-    }
+    function onSubmit(){
+        console.log('juan', users);
+    }    
 
     return (
         <>
@@ -74,11 +71,15 @@ export default function FindPeople() {
                     onChange={handleChange}
                     placeholder="Search artist"
                 ></input>
-                <button className="search-button" type="submit">
+                <button
+                    onClick={onSubmit}
+                    className="search-button"
+                    type="submit"
+                >
                     <img src="./search.png" className="fa fa-search" />
                 </button>
             </div>
-            {/* <button onSubmit={onSubmit}>go!</button> */}
+            {/* <button>go!</button> */}
             <div className="results-wrapper">
                 <div className={showResults}>
                     {users.length >= 1 ? (

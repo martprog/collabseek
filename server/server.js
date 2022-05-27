@@ -24,7 +24,10 @@ const {
     createNewMsgArtist,
     isArtist,
     getTagsBySearch,
-    addTagInTagsTable
+    addTagInTagsTable,
+    getUserArtistById,
+    getAllTags,
+    getArtistsByTag,
 } = require("../database/db");
 const multer = require("multer");
 const uidSafe = require("uid-safe");
@@ -68,8 +71,16 @@ app.get("/user/id.json", (req, res) => {
 app.get("/user/me.json", (req, res) => {
     const { userId } = req.session;
 
-    getUserById(userId).then((results) => {
-        res.json(results);
+    isArtist(userId).then((data) => {
+        if (!data) {
+            getUserById(userId).then((results) => {
+                res.json(results);
+            });
+            return;
+        }
+        getUserArtistById(userId).then((results) => {
+            res.json(results);
+        });
     });
 });
 
@@ -100,14 +111,20 @@ app.post(
 app.post("/users/artist/new", (req, res) => {
     const { userId } = req.session;
 
-    const { bio, spotify, youtube } = req.body;
+    const { bio, spotify, youtube, tagsList } = req.body;
+    // console.log(req.body);
 
     // if (!email || !password) {
     //     res.json({ succes: false });
     //     return;
     // }
-    createArtistProfile(userId, bio, spotify || null, youtube || null)
-        .then(() => {
+    createArtistProfile(userId, bio, spotify || null, youtube || null, tagsList)
+        .then((data) => {
+            data.tags.forEach((element) => {
+                addTagInTagsTable(data.artist_id, element).then(() =>
+                    console.log("it´s all good!")
+                );
+            });
             res.json({ message: "ok" });
         })
         .catch(() => res.json({ message: "error" }));
@@ -138,15 +155,15 @@ app.post("/users/newMsg/:otherUserId", (req, res) => {
     isArtist(userId).then((data) => {
         if (!data) {
             createNewMsg(userId, parseInt(otherUserId), msg).then((data) => {
-                
                 res.json(data);
             });
             return;
-        }else{
-            createNewMsgArtist(userId, parseInt(otherUserId), msg).then((data) => {
-                
-                res.json(data);
-            });
+        } else {
+            createNewMsgArtist(userId, parseInt(otherUserId), msg).then(
+                (data) => {
+                    res.json(data);
+                }
+            );
         }
     });
 });
@@ -174,6 +191,24 @@ app.get("/users/tags", (req, res) => {
             res.json(filteredId);
         });
     }
+});
+
+app.get("/tags/all", (req, res) => {
+    const search = req.query.search;
+    const { userId } = req.session;
+
+    getAllTags().then((data) => {
+        res.json(data);
+    });
+});
+
+app.get("/tags/:tags", (req, res) => {
+    const { tags } = req.params;
+    const { userId } = req.session;
+
+    getArtistsByTag(tags).then((data) => {
+        res.json(data);
+    });
 });
 
 app.get("*", function (req, res) {

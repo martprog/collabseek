@@ -111,6 +111,20 @@ const getUserById = (id) => {
     });
 };
 
+const getUserArtistById = (id) => {
+    const query = `
+        SELECT users.first, users.last, users.profile_picture_url, artists.artist_id, artists.bio,
+        artists.youtube_link, artists.spotify_link, artists.tags  FROM users 
+        JOIN artists
+        ON users.id= artists.artist_id
+        WHERE users.id=$1
+    `;
+
+    return db.query(query, [id]).then((results) => {
+        return results.rows[0];
+    });
+};
+
 const uploadProfilePic = (url, id) => {
     const query = `
         UPDATE users 
@@ -124,26 +138,44 @@ const uploadProfilePic = (url, id) => {
     });
 };
 
-const updateBio = (bio, id) => {
+const updateBio = (bio, id, tags) => {
     const query = `
-        UPDATE users
-        SET bio=$1
-        WHERE id=$2
+        UPDATE artists
+        SET bio=$1, tags=$3
+        WHERE artist_id=$2
         RETURNING *
     `;
 
-    return db.query(query, [bio, id]).then((results) => {
+    return db.query(query, [bio, id, tags]).then((results) => {
         return results.rows[0];
     });
 };
 
-const createArtistProfile = (artist_id, bio, youtube_link, spotify_link) => {
+const deleteTagsByUpdate = (id, tag) => {
     const query = `
-            INSERT INTO artists (artist_id, bio, youtube_link, spotify_link)
-            VALUES($1, $2, $3, $4)
+        DELETE from tags 
+        WHERE artist_id=$1 and tag <> $2;
+        RETURNING * 
+    `;
+
+    return db.query(query, [id, tag]).then((results) => {
+        return results.rows[0];
+    });
+};
+
+const createArtistProfile = (
+    artist_id,
+    bio,
+    youtube_link,
+    spotify_link,
+    tags
+) => {
+    const query = `
+            INSERT INTO artists (artist_id, bio, youtube_link, spotify_link, tags)
+            VALUES($1, $2, $3, $4, $5)
             RETURNING *
             `;
-    const params = [artist_id, bio, youtube_link, spotify_link];
+    const params = [artist_id, bio, youtube_link, spotify_link, tags];
     return db.query(query, params).then((results) => {
         return results.rows[0];
     });
@@ -168,7 +200,7 @@ const getUsersByQuery = (search) => {
         SELECT * FROM  USERS
         WHERE first ILIKE $1 
     `;
-        // AND id not in($2)
+    // AND id not in($2)
 
     return db.query(query, [search + "%"]).then((results) => {
         return results.rows;
@@ -177,8 +209,11 @@ const getUsersByQuery = (search) => {
 
 const getOtherUserProfile = (id) => {
     const query = `
-        SELECT * FROM users
-        WHERE id=$1
+        SELECT users.first, users.last, users.profile_picture_url, artists.artist_id, artists.bio,
+        artists.youtube_link, artists.spotify_link, artists.tags  FROM users
+        JOIN ARTISTS
+        ON users.id= artists.artist_id
+        WHERE users.id=$1
     `;
 
     return db.query(query, [id]).then((results) => {
@@ -341,11 +376,11 @@ const newArtistRequest = (otherUserId, userId, text) => {
     });
 };
 
-const getTagsBySearch = (search) =>{
+const getTagsBySearch = (search) => {
     const query = `
     SELECT * from TAGS 
     WHERE tag ILIKE $1`;
-    
+
     return db.query(query, [search + "%"]).then((results) => {
         return results.rows;
     });
@@ -356,6 +391,35 @@ const addTagInTagsTable = (id, tag) => {
     INSERT INTO tags (artist_id, tag)
     VALUES ($1, $2)
     RETURNING *
+    `;
+
+    return db.query(query, [id, tag]).then((results) => {
+        return results.rows;
+    });
+};
+
+const getAllTags = () => {
+    const query = `
+    SELECT  tag, count(tag) AS amount_tags
+    FROM tags 
+    GROUP BY tag 
+    ORDER BY amount_tags DESC;
+    
+    `;
+
+    return db.query(query).then((results) => {
+        return results.rows;
+    });
+};
+
+const getArtistsByTag = (tag) => {
+    const query = `
+    SELECT * FROM tags 
+    JOIN artists 
+    ON artists.artist_id = tags.artist_id
+    JOIN users 
+    ON artists.artist_id = users.id
+    WHERE tag=$1
     `;
 
     return db.query(query, [tag]).then((results) => {
@@ -386,5 +450,9 @@ module.exports = {
     newArtistRequest,
     isArtist,
     getTagsBySearch,
-    addTagInTagsTable
+    addTagInTagsTable,
+    getUserArtistById,
+    deleteTagsByUpdate,
+    getAllTags,
+    getArtistsByTag,
 };

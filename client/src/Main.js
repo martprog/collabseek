@@ -2,9 +2,18 @@ import { useState, useEffect } from "react";
 import Profile from "./Profile";
 import FindPeople from "./FindPeople";
 import { Link } from "react-router-dom";
-import NewArtists from "./NewArtists"
+import NewArtists from "./NewArtists";
+import ArtistsByTag from "./ArtistsByTag";
+import TagsMain from "./TagsMain";
 
-export default function Main ({ first, last, bio, onBioUpload, profile_picture_url, openModal }) {
+export default function Main({
+    first,
+    last,
+    bio,
+    onBioUpload,
+    profile_picture_url,
+    openModal,
+}) {
     return (
         <div className="mainWrapper">
             <div className="profileWrapper">
@@ -21,11 +30,11 @@ export default function Main ({ first, last, bio, onBioUpload, profile_picture_u
                 /> */}
             </div>
             <div>
-
-            <NewArtists></NewArtists>
+                <NewArtists></NewArtists>
+                <TagsMain>
+                    {/* <ArtistsByTag /> */}
+                </TagsMain>
             </div>
-
-            
         </div>
     );
 }

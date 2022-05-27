@@ -5,7 +5,7 @@ import { CSSTransition } from "react-transition-group";
 export default class ArtistPost extends Component {
     constructor() {
         super();
-        this.state = { isOn: true, search: "", isOpen: false };
+        this.state = { isOn: true, search: "", isOpen: false, tagsList: [] };
         this.handleChange = this.handleChange.bind(this);
         this.handleTagChange = this.handleTagChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -56,18 +56,46 @@ export default class ArtistPost extends Component {
             fetch(`/users/tags?search=${this.state.tag}`)
                 .then((res) => res.json())
                 .then((results) => {
-                    console.log("tag ", results);
-                    this.setState({ resTags: results });
-                    this.setState({ isOpen: true });
+                    if (results.length < 1) {
+                        console.log("taggg", typeof this.state.tag);
+                        this.setState({ resTags: this.state.tag });
+                    } else {
+                        this.setState({ resTags: results });
+                        this.setState({ isOpen: true });
+                    }
                 });
         }
     }
 
     mappedUsers() {
+        if (typeof this.state.resTags === "string") {
+            return (
+                <div
+                    className="hoverNselect-tag"
+                    onClick={() =>
+                        this.setState({
+                            tagsList: [
+                                ...this.state.tagsList,
+                                this.state.resTags,
+                            ],
+                        })
+                    }
+                >
+                    {this.state.resTags}
+                </div>
+            );
+        }
         return this.state.resTags.map((user) => {
             return (
-                <div key={user.id}>
-                    <div className="finded-users-search-bar">
+                <div className="hoverNselect-tag" key={user.id}>
+                    <div
+                        onClick={() =>
+                            this.setState({
+                                tagsList: [...this.state.tagsList, user.tag],
+                            })
+                        }
+                        className="finded-users-search-bar"
+                    >
                         <h3>{user.tag}</h3>
                     </div>
                 </div>
@@ -86,16 +114,16 @@ export default class ArtistPost extends Component {
                         appear
                     >
                         <div className={this.state.error ? "wronglog" : ""}>
-                            <div className="registration">
+                            <div className="artist-post-wrapper">
                                 <h1>Create artist page</h1>
                                 {this.state.error && (
                                     <p className="p_log">
                                         Oops, something went wrong!
                                     </p>
                                 )}
-                                <div className="form-artist-wrapper">
+                                <div className="">
                                     <form
-                                        className="form"
+                                        className="form-artist-wrapper"
                                         onSubmit={this.handleSubmit}
                                     >
                                         <input
@@ -131,16 +159,31 @@ export default class ArtistPost extends Component {
                                             name="tag"
                                         ></input>
                                         <div
-                                            className={
-                                                this.state.isOpen
-                                                    ? "active"
-                                                    : "hidden"
-                                            }
+                                        // className={
+                                        //     this.state.isOpen
+                                        //         ? "active"
+                                        //         : "hidden"
+                                        // }
                                         >
                                             {this.state.resTags &&
                                                 this.mappedUsers()}
                                         </div>
-
+                                        
+                                        <div className="tags-selection">
+                                            {this.state.tagsList &&
+                                                this.state.tagsList.map(
+                                                    (tag, i) => {
+                                                        return (
+                                                            <div
+                                                                className="tags-single"
+                                                                key={i}
+                                                            >
+                                                                <p>{tag}</p>
+                                                            </div>
+                                                        );
+                                                    }
+                                                )}
+                                        </div>
                                         <button id="submitReg">SUBMIT</button>
                                     </form>
                                 </div>

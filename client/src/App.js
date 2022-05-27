@@ -17,6 +17,8 @@ import RequestsPage from "./RequestsPage";
 import Conversation from "./Conversation";
 import ArtistPost from "./ArtistPost";
 import SearchResult from "./SearchResult"
+import ArtistsByTag from "./ArtistsByTag";
+
 
 export default class App extends Component {
     constructor(props) {
@@ -27,6 +29,9 @@ export default class App extends Component {
             first: "",
             last: "",
             bio: "",
+            spotify_link: "",
+            youtube_link: "",
+            tags: [],
             clicked: false,
         };
         this.openModal = this.openModal.bind(this);
@@ -56,6 +61,7 @@ export default class App extends Component {
             .then((res) => res.json())
             .then((data) => {
                 if (data.profile_picture_url) {
+                    
                     this.setState(data);
                 } else {
                     this.setState({ first: data.first });
@@ -114,7 +120,7 @@ export default class App extends Component {
                             <Link
                                 style={{ textDecoration: "none" }}
                                 onClick={this.menuList}
-                                to="/"
+                                to="/aboutme"
                             >
                                 Edit your profile
                             </Link>
@@ -253,6 +259,10 @@ export default class App extends Component {
                                 <Route path="/users/searchresult">
                                     <SearchResult />
                                 </Route>
+                                <Route path="/artistsbytags/:tags">
+                                    <ArtistsByTag />
+                                </Route>
+                                
 
                                 <Route path="/aboutme">
                                     <Profile

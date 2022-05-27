@@ -15,8 +15,13 @@ export default function Profile({
     onBioUpload,
     profile_picture_url,
     openModal,
+    spotify_link,
+    youtube_link,
+    tags,
 }) {
     const [inProp, setProp] = useState(true);
+    console.log(tags);
+
     return (
         <CSSTransition
             in={inProp}
@@ -32,9 +37,14 @@ export default function Profile({
                         {first} {last}
                     </h2>
                     <p>ABOUT ME</p>
+                    
                     <BioEditor
+                        spotify_link={spotify_link}
+                        youtube_link={youtube_link}
+                        tags={tags}
                         last={last}
                         bio={bio}
+                        first={first}
                         onBioUpload={onBioUpload}
                     />
                 </div>

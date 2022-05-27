@@ -5,13 +5,17 @@ const {
     getLatestUsers,
     getUsersByQuery,
     updateBio,
+    deleteTagsByUpdate
 } = require("../../database/db");
 
 router.put("/user/profile_bio", (req, res) => {
-    const { bio } = req.body;
+    const { bio, newTags } = req.body;
     const { userId } = req.session;
 
-    updateBio(bio, userId).then((results) => {
+    updateBio(bio, userId, newTags).then((results) => {
+        results.tags.forEach(element => {
+            deleteTagsByUpdate(userId, element).then((data)=> console.log('tag erased'));     
+        });
         res.json(results);
     });
 });
@@ -48,7 +52,9 @@ router.get("/api/users/:otherUserId", (req, res) => {
         res.json({ error: true });
         return;
     }
+    console.log(otherUserId);
     getOtherUserProfile(otherUserId).then((data) => {
+        
         if (!data) {
             res.json({ error: true });
             return;

@@ -19,13 +19,12 @@ body {
     align-items: center;
 }
 
-.nav-wrapper div{
+.nav-wrapper div {
     display: flex;
     height: 100%;
     align-items: center;
     cursor: pointer;
     padding: 12px;
-
 }
 
 .results-wrapper {
@@ -40,7 +39,6 @@ body {
 .find-people-search {
     display: flex;
     position: relative;
-   
 
     /* flex-direction: column; */
     align-items: center;
@@ -57,18 +55,18 @@ body {
 }
 
 .search-button {
-  background: transparent;
-  border: none;
-  outline: none;
-  position: absolute;
-  top: 30px;
-  margin-left: -33px;
+    background: transparent;
+    border: none;
+    outline: none;
+    position: absolute;
+    top: 30px;
+    margin-left: -33px;
 }
 
 .search-button img {
-  width: 20px;
-  height: 20px;
-  object-fit: cover;
+    width: 20px;
+    height: 20px;
+    object-fit: cover;
 }
 
 .searchbar {
@@ -77,7 +75,7 @@ body {
     height: 30px;
     width: 250px;
     padding: 12px;
-    border: 1px solid gray; 
+    border: 1px solid gray;
     border-radius: 25px;
     z-index: 10;
 }
@@ -87,18 +85,16 @@ input:focus {
     transition: all 200ms;
 }
 
-.finded-users-search-bar{
+.finded-users-search-bar {
     display: flex;
     gap: 5px;
 }
 
-.finded-users-search-bar img{
+.finded-users-search-bar img {
     border-radius: 50%;
     height: 40px;
     width: 40px;
 }
-
-
 
 .finded-users {
     display: flex;
@@ -136,70 +132,77 @@ input:focus {
     background-color: beige;
 }
 
-.inbox-wrapper{
+.inbox-wrapper {
     display: flex;
     justify-content: space-between;
-    height: 400px
+    height: 400px;
 }
 
-.msg-container, .private-msg-container{
+.msg-container,
+.private-msg-container {
     display: flex;
     border-top: 1px solid;
     align-items: center;
 }
 
-.private-msg-container{
-        width: 100%;
-
+.private-msg-container {
+    width: 100%;
 }
 
-.chat-wrapper{
+.chat-wrapper {
     overflow: scroll;
-
 }
 
-.chatroom-wrapper{
+.chatroom-wrapper {
     /* width: 250px; */
     height: 300px;
     overflow: scroll;
-
 }
 
-.chat-inpBtn input{
+.chat-inpBtn input {
     outline: none;
     border: none;
     height: 30px;
     width: 250px;
     padding: 12px;
     border: 1px solid gray;
-    
+
     border-radius: 25px;
     z-index: 10;
 }
 
-.private-msgs-wrapper{
+.private-msgs-wrapper {
     width: 350px;
     overflow: scroll;
     border: 1px solid pink;
 }
 
-.msg-container img, .private-msg-container img{
-   height: 60px;
-    width: 60px; 
+.msg-container img,
+.private-msg-container img {
+    height: 60px;
+    width: 60px;
     border-radius: 50%;
 }
 
-.msg-details, .private-msg-details{
+.msg-details,
+.private-msg-details {
     display: flex;
     flex-direction: column;
 }
 
-.form-artist-wrapper{
+.artist-post-wrapper {
     display: flex;
+    flex-direction: column;
+}
+
+.form-artist-wrapper {
+    display: flex;
+    flex-direction: column;
+
     gap: 10px;
 }
 
-.form-artist-wrapper input{
+.form-artist-wrapper input {
     outline: none;
     border: none;
     height: 30px;
@@ -210,7 +213,7 @@ input:focus {
     z-index: 10;
 }
 
-#submitReg{
+#submitReg {
     padding: 7px;
     outline: none;
     border: none;
@@ -218,10 +221,10 @@ input:focus {
     border-radius: 12px;
     color: white;
     cursor: pointer;
-    background: linear-gradient(to right,#FF4B2B,#FF416C)
+    background: linear-gradient(to right, #ff4b2b, #ff416c);
 }
 
-.profile-card-main{
+.profile-card-main {
     width: 300px;
     border: 1px solid yellowgreen;
     display: flex;
@@ -229,18 +232,18 @@ input:focus {
     align-items: center;
 }
 
-.finded-users{
+.finded-users {
     display: flex;
     flex-direction: column;
     text-align: center;
 }
 
-.profile-card-main img{
+.profile-card-main img {
     height: 400px;
     width: 250px;
 }
 
-.profile-card-main-btn{
+.profile-card-main-btn {
     outline: none;
     border: none;
     width: 160px;
@@ -248,13 +251,46 @@ input:focus {
     color: white;
     cursor: pointer;
     padding: 5px;
-    background: linear-gradient(to right,#FF4B2B,#FF416C)
+    background: linear-gradient(to right, #ff4b2b, #ff416c);
 }
 
-.hidden{
+.hidden {
     visibility: hidden;
 }
 
-.active{
+.active {
     visibility: visible;
+}
+
+.tags-in-profile {
+    border: 1px solid;
+    border-radius: 20px;
+    background-color: #ff4b2b;
+    padding: 0 6px 0 6px;
+}
+
+.tags-profile-wrapper {
+    display: flex;
+    gap: 5px;
+}
+
+.tags-selection {
+    display: flex;
+    gap: 10px;
+}
+
+.tags-single {
+    border: 1px solid;
+    background-color: #ff416c;
+    border-radius: 20px;
+    padding: 0 12px;
+}
+
+.new-artists-wrapper {
+    display: flex;
+    gap: 8px;
+}
+
+.hoverNselect-tag{
+    cursor: pointer;
 }

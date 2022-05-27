@@ -1,15 +1,25 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { useParams, useHistory } from "react-router";
 
-export default function NewArtists() {
+export default function ArtistsByTag() {
     const [users, setUsers] = useState([]);
+    const { tags } = useParams();
 
     useEffect(() => {
-        fetch("/users/newartists")
+        let abort = false;
+
+        fetch(`/tags/${tags}`)
             .then((res) => res.json())
             .then((results) => {
-                setUsers(results);
+                console.log("cacccc", abort);
+                if (!abort) {
+                    console.log("holis", results);
+                    setUsers(results);
+                }
             });
+
+        return () => (abort = true);
     }, []);
 
     const mappedUsers = () => {
@@ -44,17 +54,12 @@ export default function NewArtists() {
     };
 
     return (
-        <>
-            <div>
-                <h2>Discover recent Artists</h2>
-                <div className="new-artists-wrapper">
-                    {users.length >= 1 ? (
-                        mappedUsers()
-                    ) : (
-                        <p>no matches found</p>
-                    )}
-                </div>
+        <div>
+            <h2>Artists by Tag: </h2>
+
+            <div className="new-artists-wrapper">
+                {users.length >= 1 ? mappedUsers() : <p>no matches found</p>}
             </div>
-        </>
+        </div>
     );
 }
