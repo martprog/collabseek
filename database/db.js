@@ -124,6 +124,8 @@ const getUserArtistById = (id) => {
     });
 };
 
+
+
 const uploadProfilePic = (url, id) => {
     const query = `
         UPDATE users 
@@ -137,15 +139,18 @@ const uploadProfilePic = (url, id) => {
     });
 };
 
-const updateBio = (bio, id, tags) => {
+const updateBio = (bio, tags,  youtube, spotify, id) => {
+    console.log('tags:', tags);
     const query = `
         UPDATE artists
-        SET bio=$1, tags=$3
-        WHERE artist_id=$2
+        SET bio=$1, tags=$2, youtube_link=$3, spotify_link=$4
+        WHERE artist_id=$5
         RETURNING *
     `;
+    
 
-    return db.query(query, [bio, id, tags]).then((results) => {
+    return db.query(query, [bio, tags, youtube, spotify, id]).then((results) => {
+        console.log('resultados update', results.rows[0]);
         return results.rows[0];
     });
 };
@@ -209,6 +214,8 @@ const getLatestUsers = () => {
         return results.rows;
     });
 };
+
+
 
 const getUsersByQuery = (search) => {
     const query = `

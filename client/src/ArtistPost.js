@@ -170,13 +170,7 @@ export default class ArtistPost extends Component {
                                             type="tag"
                                             name="tag"
                                         ></input>
-                                        <div
-                                        // className={
-                                        //     this.state.isOpen
-                                        //         ? "active"
-                                        //         : "hidden"
-                                        // }
-                                        >
+                                        <div>
                                             {this.state.resTags &&
                                                 this.mappedUsers()}
                                         </div>

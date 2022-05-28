@@ -20,7 +20,7 @@ export default function Profile({
     tags,
 }) {
     const [inProp, setProp] = useState(true);
-    console.log(tags);
+    console.log("tags, ", tags);
 
     return (
         <CSSTransition
@@ -37,7 +37,7 @@ export default function Profile({
                         {first} {last}
                     </h2>
                     <p>ABOUT ME</p>
-                    
+
                     <BioEditor
                         spotify_link={spotify_link}
                         youtube_link={youtube_link}
@@ -47,6 +47,26 @@ export default function Profile({
                         first={first}
                         onBioUpload={onBioUpload}
                     />
+                    <div className="links-container">
+                        {spotify_link ? (
+                            <a  href={spotify_link}>
+                                {" "}
+                                <img id="spotify-log" src="./spotify.png" />
+                            </a>
+                        ) : (
+                            ""
+                        )}
+                        {youtube_link ? (
+                            <a href={youtube_link}>
+                                {" "}
+                                <img id="youtube-logo" src="./youtube.png" />
+                            </a>
+                        ) : (
+                            ""
+                        )}
+                    </div>
+
+                    
                 </div>
             </div>
         </CSSTransition>

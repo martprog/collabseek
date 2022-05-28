@@ -352,3 +352,13 @@ input:focus {
 .hoverNselect-tag{
     cursor: pointer;
 }
+
+.links-container{
+    display: flex;
+}
+
+.links-container img{
+    height: 35px;
+    width: 200px;
+
+}

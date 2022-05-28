@@ -10,16 +10,24 @@ const {
 } = require("../../database/db");
 
 router.put("/user/profile_bio", (req, res) => {
-    const { bio, newTags } = req.body;
+    const { bio, tags, newTube, newSpot } = req.body;
     const { userId } = req.session;
 
-    updateBio(bio, userId, newTags).then((results) => {
-        results.tags.forEach((element) => {
-            deleteTagsByUpdate(userId, element).then((data) =>
-                console.log("tag erased", data)
-            );
-        });
-        res.json(results);
+    console.log('body', req.body);
+
+    updateBio(bio, tags, newTube, newSpot, userId).then((results) => {
+        // if(!results){
+        res.json({ message: "no results" });
+        return;
+        // }else{
+        //     results.tags.forEach((element) => {
+        //         deleteTagsByUpdate(userId, element).then((data) =>
+        //             console.log("tag erased", data)
+        //         );
+        //     });
+        //     res.json(results);
+
+        // }
     });
 });
 
@@ -43,23 +51,23 @@ router.get("/users", (req, res) => {
 router.get("/users/newartists", (req, res) => {
     const { userId } = req.session;
 
-    let newMapped = [];
     getLatestUsers().then((users) => {
-    users.forEach((item) => {
-            let usuario = item
-            console.log('iiiii', item);
-             getFavoriteState(userId, item.id).then((data) => {
-                // console.log(data);
+        let newMapped = [];
+        users.forEach((item) => {
+            let usuario = item;
+            getFavoriteState(userId, item.id).then((data) => {
+                
                 if (data.length >= 1) {
-                    console.log("item, ", usuario);
                     newMapped.push({ ...item, isFavorite: true });
-                }else{
-                    newMapped.push(usuario)
+                } else {
+                    newMapped.push(usuario);
                 }
+                console.log("mapa", newMapped);
             });
+            return newMapped
         });
-        console.log('mapa', newMapped);
-        res.json(newMapped);
+        
+        res.json(users);
     });
 });
 

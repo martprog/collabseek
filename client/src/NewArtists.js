@@ -20,7 +20,7 @@ export default function NewArtists() {
 
     useEffect(() => {}, []);
 
-    console.log('new artists', users);
+    console.log("new artists", users);
 
     const mappedUsers = () => {
         return users.map((user) => {
@@ -57,12 +57,18 @@ export default function NewArtists() {
         <>
             <div>
                 <h2>Discover recent Artists</h2>
+                <div>
+                    <p>&laquo</p>
+                </div>
                 <div className="new-artists-wrapper">
                     {users.length >= 1 ? (
                         mappedUsers()
                     ) : (
                         <p>no matches found</p>
                     )}
+                </div>
+                <div>
+                    <p>&raquo</p>
                 </div>
             </div>
         </>

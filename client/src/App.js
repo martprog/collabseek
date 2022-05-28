@@ -83,8 +83,8 @@ export default class App extends Component {
         this.setState({ picFile: e.target.value });
     }
 
-    onBioUpload(newBio) {
-        this.setState({ bio: newBio });
+    onBioUpload(newBio, newSpot, newTagsSend, newTube) {
+        this.setState({ bio: newBio, spotify_link: newSpot, youtube_link: newTube, tags: newTagsSend });
     }
 
     menuList() {
@@ -287,8 +287,7 @@ export default class App extends Component {
                                         <Route path="/requests/all">
                                             <RequestsPage />
                                         </Route>
-                                        
-                                            
+
                                         <Route path="/request/:otherUserId">
                                             <Request />
                                         </Route>
