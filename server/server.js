@@ -28,6 +28,11 @@ const {
     getUserArtistById,
     getAllTags,
     getArtistsByTag,
+    requestSent,
+    addFavorite,
+    getFavoriteState,
+    removeFavorite,
+    getFavorites
 } = require("../database/db");
 const multer = require("multer");
 const uidSafe = require("uid-safe");
@@ -208,6 +213,54 @@ app.get("/tags/:tags", (req, res) => {
 
     getArtistsByTag(tags).then((data) => {
         res.json(data);
+    });
+});
+
+app.get("/hassentrequest/:otherUserId", (req, res) => {
+    const { otherUserId } = req.params;
+    const { userId } = req.session;
+    requestSent(userId, otherUserId).then((data) => {
+        if (data.length < 1) {
+            res.json({ message: "no-request" });
+        } else {
+            res.json({ message: "ok" });
+        }
+    });
+});
+
+app.get("/favorites/all", (req, res) => {
+    const { userId } = req.session;
+    getFavorites(userId).then((data) => {
+        res.json(data);
+    });
+});
+
+app.get("/favorites/add/:otherUserId", (req, res) => {
+    const { otherUserId } = req.params;
+    const { userId } = req.session;
+    getFavoriteState(userId, otherUserId).then((data) => {
+
+        if (data.length >= 1) {
+            res.json({ message: "friends" });
+        } else {
+            res.json({ message: "not friends" });
+        }
+    });
+});
+
+app.post("/favorites/add/:otherUserId", (req, res) => {
+    const { otherUserId } = req.params;
+    const { userId } = req.session;
+    addFavorite(userId, otherUserId).then((data) => {
+        res.json({ message: "ok" });
+    });
+});
+
+app.post("/favorites/remove/:otherUserId", (req, res) => {
+    const { otherUserId } = req.params;
+    const { userId } = req.session;
+    removeFavorite(userId, otherUserId).then((data) => {
+        res.json({ message: "removed" });
     });
 });
 

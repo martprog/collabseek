@@ -6,7 +6,7 @@ import { CSSTransition } from "react-transition-group";
 import FriendButton from "./FriendButton";
 // import { getUserId } from "./redux/sessionId/slice";
 import { useDispatch, useSelector } from "react-redux";
-// import FriendsOtherProfile from "./FriendsOtherProfile";
+import FavoriteBtn from "./FavoriteBtn";
 
 export default function OtherProfile() {
     const dispatch = useDispatch();
@@ -70,9 +70,12 @@ export default function OtherProfile() {
                             </h2>
                             <p>ABOUT ME</p>
                             <p>{otherProfile.bio}</p>
-                            <div className="tags-profile-wrapper">{otherProfile.tags ? tags: ""}</div>
+                            <div className="tags-profile-wrapper">
+                                {otherProfile.tags ? tags : ""}
+                            </div>
 
                             <FriendButton otherUserId={otherUserId} />
+                            <FavoriteBtn otherUserId={otherUserId} />
                         </div>
                     </div>
 

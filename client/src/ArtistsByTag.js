@@ -12,9 +12,7 @@ export default function ArtistsByTag() {
         fetch(`/tags/${tags}`)
             .then((res) => res.json())
             .then((results) => {
-                console.log("cacccc", abort);
                 if (!abort) {
-                    console.log("holis", results);
                     setUsers(results);
                 }
             });

@@ -50,6 +50,7 @@ export default function Request() {
         <>
             <div className="find-megawrapper">
                 <h1>Request</h1>
+                <p>Tell the artist about yourself and what project do you have in mind</p>
                 <form onSubmit={onSubmit}>
                     <textarea name="text"></textarea>
                     <div className="textareaBtns">

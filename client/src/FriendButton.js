@@ -13,8 +13,21 @@ export default function FriendButton({ otherUserId }) {
                 if (!data.userId) {
                     setIsConnected(false);
                 } else {
-                    console.log("user  logged in!");
                     setIsConnected(true);
+                }
+            })
+            .catch((e) => console.log(e));
+    }, [btnText]);
+
+    useEffect(() => {
+        fetch(`/hassentrequest/${otherUserId}`)
+            .then((res) => res.json())
+            .then((data) => {
+                if (data.message === "ok") {
+                    setBtnText("Go to messages");
+                } else {
+                    console.log("user  logged in!");
+                    setBtnText("Send Request");
                 }
             })
             .catch((e) => console.log(e));
@@ -24,14 +37,17 @@ export default function FriendButton({ otherUserId }) {
         if (!isConnected) {
             location.replace("/login");
         } else {
-            console.log("conectado!");
-            location.replace(`/request/${otherUserId}`);
+            if (btnText === "Send Request") {
+                location.replace(`/request/${otherUserId}`);
+            } else {
+                location.replace(`/conversation/${otherUserId}`);
+            }
         }
     };
 
     return (
         <button className="btnFriendship" onClick={onRequest}>
-            Send Request
+            {btnText}
         </button>
     );
 }

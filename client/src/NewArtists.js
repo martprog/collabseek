@@ -10,7 +10,17 @@ export default function NewArtists() {
             .then((results) => {
                 setUsers(results);
             });
+
+        // fetch("/favorites/all")
+        //     .then((res) => res.json())
+        //     .then((results) => {
+        //         setUsers([...users, results]);
+        //     });
     }, []);
+
+    useEffect(() => {}, []);
+
+    console.log('new artists', users);
 
     const mappedUsers = () => {
         return users.map((user) => {

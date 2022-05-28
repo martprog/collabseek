@@ -1,5 +1,5 @@
 import { Component } from "react";
-import { BrowserRouter, Route, Link } from "react-router-dom";
+import { BrowserRouter, Route, Link, Redirect } from "react-router-dom";
 import { CSSTransition } from "react-transition-group";
 import ProfilePic from "./ProfilePic";
 import Uploader from "./Uploader";
@@ -7,7 +7,7 @@ import Profile from "./Profile";
 import FindPeople from "./FindPeople";
 import Main from "./Main";
 import OtherProfile from "./OtherProfile";
-import Friends from "./Friends";
+import Favorites from "./Favorites";
 import ChatMessages from "./ChatMessages";
 import Registration from "./registration";
 import Login from "./login";
@@ -16,9 +16,8 @@ import Request from "./Request";
 import RequestsPage from "./RequestsPage";
 import Conversation from "./Conversation";
 import ArtistPost from "./ArtistPost";
-import SearchResult from "./SearchResult"
+import SearchResult from "./SearchResult";
 import ArtistsByTag from "./ArtistsByTag";
-
 
 export default class App extends Component {
     constructor(props) {
@@ -61,7 +60,6 @@ export default class App extends Component {
             .then((res) => res.json())
             .then((data) => {
                 if (data.profile_picture_url) {
-                    
                     this.setState(data);
                 } else {
                     this.setState({ first: data.first });
@@ -211,7 +209,7 @@ export default class App extends Component {
                                         to="/chatroom"
                                         style={{ textDecoration: "none" }}
                                     >
-                                        Chat
+                                        Other
                                     </Link>
                                 </div>
                                 <div>
@@ -219,7 +217,7 @@ export default class App extends Component {
                                         to="/friends"
                                         style={{ textDecoration: "none" }}
                                     >
-                                        Friends
+                                        My Favorites
                                     </Link>
                                 </div>
 
@@ -231,11 +229,18 @@ export default class App extends Component {
 
                                     <ProfilePic
                                         url={this.state.profile_picture_url}
-                                        openModal={this.openModal}
                                     />
                                 </div>
                             </nav>
                         </div>
+
+                        {this.state.modalOn && (
+                            <Uploader
+                                // handlePicChange={this.handlePicChange}
+                                onUpload={this.onUpload}
+                                closeModal={this.closeModal}
+                            />
+                        )}
                         <div className="multi-wrapper">
                             <div className="wrapperRouter">
                                 <Route exact path="/">
@@ -262,7 +267,6 @@ export default class App extends Component {
                                 <Route path="/artistsbytags/:tags">
                                     <ArtistsByTag />
                                 </Route>
-                                
 
                                 <Route path="/aboutme">
                                     <Profile
@@ -271,18 +275,11 @@ export default class App extends Component {
                                         openModal={this.openModal}
                                     />
                                 </Route>
-                                {/* <Route path="/findusers">
-                                    <FindPeople
-                                        {...this.state}
-                                        onBioUpload={this.onBioUpload}
-                                        openModal={this.openModal}
-                                    />
-                                </Route> */}
 
                                 {this.state.isConnected ? (
                                     <>
                                         <Route path="/friends">
-                                            <Friends />
+                                            <Favorites />
                                         </Route>
                                         <Route path="/chatroom">
                                             <ChatMessages />
@@ -290,6 +287,8 @@ export default class App extends Component {
                                         <Route path="/requests/all">
                                             <RequestsPage />
                                         </Route>
+                                        
+                                            
                                         <Route path="/request/:otherUserId">
                                             <Request />
                                         </Route>

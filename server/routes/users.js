@@ -5,7 +5,8 @@ const {
     getLatestUsers,
     getUsersByQuery,
     updateBio,
-    deleteTagsByUpdate
+    deleteTagsByUpdate,
+    getFavoriteState,
 } = require("../../database/db");
 
 router.put("/user/profile_bio", (req, res) => {
@@ -13,8 +14,10 @@ router.put("/user/profile_bio", (req, res) => {
     const { userId } = req.session;
 
     updateBio(bio, userId, newTags).then((results) => {
-        results.tags.forEach(element => {
-            deleteTagsByUpdate(userId, element).then((data)=> console.log('tag erased'));     
+        results.tags.forEach((element) => {
+            deleteTagsByUpdate(userId, element).then((data) =>
+                console.log("tag erased", data)
+            );
         });
         res.json(results);
     });
@@ -38,8 +41,25 @@ router.get("/users", (req, res) => {
 });
 
 router.get("/users/newartists", (req, res) => {
+    const { userId } = req.session;
+
+    let newMapped = [];
     getLatestUsers().then((users) => {
-        res.json(users);
+    users.forEach((item) => {
+            let usuario = item
+            console.log('iiiii', item);
+             getFavoriteState(userId, item.id).then((data) => {
+                // console.log(data);
+                if (data.length >= 1) {
+                    console.log("item, ", usuario);
+                    newMapped.push({ ...item, isFavorite: true });
+                }else{
+                    newMapped.push(usuario)
+                }
+            });
+        });
+        console.log('mapa', newMapped);
+        res.json(newMapped);
     });
 });
 
@@ -54,7 +74,6 @@ router.get("/api/users/:otherUserId", (req, res) => {
     }
     console.log(otherUserId);
     getOtherUserProfile(otherUserId).then((data) => {
-        
         if (!data) {
             res.json({ error: true });
             return;

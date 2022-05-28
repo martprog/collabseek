@@ -9,50 +9,32 @@ import Conversation from "./Conversation";
 import { getPrivateMessages } from "./redux/private-messages/slice";
 
 export default function RequestsPage() {
-    const [isOpen, setIsOpen] = useState(false);
-    const lastMessageRef = useRef(null);
-    const dispatch = useDispatch();
+    // const [isOpen, setIsOpen] = useState(false);
+    const [chatMessages, setChatMessages] = useState([]);
 
-    function formatDate(timestamp) {
-        const date = new Date(timestamp);
-        return `${date.toDateString()}`;
-    }
-
-    const chatMessages = useSelector(
-        (state) => state.chatMessages && state.chatMessages
-    );
-
-    useEffect(() => {
-        (async () => {
-            const res = await fetch("/user/id.json");
-            const data = await res.json();
-            dispatch(getUserId(data.userId));
-        })();
-    }, []);
     useEffect(() => {
         (async () => {
             const res = await fetch("/users/conversations/all");
             const data = await res.json();
-
-            dispatch(getMessages(data));
-            if (chatMessages) {
-                // console.log(chatMessages[0].userid);
-                location.replace(`/conversation/${+chatMessages[0].userid}`);
+            if (data.length >= 1) {
+                setChatMessages(data[0].userid);
+                console.log(data);
+                // const chatId = chatMessages && parseInt(chatMessages[0].id);
             }
         })();
-    }, [chatMessages]);
+    }, []);
     //render thousands of times!
     // }, [chatMessages]);
 
-
-    
-
     return (
         <>
+            {console.log(chatMessages, typeof chatMessages)}
+            {typeof chatMessages === "number"
+                ? location.replace(`/conversation/${chatMessages}`)
+                : ""}
             <h1>Messages</h1>
             <div className="msg-page">
-                
-                <ChatMessages />
+                {chatMessages && <ChatMessages />}
                 {/* <Conversation /> */}
             </div>
         </>

@@ -4,6 +4,7 @@
 
 body {
     /* background-color: ghostwhite; */
+    font-family: 'Bebas Neue', cursive;
 }
 
 .header {
@@ -11,6 +12,63 @@ body {
     justify-content: space-between;
     height: 85px;
     border: 1px solid;
+}
+
+.modal{
+    position: fixed;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+.formUpload{
+    margin-top: 100px;
+    background-color: pink;
+    height: 200px;
+    width: 500px;
+    border-radius: 12px;
+    box-shadow: 0px 5px 10px 0px black;
+    text-align: center;
+    
+}
+
+#submitPic{
+    outline: none;
+    border: none;
+    height: 40px;
+    background-color: #72767d;
+    border-radius: 5px;
+    color: #ffffff;
+    font-size: 20px;
+}
+
+#closeBtn{
+    background-color: #72767d;
+    width: 50px;
+    height: 50px;
+    color: white;
+    padding: 12px;
+    font-size: 20px;
+    border: 1px solid white;
+    position: absolute;
+    right: 340px;
+    top: 40px;
+    text-align: center;
+    border-radius: 50%;
+    opacity: 0.6;
+    transition: opacity 100ms;
+
+}
+
+#closeBtn:hover{
+    opacity: 1;
+    cursor: pointer;
 }
 
 .nav-wrapper {

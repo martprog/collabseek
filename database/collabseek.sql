@@ -3,6 +3,8 @@ DROP TABLE IF EXISTS artists;
 DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS gencodes;
 DROP TABLE IF EXISTS tags;
+DROP TABLE IF EXISTS favorites;
+
 
 
 
@@ -48,5 +50,12 @@ CREATE TABLE messages (
      recipient_id INT REFERENCES users(id) NOT NULL,
      text TEXT,
      created_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE favorites (
+     id SERIAL PRIMARY KEY,
+     sender_id INT REFERENCES users(id) NOT NULL,
+     artist INT REFERENCES artists(artist_id) NOT NULL,
+     is_favorite BOOLEAN 
 );
 

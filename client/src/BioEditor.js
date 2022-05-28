@@ -20,7 +20,10 @@ export default class BioEditor extends Component {
         e.preventDefault();
 
         const newBio = e.target.bio.value;
-        const newTagsSend = this.state.newTags.length >= 1 ? this.state.newTags : this.props.tags;
+        const newTagsSend =
+            this.state.newTags.length >= 1
+                ? this.state.newTags
+                : this.props.tags;
         fetch("/user/profile_bio", {
             method: "PUT",
             headers: {
@@ -95,7 +98,6 @@ export default class BioEditor extends Component {
                 : "Edit";
         return (
             <div className="textContainer">
-                {console.log(this.state.newTags)}
                 {this.state.editingBio ? (
                     this.renderForm()
                 ) : (

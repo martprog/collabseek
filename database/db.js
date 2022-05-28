@@ -86,7 +86,6 @@ const getUserByCode = (code) => {
 };
 
 const setNewPass = (password, email) => {
-    console.log("prueba:", email, password);
     return hashPassword(password).then((hashed) => {
         const query = `
             UPDATE users
@@ -151,15 +150,31 @@ const updateBio = (bio, id, tags) => {
     });
 };
 
-const deleteTagsByUpdate = (id, tag) => {
+function selectTag(id, tag) {
     const query = `
-        DELETE from tags 
-        WHERE artist_id=$1 and tag <> $2;
-        RETURNING * 
+        SELECT * FROM tags
+        WHERE id = $1 AND tag = $2
     `;
 
     return db.query(query, [id, tag]).then((results) => {
         return results.rows[0];
+    });
+}
+
+const deleteTagsByUpdate = (id, tag) => {
+    return selectTag(id, tag).then((data) => {
+        if (!data) {
+            const query = `
+            DELETE from tags 
+            WHERE artist_id=$1 and tag <> $2
+            RETURNING * 
+        `;
+
+            return db.query(query, [id, tag]).then((results) => {
+                return results.rows[0];
+            });
+        }
+        return null;
     });
 };
 
@@ -378,7 +393,7 @@ const newArtistRequest = (otherUserId, userId, text) => {
 
 const getTagsBySearch = (search) => {
     const query = `
-    SELECT * from TAGS 
+    SELECT DISTINCT ON (tag) * from TAGS 
     WHERE tag ILIKE $1`;
 
     return db.query(query, [search + "%"]).then((results) => {
@@ -427,6 +442,67 @@ const getArtistsByTag = (tag) => {
     });
 };
 
+const requestSent = (id, otherUserId) => {
+    const query = `
+    SELECT  DISTINCT ON (sender_id) * FROM messages 
+    WHERE sender_id=$1 AND recipient_id=$2
+    `;
+
+    return db.query(query, [id, otherUserId]).then((results) => {
+        return results.rows;
+    });
+};
+
+const getFavorites = (id) => {
+    const query = `
+    SELECT users.first, users.last, users.profile_picture_url, artists.artist_id as id, artists.bio, artists.tags FROM favorites
+    JOIN artists 
+    ON artists.artist_id = favorites.artist
+    join users 
+    ON artists.artist_id = users.id
+    WHERE sender_id=$1 
+    `;
+
+    return db.query(query, [id]).then((results) => {
+        return results.rows;
+    });
+};
+
+const getFavoriteState = (id, otherUserId) => {
+    const query = `
+    SELECT * FROM favorites
+    WHERE sender_id=$1 AND artist=$2
+    `;
+
+    return db.query(query, [id, otherUserId]).then((results) => {
+        return results.rows;
+    });
+};
+
+const addFavorite = (id, otherUserId) => {
+    const query = `
+    INSERT INTO favorites (sender_id, artist, is_favorite)
+    VALUES ($1, $2, true)
+    RETURNING *
+    `;
+
+    return db.query(query, [id, otherUserId]).then((results) => {
+        return results.rows;
+    });
+};
+
+const removeFavorite = (id, otherUserId) => {
+    const query = `
+    DELETE FROM favorites 
+    WHERE sender_id=$1 AND artist=$2
+    RETURNING *
+    `;
+
+    return db.query(query, [id, otherUserId]).then((results) => {
+        return results.rows;
+    });
+};
+
 module.exports = {
     createUser,
     login,
@@ -455,4 +531,9 @@ module.exports = {
     deleteTagsByUpdate,
     getAllTags,
     getArtistsByTag,
+    requestSent,
+    addFavorite,
+    getFavoriteState,
+    removeFavorite,
+    getFavorites,
 };

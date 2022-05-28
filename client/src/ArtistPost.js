@@ -51,13 +51,25 @@ export default class ArtistPost extends Component {
             .catch((e) => console.log("oops,", e));
     }
 
+    componentDidMount() {
+        fetch("/user/me.json")
+            .then((res) => res.json())
+            .then((data) => {
+                if (!data.artist_id) {
+                    console.log(data);
+                } else {
+                    location.replace("/aboutme");
+                }
+            })
+            .catch((e) => console.log(e));
+    }
+
     componentDidUpdate(prevProps, prevState) {
         if (prevState.tag !== this.state.tag) {
             fetch(`/users/tags?search=${this.state.tag}`)
                 .then((res) => res.json())
                 .then((results) => {
                     if (results.length < 1) {
-                        console.log("taggg", typeof this.state.tag);
                         this.setState({ resTags: this.state.tag });
                     } else {
                         this.setState({ resTags: results });
@@ -168,7 +180,7 @@ export default class ArtistPost extends Component {
                                             {this.state.resTags &&
                                                 this.mappedUsers()}
                                         </div>
-                                        
+
                                         <div className="tags-selection">
                                             {this.state.tagsList &&
                                                 this.state.tagsList.map(
