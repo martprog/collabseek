@@ -7,7 +7,7 @@ const {
     updateBio,
     deleteTagsByUpdate,
     getFavoriteState,
-    insertTags
+    insertTags,
 } = require("../../database/db");
 
 router.put("/user/profile_bio", (req, res) => {
@@ -17,20 +17,17 @@ router.put("/user/profile_bio", (req, res) => {
     // console.log('body', req.body);
 
     updateBio(bio, tags, newTube, newSpot, userId).then((results) => {
-                
-
-        if(!results){
-            console.log('updateed, ', results);
+        if (!results) {
+            console.log("updateed, ", results);
             res.json(results);
-            return
-        }else{
+            return;
+        } else {
             results.tags.forEach((element) => {
                 insertTags(userId, element).then((data) =>
                     console.log("tag updated", data)
                 );
             });
             res.json(results);
-
         }
     });
 });
@@ -52,27 +49,44 @@ router.get("/users", (req, res) => {
     }
 });
 
-router.get("/users/newartists", (req, res) => {
-    const { userId } = req.session;
+// router.get("/users/newartists", (req, res) => {
+//     const { userId } = req.session;
 
-    getLatestUsers().then((users) => {
-        let newMapped = [];
-        users.forEach((item) => {
-            let usuario = item;
-            getFavoriteState(userId, item.id).then((data) => {
-                
-                if (data.length >= 1) {
-                    newMapped.push({ ...item, isFavorite: true });
-                } else {
-                    newMapped.push(usuario);
-                }
-                console.log("mapa", newMapped);
-            });
-            return newMapped
-        });
-        
-        res.json(users);
-    });
+//     let newMapped = [];
+//    return getLatestUsers().then((users) => {
+//         users.forEach((item) => {
+//             let usuario = item;
+//             getFavoriteState(userId, item.id).then((data) =>
+
+//             {
+
+//                 if (data.length >= 1) {
+//                     newMapped.push({ ...item, isFavorite: true });
+//                 } else {
+//                     newMapped.push(usuario);
+//                 }
+//             });
+
+//         });
+//         console.log("mapa", newMapped);
+
+//         res.json(newMapped);
+//     });
+// });
+
+// let newMapped = [];
+router.get("/users/newartists", async (req, res) => {
+    const { userId } = req.session;
+    const users = await getLatestUsers(userId);
+    // users.forEach(async (item) => {
+    //     let usuario = item;
+    //     const data = await getFavoriteState(userId, item.id);
+    //     data.length >= 1
+    //         ? newMapped.push({ ...item, isFavorite: true })
+    //         : newMapped.push(usuario);
+    // });
+
+    res.json(users);
 });
 
 router.get("/api/users/:otherUserId", (req, res) => {

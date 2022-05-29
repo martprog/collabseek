@@ -138,7 +138,6 @@ const uploadProfilePic = (url, id) => {
 };
 
 const updateBio = (bio, tags, youtube, spotify, id) => {
-    console.log("tags:", tags);
     const query = `
         UPDATE artists
         SET bio=$1, tags=$2, youtube_link=$3, spotify_link=$4
@@ -195,9 +194,7 @@ const deleteTagsByUpdate = (id) => {
 };
 
 const insertTags = (id, tag) => {
-   return deleteTagsByUpdate(id).then(() => {
-        console.log("id y tag, ", id, tag);
-
+    return deleteTagsByUpdate(id).then(() => {
         const query = `
             INSERT INTO tags (artist_id, tag)
             VALUES($1, $2)
@@ -205,7 +202,6 @@ const insertTags = (id, tag) => {
         `;
 
         return db.query(query, [id, tag]).then((results) => {
-            console.log(results);
             return results.rows[0];
         });
     });
@@ -229,16 +225,20 @@ const createArtistProfile = (
     });
 };
 
-const getLatestUsers = () => {
+const getLatestUsers = (id) => {
     const query = `
-        SELECT users.id, users.first, users.last, users.profile_picture_url FROM artists
+        SELECT  users.id, artists.artist_id, users.first, users.last, favorites.artist, favorites.sender_id, users.profile_picture_url 
+        FROM artists
         JOIN users
         ON (artists.artist_id=users.id)
+        left join favorites on favorites.artist=artists.artist_id and favorites.sender_id=$1
         ORDER BY artists.created_at DESC
         LIMIT 3
     `;
 
-    return db.query(query).then((results) => {
+    return db.query(query, [id]).then((results) => {
+        console.log("latest artists", results.rows, id);
+       
         return results.rows;
     });
 };
@@ -569,5 +569,5 @@ module.exports = {
     getFavoriteState,
     removeFavorite,
     getFavorites,
-    insertTags
+    insertTags,
 };
