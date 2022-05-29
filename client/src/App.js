@@ -116,15 +116,17 @@ export default class App extends Component {
                                 style={{ textDecoration: "none" }}
                                 onClick={this.menuList}
                                 to="/requests/all"
+                                className="menu-links"
                             >
                                 Your Inbox
                             </Link>
                         </div>
                         <div>
                             <Link
-                                style={{ textDecoration: "none" }}
+                                style={{ textDecoration: "none", color: "red" }}
                                 onClick={this.menuList}
                                 to="/aboutme"
+                                className="menu-links"
                             >
                                 Edit your profile
                             </Link>
@@ -181,14 +183,14 @@ export default class App extends Component {
                         className="wrapper"
                     >
                         <div className="header">
-                            <Link to={"/"}>
-                                <div>
-                                    {/* <img
-                                    onClick={this.menuList}
-                                    className="logo"
-                                    src="/peanut.png"
-                                /> */}
-                                    <h1>COLLABSEEK</h1>
+                            <Link to={"/"} style={{ textDecoration: "none" }}>
+                                <div className="logo-wrapper">
+                                    <img
+                                        className="logo"
+                                        src="./logosincol.png"
+                                    />
+                                    {/* <h1>COLLABSEEK</h1> */}
+                                    <h4>COLLABSEEK</h4>
                                 </div>
                             </Link>
 
@@ -206,7 +208,13 @@ export default class App extends Component {
                             </div>
                             <nav className="nav-wrapper">
                                 <div>
-                                    <Link to={this.state.isConnected ? "/artists/post": "/login"}>
+                                    <Link
+                                        to={
+                                            this.state.isConnected
+                                                ? "/artists/post"
+                                                : "/login"
+                                        }
+                                    >
                                         Make an artist page
                                     </Link>
                                 </div>
@@ -220,7 +228,11 @@ export default class App extends Component {
                                 </div>
                                 <div>
                                     <Link
-                                        to={this.state.isConnected ?"/friends": "/login"}
+                                        to={
+                                            this.state.isConnected
+                                                ? "/friends"
+                                                : "/login"
+                                        }
                                         style={{ textDecoration: "none" }}
                                     >
                                         My Favorites

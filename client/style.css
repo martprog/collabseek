@@ -7,6 +7,24 @@ body {
     font-family: "Bebas Neue", cursive;
 }
 
+.logo{
+    height: 300px;
+    transform: translate(-90px, -120px );
+    /* transform: translateX(-100px); */
+}
+
+.logo-wrapper{
+    display: flex;
+}
+
+.logo-wrapper h4{
+    transform: translateX(-190px);
+    font-style: italic;
+    font-size: 24px;
+    letter-spacing: 2px;
+    color: #ff416c;
+}
+
 .header {
     display: flex;
     justify-content: space-between;
@@ -177,6 +195,7 @@ input:focus {
 }
 
 .header-list-menu {
+    color: black;
     position: absolute;
     top: 85px;
     right: 35px;
@@ -186,6 +205,10 @@ input:focus {
     width: 300px;
     border: 2px solid;
     background-color: beige;
+}
+
+.menu-links{
+    color: black;
 }
 
 .inbox-wrapper {
@@ -254,7 +277,6 @@ input:focus {
 .form-artist-wrapper {
     display: flex;
     flex-direction: column;
-
     gap: 10px;
 }
 
