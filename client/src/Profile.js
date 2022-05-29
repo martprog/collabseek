@@ -20,7 +20,6 @@ export default function Profile({
     tags,
 }) {
     const [inProp, setProp] = useState(true);
-    console.log("tags, ", tags);
 
     return (
         <CSSTransition
@@ -49,7 +48,7 @@ export default function Profile({
                     />
                     <div className="links-container">
                         {spotify_link ? (
-                            <a  href={spotify_link}>
+                            <a href={spotify_link}>
                                 {" "}
                                 <img id="spotify-log" src="./spotify.png" />
                             </a>
@@ -65,8 +64,6 @@ export default function Profile({
                             ""
                         )}
                     </div>
-
-                    
                 </div>
             </div>
         </CSSTransition>

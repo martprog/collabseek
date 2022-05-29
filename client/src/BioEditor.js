@@ -8,6 +8,7 @@ export default class BioEditor extends Component {
             editingBio: false,
             newTags: [],
             oldTags: [],
+            newArrTags: [],
             showResults: true,
         };
         this.renderForm = this.renderForm.bind(this);
@@ -16,27 +17,16 @@ export default class BioEditor extends Component {
         this.notEditing = this.notEditing.bind(this);
         this.handleTags = this.handleTags.bind(this);
         this.handleTagChange = this.handleTagChange.bind(this);
-       
     }
-
-   
 
     onSubmit(e) {
         e.preventDefault();
         const newSpot = e.target.spotify.value;
         const newTube = e.target.youtube.value;
         const newBio = e.target.bio.value;
-        const changedTags = [...this.state.newTags];
+        const changedTags = [...this.state.newTags, ...this.state.newArrTags];
+        console.log("new arr tags, ", this.state.newArrTags);
 
-        // const changedTags =
-        //     this.state.oldTags.length < 1
-        //         ? [...this.state.newTags, ...this.props.tags]
-        //         : this.checkOld;
-        // console.log('new array,', this.checkOld());
-        const newTagsSend = changedTags;
-        // this.state.newTags.length >= 1
-        //     ? changedTags
-        //     : this.props.tags;
         fetch("/user/profile_bio", {
             method: "PUT",
             headers: {
@@ -44,7 +34,7 @@ export default class BioEditor extends Component {
             },
             body: JSON.stringify({
                 bio: newBio,
-                tags: newTagsSend,
+                tags: changedTags,
                 newTube: newTube,
                 newSpot: newSpot,
             }),
@@ -53,24 +43,23 @@ export default class BioEditor extends Component {
             .then((data) => {
                 this.props.onBioUpload(
                     data.bio,
-                    data.tags,
-                    data.newSpot,
-                    data.newTube
+                    data.spotify_link,
+                    data.youtube_link,
+                    data.tags
                 );
                 this.setState({ editingBio: false });
+                
             });
     }
 
     handleTags(e) {
-        // e.target.defaultValue = "";
-        this.props.tags.filter((tag) => {
-            if (tag === e.target.value) {
-                this.setState({ oldTags: [...this.state.oldTags, tag] });
-
+        let newArr = [];
+        this.state.newArrTags.forEach((tag) => {
+            if (tag !== e.target.value) {
+                newArr.push(tag);
             }
+            this.setState({ newArrTags: newArr });
         });
-        
-        this.setState({ showResults: false });
     }
 
     handleTagChange(e) {
@@ -134,7 +123,7 @@ export default class BioEditor extends Component {
     }
 
     renderForm() {
-        console.log(this.props.tags);
+        console.log("on bio Upload, ", this.props.onBioUpload);
         return (
             <form onSubmit={this.onSubmit}>
                 {this.props.tags
@@ -220,7 +209,10 @@ export default class BioEditor extends Component {
     }
 
     isEditing() {
-        this.setState({ editingBio: !this.editingBio });
+        this.setState({
+            editingBio: !this.editingBio,
+            newArrTags: this.props.tags,
+        });
     }
 
     render() {

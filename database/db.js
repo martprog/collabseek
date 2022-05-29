@@ -124,8 +124,6 @@ const getUserArtistById = (id) => {
     });
 };
 
-
-
 const uploadProfilePic = (url, id) => {
     const query = `
         UPDATE users 
@@ -139,20 +137,21 @@ const uploadProfilePic = (url, id) => {
     });
 };
 
-const updateBio = (bio, tags,  youtube, spotify, id) => {
-    console.log('tags:', tags);
+const updateBio = (bio, tags, youtube, spotify, id) => {
+    console.log("tags:", tags);
     const query = `
         UPDATE artists
         SET bio=$1, tags=$2, youtube_link=$3, spotify_link=$4
         WHERE artist_id=$5
         RETURNING *
     `;
-    
 
-    return db.query(query, [bio, tags, youtube, spotify, id]).then((results) => {
-        console.log('resultados update', results.rows[0]);
-        return results.rows[0];
-    });
+    return db
+        .query(query, [bio, tags, youtube, spotify, id])
+        .then((results) => {
+            // console.log("resultados update", results.rows[0]);
+            return results.rows[0];
+        });
 };
 
 function selectTag(id, tag) {
@@ -166,20 +165,49 @@ function selectTag(id, tag) {
     });
 }
 
-const deleteTagsByUpdate = (id, tag) => {
-    return selectTag(id, tag).then((data) => {
-        if (!data) {
-            const query = `
-            DELETE from tags 
-            WHERE artist_id=$1 and tag <> $2
-            RETURNING * 
+// const deleteTagsByUpdate = (id, tag) => {
+//     return selectTag(id, tag).then((data) => {
+//         if (!data) {
+//             const query = `
+//             DELETE from tags
+//             WHERE artist_id=$1 and tag <> $2
+//             RETURNING *
+//         `;
+
+//             return db.query(query, [id, tag]).then((results) => {
+//                 return results.rows[0];
+//             });
+//         }
+//         return null;
+//     });
+// };
+
+const deleteTagsByUpdate = (id) => {
+    const query = `
+        DELETE FROM tags
+        WHERE artist_id=$1
+        RETURNING *
+    `;
+
+    return db.query(query, [id]).then((results) => {
+        return results.rows[0];
+    });
+};
+
+const insertTags = (id, tag) => {
+   return deleteTagsByUpdate(id).then(() => {
+        console.log("id y tag, ", id, tag);
+
+        const query = `
+            INSERT INTO tags (artist_id, tag)
+            VALUES($1, $2)
+            RETURNING *
         `;
 
-            return db.query(query, [id, tag]).then((results) => {
-                return results.rows[0];
-            });
-        }
-        return null;
+        return db.query(query, [id, tag]).then((results) => {
+            console.log(results);
+            return results.rows[0];
+        });
     });
 };
 
@@ -214,8 +242,6 @@ const getLatestUsers = () => {
         return results.rows;
     });
 };
-
-
 
 const getUsersByQuery = (search) => {
     const query = `
@@ -543,4 +569,5 @@ module.exports = {
     getFavoriteState,
     removeFavorite,
     getFavorites,
+    insertTags
 };

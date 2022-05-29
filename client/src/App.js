@@ -83,8 +83,13 @@ export default class App extends Component {
         this.setState({ picFile: e.target.value });
     }
 
-    onBioUpload(newBio, newSpot, newTagsSend, newTube) {
-        this.setState({ bio: newBio, spotify_link: newSpot, youtube_link: newTube, tags: newTagsSend });
+    onBioUpload(newBio, newSpot, newTube, changedTags) {
+        this.setState({
+            bio: newBio,
+            spotify_link: newSpot,
+            youtube_link: newTube,
+            tags: changedTags,
+        });
     }
 
     menuList() {

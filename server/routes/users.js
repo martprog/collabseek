@@ -7,27 +7,31 @@ const {
     updateBio,
     deleteTagsByUpdate,
     getFavoriteState,
+    insertTags
 } = require("../../database/db");
 
 router.put("/user/profile_bio", (req, res) => {
     const { bio, tags, newTube, newSpot } = req.body;
     const { userId } = req.session;
 
-    console.log('body', req.body);
+    // console.log('body', req.body);
 
     updateBio(bio, tags, newTube, newSpot, userId).then((results) => {
-        // if(!results){
-        res.json({ message: "no results" });
-        return;
-        // }else{
-        //     results.tags.forEach((element) => {
-        //         deleteTagsByUpdate(userId, element).then((data) =>
-        //             console.log("tag erased", data)
-        //         );
-        //     });
-        //     res.json(results);
+                
 
-        // }
+        if(!results){
+            console.log('updateed, ', results);
+            res.json(results);
+            return
+        }else{
+            results.tags.forEach((element) => {
+                insertTags(userId, element).then((data) =>
+                    console.log("tag updated", data)
+                );
+            });
+            res.json(results);
+
+        }
     });
 });
 
