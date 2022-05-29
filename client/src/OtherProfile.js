@@ -7,6 +7,7 @@ import FriendButton from "./FriendButton";
 // import { getUserId } from "./redux/sessionId/slice";
 import { useDispatch, useSelector } from "react-redux";
 import FavoriteBtn from "./FavoriteBtn";
+import Rating from "./Rating";
 
 export default function OtherProfile() {
     const dispatch = useDispatch();
@@ -76,6 +77,7 @@ export default function OtherProfile() {
 
                             <FriendButton otherUserId={otherUserId} />
                             <FavoriteBtn otherUserId={otherUserId} />
+                            <Rating otherUserId={otherUserId} />
                         </div>
                     </div>
 

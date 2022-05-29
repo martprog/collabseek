@@ -32,7 +32,9 @@ const {
     addFavorite,
     getFavoriteState,
     removeFavorite,
-    getFavorites
+    getFavorites,
+    getRatingById,
+    addRatingById,
 } = require("../database/db");
 const multer = require("multer");
 const uidSafe = require("uid-safe");
@@ -239,7 +241,6 @@ app.get("/favorites/add/:otherUserId", (req, res) => {
     const { otherUserId } = req.params;
     const { userId } = req.session;
     getFavoriteState(userId, otherUserId).then((data) => {
-
         if (data.length >= 1) {
             res.json({ message: "friends" });
         } else {
@@ -252,7 +253,9 @@ app.post("/favorites/add/:otherUserId", (req, res) => {
     const { otherUserId } = req.params;
     const { userId } = req.session;
     addFavorite(userId, otherUserId).then((data) => {
-        res.json({ message: "ok" });
+        console.log("resultadossssss", data);
+        res.json(data);
+        // res.json({ message: "ok" });
     });
 });
 
@@ -260,7 +263,26 @@ app.post("/favorites/remove/:otherUserId", (req, res) => {
     const { otherUserId } = req.params;
     const { userId } = req.session;
     removeFavorite(userId, otherUserId).then((data) => {
-        res.json({ message: "removed" });
+        console.log("rremovidos", data);
+
+        res.json(data);
+        // res.json({ message: "removed" });
+    });
+});
+
+app.get("/users/rating/:otherUserId", (req, res) => {
+    const { otherUserId } = req.params;
+    getRatingById(otherUserId).then((data) => {
+        res.json(data);
+    });
+});
+
+app.post("/users/rating/post/:otherUserId", (req, res) => {
+    const { userId } = req.session;
+    const { otherUserId } = req.params;
+    const { text, rating } = req.body;
+    addRatingById(userId, otherUserId, text || null, rating).then((data) => {
+        res.json(data);
     });
 });
 

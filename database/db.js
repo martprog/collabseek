@@ -227,7 +227,7 @@ const createArtistProfile = (
 
 const getLatestUsers = (id) => {
     const query = `
-        SELECT  users.id, artists.artist_id, users.first, users.last, favorites.artist, favorites.sender_id, users.profile_picture_url 
+        SELECT  users.id, artists.artist_id, users.first, users.last, favorites.artist, favorites.sender_id, favorites.is_favorite, users.profile_picture_url 
         FROM artists
         JOIN users
         ON (artists.artist_id=users.id)
@@ -237,8 +237,8 @@ const getLatestUsers = (id) => {
     `;
 
     return db.query(query, [id]).then((results) => {
-        console.log("latest artists", results.rows, id);
-       
+        // console.log("latest artists", results.rows, id);
+
         return results.rows;
     });
 };
@@ -536,6 +536,30 @@ const removeFavorite = (id, otherUserId) => {
     });
 };
 
+const getRatingById = (id) => {
+    const query = `
+        SELECT artist, ROUND(AVG(rating), 0) FROM ratings
+        where artist=$1
+        GROUP BY artist
+    `;
+
+    return db.query(query, [id]).then((results) => {
+        return results.rows[0];
+    });
+};
+
+const addRatingById = (id, otherUserId, text, rating) => {
+    const query = `
+        INSERT INTO ratings(rater_id, artist, comments, rating)
+        VALUES ($1, $2, $3, $4)
+        RETURNING *
+    `;
+
+    return db.query(query, [id, otherUserId, text, rating]).then((results) => {
+        return results.rows[0];
+    });
+};
+
 module.exports = {
     createUser,
     login,
@@ -570,4 +594,6 @@ module.exports = {
     removeFavorite,
     getFavorites,
     insertTags,
+    getRatingById,
+    addRatingById
 };

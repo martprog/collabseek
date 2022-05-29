@@ -1,14 +1,16 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
-export default function NewArtists() {
+export default function NewArtists(props) {
     const [users, setUsers] = useState([]);
+    const [isChanged, setIsChanged] = useState(false);
 
     useEffect(() => {
         fetch("/users/newartists")
             .then((res) => res.json())
             .then((results) => {
                 setUsers(results);
+                setIsChanged(false);
             });
 
         // fetch("/favorites/all")
@@ -16,16 +18,60 @@ export default function NewArtists() {
         //     .then((results) => {
         //         setUsers([...users, results]);
         //     });
-    }, []);
+    }, [isChanged]);
 
-    useEffect(() => {}, []);
+    // console.log("new artists", users);
 
-    console.log("new artists", users);
+    const changeFav = async (e, otherUserId, is_favorite) => {
+        console.log();
+        e.preventDefault();
+        const artist = otherUserId;
+        if (!props.isConnected) {
+            location.replace("/login");
+            return;
+        }
+        if (is_favorite) {
+            const res = await fetch(`/favorites/remove/${otherUserId}`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ artist: artist }),
+            });
+            const data = await res.json();
+            setIsChanged(true);
+            return;
+        } else {
+            const res = await fetch(`/favorites/add/${otherUserId}`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ artist: artist }),
+            });
+            const data = await res.json();
+        }
+        setIsChanged(true);
+    };
 
     const mappedUsers = () => {
         return users.map((user) => {
             return (
                 <div className="profile-card-main" key={user.id}>
+                    <form>
+                        <div
+                            onClick={(e) =>
+                                changeFav(e, user.id, user.is_favorite)
+                            }
+                            className="fav-heart"
+                        >
+                            {user.sender_id ? (
+                                <div className="heart"></div>
+                            ) : (
+                                <div className="heart nofav"></div>
+                            )}
+                        </div>
+                    </form>
                     <Link
                         style={{ textDecoration: "none" }}
                         to={`/users/${user.id}`}
@@ -36,6 +82,7 @@ export default function NewArtists() {
                                     user.profile_picture_url || "./default.png"
                                 }
                             />
+
                             <h3>
                                 {user.first} {user.last}
                             </h3>
@@ -57,9 +104,7 @@ export default function NewArtists() {
         <>
             <div>
                 <h2>Discover recent Artists</h2>
-                <div>
-                    <p>&laquo</p>
-                </div>
+                <div>{/* <p>&laquo</p> */}</div>
                 <div className="new-artists-wrapper">
                     {users.length >= 1 ? (
                         mappedUsers()
@@ -67,9 +112,7 @@ export default function NewArtists() {
                         <p>no matches found</p>
                     )}
                 </div>
-                <div>
-                    <p>&raquo</p>
-                </div>
+                <div>{/* <p>&raquo</p> */}</div>
             </div>
         </>
     );

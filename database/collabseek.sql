@@ -1,3 +1,4 @@
+DROP TABLE IF EXISTS ratings;
 DROP TABLE IF EXISTS messages;
 DROP TABLE IF EXISTS artists;
 DROP TABLE IF EXISTS users;
@@ -57,5 +58,13 @@ CREATE TABLE favorites (
      sender_id INT REFERENCES users(id) NOT NULL,
      artist INT REFERENCES artists(artist_id) NOT NULL,
      is_favorite BOOLEAN 
+);
+
+CREATE TABLE ratings (
+     id SERIAL PRIMARY KEY,
+     rater_id INT REFERENCES users(id) NOT NULL, 
+     artist INT REFERENCES artists(artist_id) NOT NULL,
+     comments TEXT,
+     rating INT  
 );
 

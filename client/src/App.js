@@ -32,6 +32,7 @@ export default class App extends Component {
             youtube_link: "",
             tags: [],
             clicked: false,
+            isConnected: false,
         };
         this.openModal = this.openModal.bind(this);
         this.closeModal = this.closeModal.bind(this);
@@ -205,7 +206,7 @@ export default class App extends Component {
                             </div>
                             <nav className="nav-wrapper">
                                 <div>
-                                    <Link to="/artists/post">
+                                    <Link to={this.state.isConnected ? "/artists/post": "/login"}>
                                         Make an artist page
                                     </Link>
                                 </div>
@@ -219,7 +220,7 @@ export default class App extends Component {
                                 </div>
                                 <div>
                                     <Link
-                                        to="/friends"
+                                        to={this.state.isConnected ?"/friends": "/login"}
                                         style={{ textDecoration: "none" }}
                                     >
                                         My Favorites
@@ -284,7 +285,7 @@ export default class App extends Component {
                                 {this.state.isConnected ? (
                                     <>
                                         <Route path="/friends">
-                                            <Favorites />
+                                            <Favorites {...this.state} />
                                         </Route>
                                         <Route path="/chatroom">
                                             <ChatMessages />

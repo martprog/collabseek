@@ -4,7 +4,7 @@
 
 body {
     /* background-color: ghostwhite; */
-    font-family: 'Bebas Neue', cursive;
+    font-family: "Bebas Neue", cursive;
 }
 
 .header {
@@ -14,7 +14,7 @@ body {
     border: 1px solid;
 }
 
-.modal{
+.modal {
     position: fixed;
     z-index: 10;
     display: flex;
@@ -27,7 +27,7 @@ body {
     background-color: rgba(0, 0, 0, 0.7);
 }
 
-.formUpload{
+.formUpload {
     margin-top: 100px;
     background-color: pink;
     height: 200px;
@@ -35,10 +35,9 @@ body {
     border-radius: 12px;
     box-shadow: 0px 5px 10px 0px black;
     text-align: center;
-    
 }
 
-#submitPic{
+#submitPic {
     outline: none;
     border: none;
     height: 40px;
@@ -48,7 +47,7 @@ body {
     font-size: 20px;
 }
 
-#closeBtn{
+#closeBtn {
     background-color: #72767d;
     width: 50px;
     height: 50px;
@@ -63,10 +62,9 @@ body {
     border-radius: 50%;
     opacity: 0.6;
     transition: opacity 100ms;
-
 }
 
-#closeBtn:hover{
+#closeBtn:hover {
     opacity: 1;
     cursor: pointer;
 }
@@ -283,6 +281,7 @@ input:focus {
 }
 
 .profile-card-main {
+    position: relative;
     width: 300px;
     border: 1px solid yellowgreen;
     display: flex;
@@ -349,16 +348,84 @@ input:focus {
     gap: 8px;
 }
 
-.hoverNselect-tag{
+.hoverNselect-tag {
     cursor: pointer;
 }
 
-.links-container{
+.links-container {
     display: flex;
 }
 
-.links-container img{
+.links-container img {
     height: 35px;
     width: 200px;
+}
 
+.heart {
+    position: relative;
+    width: 40px;
+    height: 40px;
+    /* -webkit-transform: rotate(45deg);
+  -moz-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  -o-transform: rotate(45deg); */
+    transform: rotate(45deg);
+    background-color: red;
+}
+.heart:before,
+.heart:after {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    content: "";
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    -o-border-radius: 50%;
+    border-radius: 50%;
+    background-color: red;
+
+    /* background-color: rgba(250,184,66, 1); */
+}
+.heart:before {
+    bottom: 0px;
+    left: -20px;
+}
+.heart:after {
+    top: -20px;
+    right: 0px;
+}
+
+.nofav {
+    background-color: antiquewhite;
+}
+.nofav:before,
+.nofav:after {
+    background-color: antiquewhite;
+}
+
+.fav-heart {
+    z-index: 5;
+    position: absolute;
+    right: -20px;
+    top: 18px;
+    height: 200px;
+    width: 200px;
+    cursor: pointer;
+}
+
+.fav-heart:hover {
+    background-color: aqua;
+}
+
+.rating span {
+    cursor: pointer;
+}
+
+.rating span:hover ~ span {
+    cursor: pointer;
+    color: #c7c7c7;
+}
+
+.clickedstar {
+    color: rgb(212, 180, 0);
 }

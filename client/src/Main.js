@@ -13,6 +13,7 @@ export default function Main({
     onBioUpload,
     profile_picture_url,
     openModal,
+    isConnected
 }) {
     return (
         <div className="mainWrapper">
@@ -30,9 +31,9 @@ export default function Main({
                 /> */}
             </div>
             <div>
-                <NewArtists></NewArtists>
+                <NewArtists isConnected={isConnected}></NewArtists>
                 <TagsMain>
-                    {/* <ArtistsByTag /> */}
+                    
                 </TagsMain>
             </div>
         </div>

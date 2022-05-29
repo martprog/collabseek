@@ -45,7 +45,7 @@ export default function Favorites() {
         <>
             <h1>Favorites</h1>
             <p>juanes</p>
-            {console.log(favorites)}
+            
             <div className="new-artists-wrapper">
                 {favorites.length >= 1 ? (
                     mappedFavorites()

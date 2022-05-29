@@ -74,7 +74,7 @@ router.get("/users", (req, res) => {
 //     });
 // });
 
-// let newMapped = [];
+let newMapped = [];
 router.get("/users/newartists", async (req, res) => {
     const { userId } = req.session;
     const users = await getLatestUsers(userId);
