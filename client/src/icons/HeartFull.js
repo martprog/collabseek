@@ -4,7 +4,7 @@ export default function HeartFull() {
             xmlns="http://www.w3.org/2000/svg"
             className="h-5 w-5"
             viewBox="0 0 20 20"
-            fill="red"
+            fill="#ff416c"
             // fill="currentColor"
             width="40px"
             height="40px"

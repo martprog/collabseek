@@ -560,6 +560,32 @@ const addRatingById = (id, otherUserId, text, rating) => {
     });
 };
 
+const getUnreadMsgs = (id) => {
+    const query = `
+        SELECT COUNT(*) FROM messages 
+        WHERE recipient_id=$1 AND is_read=false
+    `;
+
+    return db.query(query, [id]).then((results) => {
+        console.log("resultadinhos", results.rows);
+        return results.rows;
+    });
+};
+
+const setReadMsgs = (id, otherUserId) =>{
+    const query = `
+        UPDATE messages 
+        SET is_read=true
+        WHERE recipient_id=$1 AND sender_id=$2
+        RETURNING *
+    `;
+
+    return db.query(query, [id, otherUserId]).then((results) => {
+        console.log("ACTUALIZADO", results.rows);
+        return results.rows;
+    });
+};
+
 module.exports = {
     createUser,
     login,
@@ -596,4 +622,6 @@ module.exports = {
     insertTags,
     getRatingById,
     addRatingById,
+    getUnreadMsgs,
+    setReadMsgs
 };

@@ -8,17 +8,38 @@ body {
     font-family: "Bebas Neue", cursive;
 }
 
-.logo{
+.logo {
     height: 80px;
     /* transform: translate(-90px, -120px ); */
     /* transform: translateX(-100px); */
 }
 
-.logo-wrapper{
+.logo-wrapper {
     display: flex;
 }
 
-.logo-wrapper h4{
+.red-dot {
+    position: absolute;
+    left: 90px;
+    top: 13px;
+    border: 3px solid white;
+    height: 23px;
+    width: 23px;
+    background-color: #ff416c;
+    border-radius: 50%;
+}
+
+.count-notifications {
+    position: absolute;
+    left: 99px;
+    top: 16px;
+    color: white;
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+}
+
+.logo-wrapper h4 {
     /* transform: translateX(-190px); */
     font-style: italic;
     font-size: 24px;
@@ -46,42 +67,41 @@ body {
     background-color: rgba(0, 0, 0, 0.7);
 }
 
-.log-multiwrapper{
+.log-multiwrapper {
     gap: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-.login{
-    
+.login {
     z-index: 10;
     display: flex;
     flex-direction: column;
     /* align-items: center; */
-    
+
     height: 100vh;
     /* width: 100%; */
     /* background-color: rgba(0, 0, 0, 0.7); */
 }
 
-.musician-pic-wrapper{
+.musician-pic-wrapper {
     position: relative;
-  text-align: center;
-  color: white;
+    text-align: center;
+    color: white;
 }
 
-.mus-pic-text{
+.mus-pic-text {
     position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
-.formLogin{
-   margin-top: 100px;
-   display: flex;
-   flex-direction: column;
+.formLogin {
+    margin-top: 100px;
+    display: flex;
+    flex-direction: column;
     background-color: white;
     /* height: 200px; */
     width: 500px;
@@ -113,7 +133,7 @@ body {
     text-align: center;
 }
 
-.formRegister form{
+.formRegister form {
     gap: 10px;
     align-items: center;
     display: flex;
@@ -164,7 +184,17 @@ body {
     align-items: center;
     cursor: pointer;
     padding: 12px;
+    transition: box-shadow 200ms ease-in-out;
 }
+
+.hovering-header:hover{
+    background-color: #d8d9dd;
+    border: 0.2px solid rgb(220, 215, 215);
+    border-radius: 35px;
+    cursor: pointer;
+}
+
+
 
 .results-wrapper {
     position: absolute;
@@ -252,10 +282,15 @@ input:focus {
     display: flex;
 }
 
-.select-miniwrapper{
+.select-miniwrapper {
     border: 0.2px solid rgb(220, 215, 215);
-    border-radius: 35px;
+    border-radius: 30px;
     cursor: pointer;
+}
+
+.select-miniwrapper:hover{
+    box-shadow: 0px 1px 3px 0px rgb(78, 77, 77);
+
 }
 
 .select-list img {
@@ -268,7 +303,6 @@ input:focus {
 .header-list-menu {
     z-index: 10 !important;
     padding-top: 5px;
-    color: black;
     position: absolute;
     top: 85px;
     right: 35px;
@@ -278,21 +312,22 @@ input:focus {
     width: 150px;
     border: 0.2px solid rgb(220, 215, 215);
     border-radius: 20px;
-    box-shadow: 0px 2px 5px 0px black;
+    box-shadow: 0px 1.5px 3.5px 0px rgb(154, 152, 152);
     background-color: white;
 }
 
-.header-list-menu div{
+.header-list-menu div {
     padding: 20px;
 }
 
-.header-list-menu div:hover{
-    background-color: rgb(194, 190, 190);
+.header-list-menu div:hover {
+    background-color: rgb(229, 226, 226);
     cursor: pointer;
 }
 
-.menu-links{
+.menu-links  {
     color: black;
+    text-decoration: none;
 }
 
 .inbox-wrapper {
@@ -389,7 +424,7 @@ input:focus {
 .profile-card-main {
     z-index: 5;
     position: relative;
-    width: 300px;
+    width: 250px;
     border: 1px solid yellowgreen;
     display: flex;
     flex-direction: column;
@@ -403,8 +438,9 @@ input:focus {
 }
 
 .profile-card-main img {
-    height: 400px;
-    width: 250px;
+    height: 280px;
+    width: 200px;
+    object-fit: cover;
 }
 
 .profile-card-main-btn {
@@ -468,8 +504,7 @@ input:focus {
     width: 200px;
 }
 
-
-.heart-fav{
+.heart-fav {
     z-index: 10;
     position: absolute;
     right: 40px;
@@ -488,15 +523,8 @@ input:focus {
 
 .clickedstar {
     color: rgb(212, 180, 0);
+    /* color: black; */
 }
-
-
-
-
-
-
-
-
 
 /* 
 

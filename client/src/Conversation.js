@@ -50,6 +50,8 @@ export default function Conversation() {
             const res = await fetch(`/users/conversation/${otherUserId}`);
             const data = await res.json();
             setPrivateMsgs(data);
+            socket.emit("readMsgs", data[0]);
+
             // dispatch(getPrivateMessages(data));
         })();
 
@@ -66,8 +68,8 @@ export default function Conversation() {
             lastMessageRef.current.scrollIntoView();
         }
 
-        socket.emit("message", privateMsgs
-        );
+        // socket.emit("message", privateMsgs)
+        
     }, [privateMsgs]);
 
     async function handleSubmit(e) {
@@ -82,7 +84,9 @@ export default function Conversation() {
             body: JSON.stringify({ msg: newMsg }),
         });
         const data = await res.json();
+        
         setPrivateMsgs([...privateMsgs, data])
+        // socket.emit("message", data)
         e.target.text.value = "";
 
         // dispatch(addMessage(data));

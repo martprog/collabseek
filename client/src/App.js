@@ -36,6 +36,8 @@ export default class App extends Component {
             tags: [],
             clicked: false,
             isConnected: false,
+            notifications: false,
+            notifications_count: null,
         };
         this.openModal = this.openModal.bind(this);
         this.closeModal = this.closeModal.bind(this);
@@ -72,15 +74,14 @@ export default class App extends Component {
                 }
             });
 
-        
-        socket.on("notifications", (data) => {
-            console.log("chussss", data);
+        socket.on("notifications", ({ count }) => {
+            console.log(count);
+            this.setState({ notifications: true, notifications_count: count });
+        });
+        socket.on("no-notifications", (data) => {
+            this.setState({ notifications: false, notifications_count: null });
         });
     }
-
-   
-
-    
 
     openModal() {
         this.setState({ modalOn: true });
@@ -145,7 +146,7 @@ export default class App extends Component {
                         </div>
                         <div>
                             <Link
-                                style={{ textDecoration: "none", color: "red" }}
+                                style={{ textDecoration: "none" }}
                                 onClick={this.menuList}
                                 to="/aboutme"
                                 className="menu-links"
@@ -154,7 +155,9 @@ export default class App extends Component {
                             </Link>
                         </div>
                         <div>
-                            <a href="/logout">Logout</a>
+                            <a href="/logout" className="menu-links">
+                                Logout
+                            </a>
                         </div>
                     </div>
                 </CSSTransition>
@@ -211,7 +214,6 @@ export default class App extends Component {
                                         className="logo"
                                         src="/logosincol1.png"
                                     />
-                                    {/* <h1>COLLABSEEK</h1> */}
                                     <h4>COLLABSEEK</h4>
                                 </div>
                             </Link>
@@ -230,35 +232,45 @@ export default class App extends Component {
                             </div>
                             <nav className="nav-wrapper">
                                 <div>
-                                    <Link
-                                        to={
-                                            this.state.isConnected
-                                                ? "/artists/post"
-                                                : "/login"
-                                        }
-                                    >
-                                        Make an artist page
-                                    </Link>
+                                    <div className="hovering-header">
+                                        <Link
+                                            to={
+                                                this.state.isConnected
+                                                    ? "/artists/post"
+                                                    : "/login"
+                                            }
+                                            style={{ textDecoration: "none" }}
+                                            className="menu-links"
+                                        >
+                                            Make an artist page
+                                        </Link>
+                                    </div>
                                 </div>
                                 <div>
-                                    <Link
-                                        to="/chatroom"
-                                        style={{ textDecoration: "none" }}
-                                    >
-                                        Other
-                                    </Link>
+                                    <div className="hovering-header">
+                                        <Link
+                                            to="/chatroom"
+                                            style={{ textDecoration: "none" }}
+                                            className="menu-links"
+                                        >
+                                            Other
+                                        </Link>
+                                    </div>
                                 </div>
                                 <div>
-                                    <Link
-                                        to={
-                                            this.state.isConnected
-                                                ? "/friends"
-                                                : "/login"
-                                        }
-                                        style={{ textDecoration: "none" }}
-                                    >
-                                        My Favorites
-                                    </Link>
+                                    <div className="hovering-header">
+                                        <Link
+                                            to={
+                                                this.state.isConnected
+                                                    ? "/friends"
+                                                    : "/login"
+                                            }
+                                            style={{ textDecoration: "none" }}
+                                            className="menu-links"
+                                        >
+                                            My Favorites
+                                        </Link>
+                                    </div>
                                 </div>
 
                                 <div
@@ -271,6 +283,17 @@ export default class App extends Component {
                                         <ProfilePic
                                             url={this.state.profile_picture_url}
                                         />
+                                        {this.state.notifications && (
+                                            <div className="notifications-alert">
+                                                <span className="red-dot"></span>
+                                                <span className="count-notifications">
+                                                    {
+                                                        this.state
+                                                            .notifications_count
+                                                    }
+                                                </span>
+                                            </div>
+                                        )}
                                     </div>
                                 </div>
                             </nav>
@@ -284,6 +307,7 @@ export default class App extends Component {
                             />
                         )}
                         <div className="multi-wrapper">
+                            {this.state.notifications && <h1>BANANA</h1>}
                             <div className="wrapperRouter">
                                 <Route exact path="/">
                                     <Main

@@ -43,6 +43,7 @@ export default function ChatMessages({ privateMsgs }) {
             const res = await fetch("/users/conversations/all");
             const data = await res.json();
             setChatMessages(data);
+            // socket.emit('readMsgs', data)
             // dispatch(getMessages(data));
         })();
     }, [privateMsgs]);

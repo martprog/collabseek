@@ -35,6 +35,8 @@ const {
     getFavorites,
     getRatingById,
     addRatingById,
+    getUnreadMsgs,
+    setReadMsgs,
 } = require("../database/db");
 const multer = require("multer");
 const uidSafe = require("uid-safe");
@@ -294,7 +296,7 @@ app.get("*", function (req, res) {
     res.sendFile(path.join(__dirname, "..", "client", "index.html"));
 });
 
-io.on("connection", function (socket) {
+io.on("connection", async function (socket) {
     console.log(`socket with the id ${socket.id} is now connected`);
 
     socket.on("disconnect", function () {
@@ -302,16 +304,25 @@ io.on("connection", function (socket) {
     });
 
     socket.on("message", function (data) {
-        
-        io.emit("notifications", data
-        );
+        console.log("data message", data);
+        socket.broadcast(socket.id).emit("notifications", data);
     });
 
-    socket.emit("welcome", {
-        message: "Welome. It is nice to see you",
+    socket.on("readMsgs", async ({ sender_id, recipient_id }) => {
+        let sender = sender_id !== userId ? sender_id : recipient_id;
+
+        const readRes = await setReadMsgs(userId, sender);
+        socket.emit("no-notifications", {message: 'ok'})
     });
 
+    const userId = socket.request.session.userId;
 
+    const unreadMsgs = await getUnreadMsgs(userId);
+    console.log('lectureee,', unreadMsgs);
+
+    if (unreadMsgs[0].count > 0) {
+        socket.emit("notifications", unreadMsgs[0]);
+    }
 });
 
 server.listen(process.env.PORT || 3001, function () {
