@@ -98,7 +98,6 @@ router.get("/api/users/:otherUserId", (req, res) => {
         res.json({ error: true });
         return;
     }
-    console.log(otherUserId);
     getOtherUserProfile(otherUserId).then((data) => {
         if (!data) {
             res.json({ error: true });

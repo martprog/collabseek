@@ -28,7 +28,7 @@ export default class Uploader extends Component {
     render() {
         return (
             <div className="modal">
-                <div onClick={this.props.closeModal} id="closeBtn">
+                <div onClick={this.props.closeModal} className="closeBtn">
                     &times;
                 </div>
                 <div className="formUpload">

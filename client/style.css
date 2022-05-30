@@ -3,13 +3,14 @@
 }
 
 body {
+    margin: 0;
     /* background-color: ghostwhite; */
     font-family: "Bebas Neue", cursive;
 }
 
 .logo{
-    height: 300px;
-    transform: translate(-90px, -120px );
+    height: 80px;
+    /* transform: translate(-90px, -120px ); */
     /* transform: translateX(-100px); */
 }
 
@@ -18,7 +19,7 @@ body {
 }
 
 .logo-wrapper h4{
-    transform: translateX(-190px);
+    /* transform: translateX(-190px); */
     font-style: italic;
     font-size: 24px;
     letter-spacing: 2px;
@@ -29,7 +30,7 @@ body {
     display: flex;
     justify-content: space-between;
     height: 85px;
-    border: 1px solid;
+    border: 0.2px solid rgb(220, 215, 215);
 }
 
 .modal {
@@ -45,6 +46,50 @@ body {
     background-color: rgba(0, 0, 0, 0.7);
 }
 
+.log-multiwrapper{
+    gap: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.login{
+    
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    /* align-items: center; */
+    
+    height: 100vh;
+    /* width: 100%; */
+    /* background-color: rgba(0, 0, 0, 0.7); */
+}
+
+.musician-pic-wrapper{
+    position: relative;
+  text-align: center;
+  color: white;
+}
+
+.mus-pic-text{
+    position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.formLogin{
+   margin-top: 100px;
+   display: flex;
+   flex-direction: column;
+    background-color: white;
+    /* height: 200px; */
+    width: 500px;
+    border-radius: 12px;
+    box-shadow: 0px 5px 10px 0px black;
+    text-align: center;
+}
+
 .formUpload {
     margin-top: 100px;
     background-color: pink;
@@ -53,6 +98,26 @@ body {
     border-radius: 12px;
     box-shadow: 0px 5px 10px 0px black;
     text-align: center;
+}
+
+.formRegister {
+    padding: 50px;
+    margin-top: 100px;
+    display: flex;
+    flex-direction: column;
+    background-color: rgb(243, 226, 229);
+    /* height: 700px; */
+    min-width: 500px;
+    border-radius: 12px;
+    box-shadow: 0px 5px 10px 0px black;
+    text-align: center;
+}
+
+.formRegister form{
+    gap: 10px;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
 }
 
 #submitPic {
@@ -65,7 +130,7 @@ body {
     font-size: 20px;
 }
 
-#closeBtn {
+.closeBtn {
     background-color: #72767d;
     width: 50px;
     height: 50px;
@@ -129,6 +194,7 @@ body {
 }
 
 .search-button {
+    cursor: pointer;
     background: transparent;
     border: none;
     outline: none;
@@ -184,7 +250,12 @@ input:focus {
 .select-list {
     position: relative;
     display: flex;
-    border: 1px solid gray;
+}
+
+.select-miniwrapper{
+    border: 0.2px solid rgb(220, 215, 215);
+    border-radius: 35px;
+    cursor: pointer;
 }
 
 .select-list img {
@@ -195,16 +266,29 @@ input:focus {
 }
 
 .header-list-menu {
+    z-index: 10 !important;
+    padding-top: 5px;
     color: black;
     position: absolute;
     top: 85px;
     right: 35px;
     display: flex;
     flex-direction: column;
-    height: 200px;
-    width: 300px;
-    border: 2px solid;
-    background-color: beige;
+    min-height: 200px;
+    width: 150px;
+    border: 0.2px solid rgb(220, 215, 215);
+    border-radius: 20px;
+    box-shadow: 0px 2px 5px 0px black;
+    background-color: white;
+}
+
+.header-list-menu div{
+    padding: 20px;
+}
+
+.header-list-menu div:hover{
+    background-color: rgb(194, 190, 190);
+    cursor: pointer;
 }
 
 .menu-links{
@@ -303,6 +387,7 @@ input:focus {
 }
 
 .profile-card-main {
+    z-index: 5;
     position: relative;
     width: 300px;
     border: 1px solid yellowgreen;
@@ -383,60 +468,13 @@ input:focus {
     width: 200px;
 }
 
-.heart {
-    position: relative;
-    width: 40px;
-    height: 40px;
-    /* -webkit-transform: rotate(45deg);
-  -moz-transform: rotate(45deg);
-  -ms-transform: rotate(45deg);
-  -o-transform: rotate(45deg); */
-    transform: rotate(45deg);
-    background-color: red;
-}
-.heart:before,
-.heart:after {
+
+.heart-fav{
+    z-index: 10;
     position: absolute;
-    width: 40px;
-    height: 40px;
-    content: "";
-    -webkit-border-radius: 50%;
-    -moz-border-radius: 50%;
-    -o-border-radius: 50%;
-    border-radius: 50%;
-    background-color: red;
-
-    /* background-color: rgba(250,184,66, 1); */
-}
-.heart:before {
-    bottom: 0px;
-    left: -20px;
-}
-.heart:after {
-    top: -20px;
-    right: 0px;
-}
-
-.nofav {
-    background-color: antiquewhite;
-}
-.nofav:before,
-.nofav:after {
-    background-color: antiquewhite;
-}
-
-.fav-heart {
-    z-index: 5;
-    position: absolute;
-    right: -20px;
-    top: 18px;
-    height: 200px;
-    width: 200px;
+    right: 40px;
     cursor: pointer;
-}
-
-.fav-heart:hover {
-    background-color: aqua;
+    transition: color 400ms;
 }
 
 .rating span {
@@ -451,3 +489,54 @@ input:focus {
 .clickedstar {
     color: rgb(212, 180, 0);
 }
+
+
+
+
+
+
+
+
+
+/* 
+
+.heart {
+    position: relative;
+    width: 40px;
+    height: 40px;
+    
+    transform: rotate(45deg);
+    background-color: red;
+}
+.heart:before,
+.heart:after {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    content: "";
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    -o-border-radius: 50%;
+    border-radius: 50%;
+    background-color: red;
+}
+.heart:before {
+    bottom: 0px;
+    left: -20px;
+}
+.heart:after {
+    top: -20px;
+    right: 0px;
+}
+
+
+
+.fav-heart {
+    z-index: 5;
+    position: absolute;
+    right: -20px;
+    top: 18px;
+    height: 200px;
+    width: 200px;
+    cursor: pointer;
+} */

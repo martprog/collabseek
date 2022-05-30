@@ -6,10 +6,12 @@ import { getUserId } from "./redux/sessionId/slice";
 import { Link } from "react-router-dom";
 import ChatMessages from "./ChatMessages";
 import Conversation from "./Conversation";
+import { useParams, useHistory } from "react-router";
 import { getPrivateMessages } from "./redux/private-messages/slice";
 
 export default function RequestsPage() {
     // const [isOpen, setIsOpen] = useState(false);
+    const history = useHistory()
     const [chatMessages, setChatMessages] = useState([]);
 
     useEffect(() => {
@@ -30,7 +32,7 @@ export default function RequestsPage() {
         <>
             {console.log(chatMessages, typeof chatMessages)}
             {typeof chatMessages === "number"
-                ? location.replace(`/conversation/${chatMessages}`)
+                ? history.push(`/conversation/${chatMessages}`)
                 : ""}
             <h1>Messages</h1>
             <div className="msg-page">

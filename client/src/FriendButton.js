@@ -1,10 +1,13 @@
 import { useState, useEffect } from "react";
+import {  useHistory } from "react-router-dom";
+
 // import { getUserId } from "./redux/sessionId/slice";
 // import { useDispatch, useSelector } from "react-redux";
 
 export default function FriendButton({ otherUserId }) {
     const [btnText, setBtnText] = useState("");
     const [isConnected, setIsConnected] = useState("");
+    const history = useHistory();
 
     useEffect(() => {
         fetch("/user/id.json")
@@ -38,9 +41,9 @@ export default function FriendButton({ otherUserId }) {
             location.replace("/login");
         } else {
             if (btnText === "Send Request") {
-                location.replace(`/request/${otherUserId}`);
+                history.push(`/request/${otherUserId}`);
             } else {
-                location.replace(`/conversation/${otherUserId}`);
+                history.push(`/conversation/${otherUserId}`);
             }
         }
     };

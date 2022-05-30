@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import Profile from "./Profile";
-import FindPeople from "./FindPeople";
+import Login from "./login";
+import Registration from "./registration";
 import { Link } from "react-router-dom";
 import NewArtists from "./NewArtists";
 import ArtistsByTag from "./ArtistsByTag";
@@ -13,28 +13,23 @@ export default function Main({
     onBioUpload,
     profile_picture_url,
     openModal,
-    isConnected
+    isConnected,
+    openLoginModal,
 }) {
     return (
         <div className="mainWrapper">
             <div className="profileWrapper">
-                {/* <h1>Your Profile</h1>
-                <Profile
-                    first={first}
-                    last={last}
-                    onBioUpload={onBioUpload}
-                    profile_picture_url={profile_picture_url}
-                    openModal={openModal}
+                {/* <Login
+                    // openModal={openModal}
                     bio={bio}
-                    // onBioUpload={this.onBioUpload}
-                    // openModal={this.openModal}
-                /> */}
+                    onClick={openLoginModal}
+                    // onBioUpload={this.onBioUpload}>
+                />
+                <Link to="/login" onClick={openLoginModal}>Login</Link> */}
             </div>
             <div>
                 <NewArtists isConnected={isConnected}></NewArtists>
-                <TagsMain>
-                    
-                </TagsMain>
+                <TagsMain isConnected={isConnected}></TagsMain>
             </div>
         </div>
     );

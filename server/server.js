@@ -1,10 +1,10 @@
 const express = require("express");
 const app = express();
-// const server = require("http").Server(app);
-// const io = require("socket.io")(server, {
-//     allowRequest: (req, callback) =>
-//         callback(null, req.headers.referer.startsWith("http://localhost:3000")),
-// });
+const server = require("http").Server(app);
+const io = require("socket.io")(server, {
+    allowRequest: (req, callback) =>
+        callback(null, req.headers.referer.startsWith("http://localhost:3000")),
+});
 const compression = require("compression");
 const path = require("path");
 app.use(compression());
@@ -64,6 +64,10 @@ const cookieSessionMiddleware = cookieSession({
 
 app.use(express.static(path.join(__dirname, "..", "client", "public")));
 app.use(cookieSessionMiddleware);
+io.use(function (socket, next) {
+    cookieSessionMiddleware(socket.request, socket.request.res, next);
+});
+
 app.use(express.json());
 
 app.use(logAndReg);
@@ -290,6 +294,26 @@ app.get("*", function (req, res) {
     res.sendFile(path.join(__dirname, "..", "client", "index.html"));
 });
 
-app.listen(process.env.PORT || 3001, function () {
+io.on("connection", function (socket) {
+    console.log(`socket with the id ${socket.id} is now connected`);
+
+    socket.on("disconnect", function () {
+        console.log(`socket with the id ${socket.id} is now disconnected`);
+    });
+
+    socket.on("message", function (data) {
+        
+        io.emit("notifications", data
+        );
+    });
+
+    socket.emit("welcome", {
+        message: "Welome. It is nice to see you",
+    });
+
+
+});
+
+server.listen(process.env.PORT || 3001, function () {
     console.log("I'm listening.");
 });

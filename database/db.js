@@ -330,10 +330,10 @@ const getAllConversations = (id) => {
         return unique;
     });
 };
-
+// users.profile_picture_url, users.first, users.last,
 const getAllMessages = (userId, otherUserId) => {
     const query = `
-        SELECT users.id as userid, users.first, users.last, users.profile_picture_url,  messages.id, messages.sender_id, messages.recipient_id, messages.text, messages.created_at FROM messages
+        SELECT users.id as userid,  messages.id, messages.sender_id, messages.recipient_id, messages.text, messages.created_at FROM messages
          JOIN users
         ON messages.sender_id=users.id or messages.recipient_id=users.id
         
@@ -595,5 +595,5 @@ module.exports = {
     getFavorites,
     insertTags,
     getRatingById,
-    addRatingById
+    addRatingById,
 };

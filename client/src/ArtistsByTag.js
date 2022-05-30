@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useParams, useHistory } from "react-router";
 
-export default function ArtistsByTag() {
+export default function ArtistsByTag(props) {
     const [users, setUsers] = useState([]);
     const { tags } = useParams();
 
@@ -41,7 +41,7 @@ export default function ArtistsByTag() {
                     </Link>
                     <Link
                         style={{ textDecoration: "none", textAlign: "center" }}
-                        to={`/request/${user.id}`}
+                        to={props.isConnected ? `/request/${user.id}`: "/login"}
                         className="profile-card-main-btn"
                     >
                         Send request

@@ -1,18 +1,28 @@
-import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import FindPeople from "./FindPeople";
+import React from "react";
 
+import { useState, useEffect } from "react";
+
+import { BrowserRouter as Router, Link, useLocation } from "react-router-dom";
 
 export default function SearchResult() {
-    const [search, setSearch] = useState("");
-    const [users, setUsers] = useState([]);
+    const { search } = useLocation();
+    const query = new URLSearchParams(search);
 
+    const querySearch = query.get("s");
+
+    const [users, setUsers] = useState([]);
+    console.log("usuarios", users);
     useEffect(() => {
-        fetch(`/users?search=${search}`)
-            .then((res) => res.json())
-            .then((results) => {
-                setUsers(results);
-            });
+        if (querySearch) {
+            fetch(`/users?search=${querySearch}`)
+                .then((res) => res.json())
+                .then((results) => {
+                    setUsers(results);
+                });
+        }
+        return () => {
+            setUsers([]);
+        };
     }, [search]);
 
     const mappedUsers = () => {
@@ -41,10 +51,9 @@ export default function SearchResult() {
 
     return (
         <>
-            <div className="results-wrapper">
-                {/* <FindPeople></FindPeople> */}
-
-                <div>
+            <div className="results-page">
+                <h1>Your results for &quot;{querySearch}&quot;...</h1>
+                <div className="results-page-wrapper">
                     {users.length >= 1 ? (
                         mappedUsers()
                     ) : (

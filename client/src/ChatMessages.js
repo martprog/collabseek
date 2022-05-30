@@ -1,35 +1,40 @@
 import { useEffect, useRef, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { getMessages, addMessage } from "./redux/messages/slice";
-import { getUserId } from "./redux/sessionId/slice";
+// import { useDispatch, useSelector } from "react-redux";
+// import { getMessages, addMessage } from "./redux/messages/slice";
+// import { getUserId } from "./redux/sessionId/slice";
 // import { getOnlineUsers } from "./redux/online-users/slice";
 import { Link } from "react-router-dom";
 import Conversation from "./Conversation";
 
-export default function ChatMessages() {
-    const [isOpen, setIsOpen] = useState(false);
+import { socket } from "./start";
+
+export default function ChatMessages({ privateMsgs }) {
     const lastMessageRef = useRef(null);
-    const dispatch = useDispatch();
+    // const dispatch = useDispatch();
+    // const chatMessages = useSelector(
+    //     (state) => state.chatMessages && state.chatMessages
+    // );
+    // const userId = useSelector((state) => state.userId && state.userId);
+
+    const [chatMessages, setChatMessages] = useState([]);
+
+    socket.on("welcome", function (data) {
+        console.log("churrito", data);
+        socket.emit("thanks", {
+            message: "Thank you. It is great to be here.",
+        });
+    });
 
     function formatDate(timestamp) {
         const date = new Date(timestamp);
         return `${date.toDateString()}`;
     }
 
-    const chatMessages = useSelector(
-        (state) => state.chatMessages && state.chatMessages
-    );
-
-    const userId = useSelector((state) => state.userId && state.userId);
-    const onlineUsers = useSelector(
-        (state) => state.onlineUsers && state.onlineUsers
-    );
-
     useEffect(() => {
         (async () => {
             const res = await fetch("/user/id.json");
             const data = await res.json();
-            dispatch(getUserId(data.userId));
+            // dispatch(getUserId(data.userId));
         })();
     }, []);
 
@@ -37,14 +42,12 @@ export default function ChatMessages() {
         (async () => {
             const res = await fetch("/users/conversations/all");
             const data = await res.json();
-            
-            dispatch(getMessages(data));
-
+            setChatMessages(data);
+            // dispatch(getMessages(data));
         })();
-    }, []);
+    }, [privateMsgs]);
 
     // }, [chatMessages]);
-
 
     const msgs = chatMessages.map((message) => {
         return (
@@ -85,29 +88,10 @@ export default function ChatMessages() {
         );
     });
 
-    // const displayOnline = onlineUsers.map((user) => {
-    //     return (
-    //         <div className="online-wrapper" key={user.id}>
-    //             <img src={user.profile_picture_url} />
-    //             <p>
-    //                 {user.first} {user.last}{" "}
-    //             </p>
-    //         </div>
-    //     );
-    // });
-
-    // function handleIsOpen() {
-    //     if (!isOpen) {
-    //         setIsOpen(true);
-    //     } else {
-    //         setIsOpen(false);
-    //     }
-    // }
-
     return (
         <>
             <div className="chatroom-multiwrapper">
-                    <h3>Your conversations</h3>
+                <h3>Your conversations</h3>
                 <div className="chatroom-wrapper">
                     <div className="chat-wrapper">
                         {chatMessages.length >= 1 ? msgs : <h2>no messages</h2>}

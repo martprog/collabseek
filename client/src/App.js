@@ -18,13 +18,16 @@ import Conversation from "./Conversation";
 import ArtistPost from "./ArtistPost";
 import SearchResult from "./SearchResult";
 import ArtistsByTag from "./ArtistsByTag";
+import HamburgerMenu from "./HamburgerMenu";
+import { socket } from "./start";
 
 export default class App extends Component {
     constructor(props) {
         super(props);
         this.state = {
             modalOn: false,
-            profile_picture_url: "./default.png",
+            loginModalOn: false,
+            profile_picture_url: "/default.png",
             first: "",
             last: "",
             bio: "",
@@ -42,6 +45,8 @@ export default class App extends Component {
         this.menuList = this.menuList.bind(this);
         this.renderOnlineList = this.renderOnlineList.bind(this);
         this.renderOfflineList = this.renderOfflineList.bind(this);
+        this.openLoginModal = this.openLoginModal.bind(this);
+        this.closeLoginModal = this.closeLoginModal.bind(this);
     }
 
     componentDidMount() {
@@ -66,13 +71,30 @@ export default class App extends Component {
                     this.setState({ first: data.first });
                 }
             });
+
+        
+        socket.on("notifications", (data) => {
+            console.log("chussss", data);
+        });
     }
+
+   
+
+    
 
     openModal() {
         this.setState({ modalOn: true });
     }
 
     closeModal() {
+        this.setState({ modalOn: false });
+    }
+
+    openLoginModal() {
+        this.setState({ modalOn: true });
+    }
+
+    closeLoginModal() {
         this.setState({ modalOn: false });
     }
 
@@ -187,7 +209,7 @@ export default class App extends Component {
                                 <div className="logo-wrapper">
                                     <img
                                         className="logo"
-                                        src="./logosincol.png"
+                                        src="/logosincol1.png"
                                     />
                                     {/* <h1>COLLABSEEK</h1> */}
                                     <h4>COLLABSEEK</h4>
@@ -243,11 +265,13 @@ export default class App extends Component {
                                     className="select-list"
                                     onClick={this.menuList}
                                 >
-                                    <img src="./hamburguer-menu.jpeg" />
+                                    <div className="select-miniwrapper">
+                                        <HamburgerMenu />
 
-                                    <ProfilePic
-                                        url={this.state.profile_picture_url}
-                                    />
+                                        <ProfilePic
+                                            url={this.state.profile_picture_url}
+                                        />
+                                    </div>
                                 </div>
                             </nav>
                         </div>
@@ -266,6 +290,7 @@ export default class App extends Component {
                                         {...this.state}
                                         onBioUpload={this.onBioUpload}
                                         openModal={this.openModal}
+                                        openLoginModal={this.openLoginModal}
                                     />
                                 </Route>
                                 <Route path="/artists/post">
@@ -279,7 +304,7 @@ export default class App extends Component {
                                 <Route path="/users/:otherUserId">
                                     <OtherProfile />
                                 </Route>
-                                <Route path="/users/searchresult">
+                                <Route path="/search">
                                     <SearchResult />
                                 </Route>
                                 <Route path="/artistsbytags/:tags">
@@ -319,7 +344,11 @@ export default class App extends Component {
                                             <Registration />
                                         </Route>
                                         <Route path="/login">
-                                            <Login />
+                                            <Login
+                                                closeLoginModal={
+                                                    this.closeLoginModal
+                                                }
+                                            />
                                         </Route>
                                         <Route path="/reset">
                                             <ResetPass />

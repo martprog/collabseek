@@ -1,6 +1,8 @@
 import { Component } from "react";
 import { Link } from "react-router-dom";
 import { CSSTransition } from "react-transition-group";
+import { useParams, useHistory } from "react-router";
+
 
 export default class ArtistPost extends Component {
     constructor() {

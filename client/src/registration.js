@@ -1,6 +1,7 @@
 import { Component } from "react";
 import { Link } from "react-router-dom";
 import { CSSTransition } from "react-transition-group";
+import Musician from "./Musician";
 
 export default class Registration extends Component {
     constructor() {
@@ -57,47 +58,55 @@ export default class Registration extends Component {
                         appear
                     >
                         <div className={this.state.error ? "wronglog" : ""}>
-                            <div className="registration">
-                                <h1>Create account</h1>
-                                {this.state.error && (
-                                    <p className="p_log">
-                                        Oops, something went wrong!
-                                    </p>
-                                )}
-                                <form
-                                    className="form"
-                                    onSubmit={this.handleSubmit}
-                                >
-                                    <input
-                                        onChange={this.handleChange}
-                                        placeholder="First Name"
-                                        type="text"
-                                        name="first"
-                                    ></input>
-                                    <input
-                                        onChange={this.handleChange}
-                                        placeholder="Last Name"
-                                        type="text"
-                                        name="last"
-                                    ></input>
-                                    <input
-                                        onChange={this.handleChange}
-                                        placeholder="E-mail"
-                                        type="email"
-                                        name="email"
-                                    ></input>
-                                    <input
-                                        onChange={this.handleChange}
-                                        placeholder="Password"
-                                        type="password"
-                                        name="password"
-                                    ></input>
-                                    <button id="submitReg">Submit</button>
-                                </form>
-                                <p>
-                                    Already a member?{" "}
-                                    <Link to="/login">Log in</Link>
-                                </p>
+                            <div className="log-multiwrapper">
+                                <div className="login">
+                                    {this.state.error && (
+                                        <p className="p_log">
+                                            Oops, something went wrong!
+                                        </p>
+                                    )}
+                                    <div className="formRegister">
+                                        <h1>Create account</h1>
+
+                                        <form
+                                            className="form"
+                                            onSubmit={this.handleSubmit}
+                                        >
+                                            <input
+                                                onChange={this.handleChange}
+                                                placeholder="First Name"
+                                                type="text"
+                                                name="first"
+                                            ></input>
+                                            <input
+                                                onChange={this.handleChange}
+                                                placeholder="Last Name"
+                                                type="text"
+                                                name="last"
+                                            ></input>
+                                            <input
+                                                onChange={this.handleChange}
+                                                placeholder="E-mail"
+                                                type="email"
+                                                name="email"
+                                            ></input>
+                                            <input
+                                                onChange={this.handleChange}
+                                                placeholder="Password"
+                                                type="password"
+                                                name="password"
+                                            ></input>
+                                            <button id="submitReg">
+                                                Submit
+                                            </button>
+                                        </form>
+                                        <p>
+                                            Already a member?{" "}
+                                            <Link to="/login">Log in</Link>
+                                        </p>
+                                    </div>
+                                </div>
+                                <Musician />
                             </div>
                         </div>
                     </CSSTransition>

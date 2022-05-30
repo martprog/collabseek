@@ -6,11 +6,12 @@ import {
     SwitchTransition,
     TransitionGroup,
 } from "react-transition-group";
+import Musician from "./Musician";
 
 export default class Login extends Component {
     constructor() {
         super();
-        this.state = {error: false, isOn: true};
+        this.state = { error: false, isOn: true };
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
@@ -19,13 +20,13 @@ export default class Login extends Component {
         this.setState(
             {
                 [e.target.name]: e.target.value,
-            },
+            }
             // () => console.log(this.state)
         );
     }
 
     handleSubmit(e) {
-        this.setState({error:false})
+        this.setState({ error: false });
         e.preventDefault();
         fetch("/login", {
             method: "POST",
@@ -36,12 +37,11 @@ export default class Login extends Component {
         })
             .then((res) => res.json())
             .then((result) => {
-                
                 if (result.succes == false) {
                     this.setState({ error: true });
                 }
-                if (result.succes == true){
-                    location.replace('/');
+                if (result.succes == true) {
+                    location.replace("/");
                     this.setState({ error: false });
                 }
             })
@@ -51,6 +51,7 @@ export default class Login extends Component {
     render() {
         return (
             <>
+                {console.log("papas bravas")}
                 {this.state.isOn && (
                     <CSSTransition
                         in={this.state.isOn}
@@ -58,41 +59,53 @@ export default class Login extends Component {
                         classNames="login-transition"
                         appear
                     >
-                        <div className={this.state.error? "wronglog": ''}>
-                            <div className="login">
-                                <h1>Welcome Back!</h1>
-                                {this.state.error && (
-                                    <p className="p_log">
-                                        Oops, something went wrong!
-                                    </p>
-                                )}
-                                <form
-                                    className="form"
-                                    onSubmit={this.handleSubmit}
-                                >
-                                    <input
-                                        onChange={this.handleChange}
-                                        placeholder="E-mail"
-                                        type="email"
-                                        name="email"
-                                    ></input>
-                                    <input
-                                        onChange={this.handleChange}
-                                        placeholder="Password"
-                                        type="password"
-                                        name="password"
-                                    ></input>
-                                    <button id="submitReg">Submit</button>
-                                </form>
-                                <div className="containerLinks">
-                                    <p>
-                                        Not a member?{" "}
-                                        <Link to="/">Register</Link>
-                                    </p>
-                                    <p>
-                                        <Link to="/reset">Reset Password</Link>
-                                    </p>
+                        <div className={this.state.error ? "wronglog" : ""}>
+                            <div className="log-multiwrapper">
+                                <div className="login">
+                                    {this.state.error && (
+                                        <p className="p_log">
+                                            Oops, something went wrong!
+                                        </p>
+                                    )}
+                                    <div className="formLogin">
+                                        <h1>Welcome Back!</h1>
+
+                                        <form
+                                            className="form"
+                                            onSubmit={this.handleSubmit}
+                                        >
+                                            <input
+                                                onChange={this.handleChange}
+                                                placeholder="E-mail"
+                                                type="email"
+                                                name="email"
+                                            ></input>
+                                            <input
+                                                onChange={this.handleChange}
+                                                placeholder="Password"
+                                                type="password"
+                                                name="password"
+                                            ></input>
+                                            <button id="submitReg">
+                                                Submit
+                                            </button>
+                                        </form>
+                                        <div className="containerLinks">
+                                            <p>
+                                                Not a member?{" "}
+                                                <Link to="/register">
+                                                    Register
+                                                </Link>
+                                            </p>
+                                            <p>
+                                                <Link to="/reset">
+                                                    Reset Password
+                                                </Link>
+                                            </p>
+                                        </div>
+                                    </div>
                                 </div>
+                                <Musician />
                             </div>
                         </div>
                     </CSSTransition>
@@ -101,4 +114,3 @@ export default class Login extends Component {
         );
     }
 }
-

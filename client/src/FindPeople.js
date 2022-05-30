@@ -1,12 +1,13 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 
 export default function FindPeople() {
     const [search, setSearch] = useState("");
     const [users, setUsers] = useState([]);
+    const [isHidden, setIsHidden] = useState(false);
     const [isFocused, setIsFocused] = useState(false);
     // const [clicked, setClicked] = useState(false);
-
+    const history = useHistory();
     const handleChange = (e) => {
         console.log(e.target.value);
         setIsFocused(true);
@@ -32,7 +33,7 @@ export default function FindPeople() {
     const mappedUsers = () => {
         return users.map((user) => {
             return (
-                <div key={user.id}>
+                <div key={user.id} onClick={()=>console.log('clicked')}>
                     <Link
                         style={{ textDecoration: "none" }}
                         to={`/users/${user.id}`}
@@ -40,7 +41,7 @@ export default function FindPeople() {
                         <div className="finded-users-search-bar">
                             <img
                                 src={
-                                    user.profile_picture_url || "./default.png"
+                                    user.profile_picture_url || "/default.png"
                                 }
                             />
                             <h3>
@@ -70,23 +71,30 @@ export default function FindPeople() {
                 <div className="form-group fg--search">
                     <input
                         className="searchbar search-field"
+                        onFocus={(e)=>{
+                            setIsHidden(false)
+                        }}
                         onBlur={(e) => {
-                            // setSearch("");
+                            // setTimeout(()=>setIsHidden(true), 100);
+                            setTimeout(() => setSearch(""), 100);
+
                         }}
                         onChange={handleChange}
                         placeholder="Search artist"
                     ></input>
                     <button
-                        onClick={onSubmit}
+                        onClick={()=>history.push(`/search?s=${search}`)}
                         className="search-button"
                         type="submit"
                     >
-                        <img src="./search.png" className="fa fa-search" />
+                        <img src="/search.png" className="fa fa-search" />
                     </button>
                 </div>
                 {/* <button>go!</button> */}
                 <div className="results-wrapper">
+                    {/* <div className={`${isHidden ? "hidden-results": search ? "results": ""}`}> */}
                     <div className={showResults}>
+
                         {users.length >= 1 ? (
                             mappedUsers()
                         ) : (

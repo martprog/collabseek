@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import HeartFull from "./icons/HeartFull";
+import HeartEmpty from "./icons/HeartEmpty";
 
 export default function NewArtists(props) {
     const [users, setUsers] = useState([]);
@@ -63,12 +65,14 @@ export default function NewArtists(props) {
                             onClick={(e) =>
                                 changeFav(e, user.id, user.is_favorite)
                             }
-                            className="fav-heart"
+                            className="heart-fav"
                         >
                             {user.sender_id ? (
-                                <div className="heart"></div>
+                                // <div className="heart"></div>
+                                <HeartFull />
                             ) : (
-                                <div className="heart nofav"></div>
+                                <HeartEmpty />
+                                // <div className="heart nofav"></div>
                             )}
                         </div>
                     </form>
@@ -90,7 +94,9 @@ export default function NewArtists(props) {
                     </Link>
                     <Link
                         style={{ textDecoration: "none", textAlign: "center" }}
-                        to={`/request/${user.id}`}
+                        to={
+                            props.isConnected ? `/request/${user.id}` : "/login"
+                        }
                         className="profile-card-main-btn"
                     >
                         Send request
