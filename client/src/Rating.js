@@ -1,9 +1,12 @@
 import { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import { Link } from "react-router-dom";
 import Star from "./icons/Star";
 
 export default function Rating({ otherUserId }) {
     // const [rating, setRating] = useState([]);
+    const location = useLocation();
+
     const [clicked, setClicked] = useState([false, false, false, false, false]);
 
     const [isChanged, setIsChanged] = useState(false);
@@ -53,7 +56,7 @@ export default function Rating({ otherUserId }) {
 
     return (
         <div className="rating">
-            <p>Rating</p>
+            {location.pathname == "/" ? "" : <p>Rating</p>}
             <div className="stars">
                 <span
                     onClick={(e) => handleStarClick(e, 0)}
@@ -87,6 +90,11 @@ export default function Rating({ otherUserId }) {
                     &#9733;
                 </span>
             </div>
+            {clicked[0] == false ? (
+                <p style={{ fontSize: "12px" }}>(No ratings yet)</p>
+            ) : (
+                ""
+            )}
         </div>
     );
 }

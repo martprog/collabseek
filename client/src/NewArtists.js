@@ -2,11 +2,12 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import HeartFull from "./icons/HeartFull";
 import HeartEmpty from "./icons/HeartEmpty";
+import Rating from "./Rating";
 
 export default function NewArtists(props) {
     const [users, setUsers] = useState([]);
     const [isChanged, setIsChanged] = useState(false);
-
+    console.log('hay rating:', users);
     useEffect(() => {
         fetch("/users/newartists")
             .then((res) => res.json())
@@ -82,11 +83,12 @@ export default function NewArtists(props) {
                             <h3>
                                 {user.first} {user.last}
                             </h3>
-                            <p>
-                                {user.instrument} 
-                            </p>
+                            <p>{user.instrument}</p>
                         </div>
                     </Link>
+                    <Rating otherUserId={user.artist_id} />
+                    {console.log('turcooo', typeof user.artist_id)}
+
                     <Link
                         style={{ textDecoration: "none", textAlign: "center" }}
                         to={

@@ -227,11 +227,14 @@ const createArtistProfile = (
 
 const getLatestUsers = (id) => {
     const query = `
-        SELECT  users.id, artists.artist_id, artists.instrument, users.first, users.last, favorites.artist, favorites.sender_id, favorites.is_favorite, users.profile_picture_url 
+        SELECT  users.id, artists.artist_id, artists.instrument, ROUND(AVG(rating), 0) as art_rating, users.first, users.last, favorites.artist, favorites.sender_id, favorites.is_favorite, users.profile_picture_url 
         FROM artists
+        full outer JOIN ratings 
+        on artists.artist_id=ratings.artist
         JOIN users
         ON (artists.artist_id=users.id)
         left join favorites on favorites.artist=artists.artist_id and favorites.sender_id=$1
+        group by users.id, artists.artist_id, artists.instrument, favorites.artist, favorites.is_favorite, favorites.sender_id, artists.created_at 
         ORDER BY artists.created_at DESC
         LIMIT 3
     `;
