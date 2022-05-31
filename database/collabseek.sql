@@ -31,6 +31,7 @@ CREATE TABLE artists (
      id SERIAL PRIMARY KEY,
      artist_id INT REFERENCES users(id) UNIQUE NOT NULL,
      bio TEXT,
+     instrument TEXT,
      youtube_link VARCHAR,
      spotify_link VARCHAR,
      instagram_link VARCHAR,
@@ -51,6 +52,7 @@ CREATE TABLE messages (
      recipient_id INT REFERENCES users(id) NOT NULL,
      text TEXT,
      created_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+     is_read BOOLEAN
 );
 
 CREATE TABLE favorites (

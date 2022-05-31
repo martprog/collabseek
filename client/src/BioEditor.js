@@ -271,6 +271,7 @@ export default class BioEditor extends Component {
                 ) : (
                     <div className="profile-minicontainer">
                         <p>{this.props.bio}</p>
+                        <p>{this.props.instrument}</p>
                         <div className="tags-wrapper">
                             {this.props.tags
                                 ? this.props.tags.map((tag, i) => {

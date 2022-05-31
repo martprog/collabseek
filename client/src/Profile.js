@@ -12,6 +12,7 @@ export default function Profile({
     first,
     last,
     bio,
+    instrument,
     onBioUpload,
     profile_picture_url,
     openModal,
@@ -42,9 +43,10 @@ export default function Profile({
                         last={last}
                         bio={bio}
                         first={first}
+                        instrument={instrument}
                         onBioUpload={onBioUpload}
                     />
-                    
+                    {console.log(first, bio)}
                 </div>
                 <ProfilePic className="profile-pic" spotify_link={spotify_link} youtube_link={youtube_link} url={profile_picture_url} openModal={openModal} />
             </div>

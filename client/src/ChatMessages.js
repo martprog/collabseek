@@ -8,7 +8,7 @@ import Conversation from "./Conversation";
 
 import { socket } from "./start";
 
-export default function ChatMessages({ privateMsgs }) {
+export default function ChatMessages({ privateMsgs, otherUserId }) {
     const lastMessageRef = useRef(null);
     // const dispatch = useDispatch();
     // const chatMessages = useSelector(
@@ -50,22 +50,24 @@ export default function ChatMessages({ privateMsgs }) {
 
     // }, [chatMessages]);
 
+    
+
     const msgs = chatMessages.map((message) => {
         return (
             <div
-                className="msg-container"
+                className={message.userid == otherUserId? "msg-container read":"msg-container"}
                 key={message.id}
                 ref={lastMessageRef}
             >
                 <img src={message.profile_picture_url} />
-
+                {console.log(message)}
                 <div className="msg-details">
                     <Link
-                        style={{ textDecoration: "none" }}
+                        style={{ textDecoration: "none", color:"black" }}
                         to={`/conversation/${message.userid}`}
                     >
                         <div>
-                            {message.first}
+                            {message.first} &nbsp;
                             {message.last}
                         </div>
                         <div className="msg-row">

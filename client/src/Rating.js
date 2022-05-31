@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import Star from "./icons/Star";
 
 export default function Rating({ otherUserId }) {
     // const [rating, setRating] = useState([]);
@@ -52,15 +53,15 @@ export default function Rating({ otherUserId }) {
 
     return (
         <div className="rating">
-            {/* {console.log(object)} */}
             <p>Rating</p>
-            <div>
+            <div className="stars">
                 <span
                     onClick={(e) => handleStarClick(e, 0)}
                     className={clicked[0] ? "clickedstar" : null}
                 >
                     &#9733;
                 </span>
+
                 <span
                     onClick={(e) => handleStarClick(e, 1)}
                     className={clicked[1] ? "clickedstar" : null}

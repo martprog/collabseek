@@ -31,6 +31,7 @@ export default class App extends Component {
             first: "",
             last: "",
             bio: "",
+            instrument: "",
             spotify_link: "",
             youtube_link: "",
             tags: [],
@@ -70,7 +71,10 @@ export default class App extends Component {
                 if (data.profile_picture_url) {
                     this.setState(data);
                 } else {
-                    this.setState({ first: data.first });
+                    this.setState({
+                        ...data,
+                        profile_picture_url: this.state.profile_picture_url,
+                    });
                 }
             });
 
@@ -301,13 +305,11 @@ export default class App extends Component {
 
                         {this.state.modalOn && (
                             <Uploader
-                                // handlePicChange={this.handlePicChange}
                                 onUpload={this.onUpload}
                                 closeModal={this.closeModal}
                             />
                         )}
                         <div className="multi-wrapper">
-                            {this.state.notifications && <h1>BANANA</h1>}
                             <div className="wrapperRouter">
                                 <Route exact path="/">
                                     <Main

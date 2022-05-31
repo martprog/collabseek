@@ -67,7 +67,7 @@ export default function FavoriteBtn({ otherUserId }) {
     };
 
     return (
-        <button className="btnFriendship" onClick={onRequest}>
+        <button className="btnFavorite" onClick={onRequest}>
             {btnText}
         </button>
     );

@@ -15,7 +15,6 @@ export default function OtherProfile() {
     const [transition, setTransition] = useState(true);
 
     const { otherUserId } = useParams();
-    
 
     const history = useHistory();
 
@@ -33,9 +32,15 @@ export default function OtherProfile() {
 
     // }, [otherProfile]);
 
-    const tags = otherProfile.tags && otherProfile.tags.map((tag, i) => {
-        return <div className="tags-in-profile" key={i}>{tag}</div>;
-    });
+    const tags =
+        otherProfile.tags &&
+        otherProfile.tags.map((tag, i) => {
+            return (
+                <div className="tags-in-profile" key={i}>
+                    {tag}
+                </div>
+            );
+        });
 
     return (
         <>
@@ -48,13 +53,12 @@ export default function OtherProfile() {
             >
                 <div>
                     <div className="profileContainer">
-                        
                         <div className="about">
-                            <div>
+                            <div className="other-profile-img-div">
                                 <img
                                     src={
                                         otherProfile.profile_picture_url ||
-                                        "../default.png"
+                                        "/default.png"
                                     }
                                 />
                             </div>
@@ -67,8 +71,10 @@ export default function OtherProfile() {
                                 {otherProfile.tags ? tags : ""}
                             </div>
 
-                            <FriendButton otherUserId={otherUserId} />
-                            <FavoriteBtn otherUserId={otherUserId} />
+                            <div className="other-profile-btns-wrapper">
+                                <FriendButton otherUserId={otherUserId} />
+                                <FavoriteBtn otherUserId={otherUserId} />
+                            </div>
                             <Rating otherUserId={otherUserId} />
                         </div>
                     </div>

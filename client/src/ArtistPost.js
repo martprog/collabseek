@@ -43,6 +43,7 @@ export default class ArtistPost extends Component {
             .then((res) => res.json())
             .then((result) => {
                 if (result.message == "error") {
+                    console.log(result);
                     this.setState({ error: true });
                 }
                 if (result.message == "ok") {
@@ -145,6 +146,12 @@ export default class ArtistPost extends Component {
                                             placeholder="tell us about yourself"
                                             type="text"
                                             name="bio"
+                                        ></input>
+                                        <input
+                                            onChange={this.handleChange}
+                                            placeholder="What instrument do you play?"
+                                            type="text"
+                                            name="instrument"
                                         ></input>
                                         <input
                                             onChange={this.handleChange}

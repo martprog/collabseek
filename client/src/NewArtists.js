@@ -82,6 +82,9 @@ export default function NewArtists(props) {
                             <h3>
                                 {user.first} {user.last}
                             </h3>
+                            <p>
+                                {user.instrument} 
+                            </p>
                         </div>
                     </Link>
                     <Link

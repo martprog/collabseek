@@ -139,9 +139,9 @@ export default function Conversation() {
         <>
             <h1>Chat Room</h1>
             <div className="inbox-wrapper">
-                <ChatMessages privateMsgs={privateMsgs}></ChatMessages>
+                <ChatMessages otherUserId={otherUserId} privateMsgs={privateMsgs}></ChatMessages>
+                    {/* <h3>{chatUser}</h3> */}
                 <div className="private-msgs-multiwrapper">
-                    <h3>{chatUser}</h3>
                     <div className="private-msgs-wrapper">
                         <div className="chatroom-wrapper">
                             <div className="chat-wrapper">

@@ -208,24 +208,26 @@ const insertTags = (id, tag) => {
 const createArtistProfile = (
     artist_id,
     bio,
+    instrument,
     youtube_link,
     spotify_link,
     tags
 ) => {
     const query = `
-            INSERT INTO artists (artist_id, bio, youtube_link, spotify_link, tags)
-            VALUES($1, $2, $3, $4, $5)
+            INSERT INTO artists (artist_id, bio, instrument, youtube_link, spotify_link, tags)
+            VALUES($1, $2, $3, $4, $5, $6)
             RETURNING *
             `;
-    const params = [artist_id, bio, youtube_link, spotify_link, tags];
+    const params = [artist_id, bio, instrument, youtube_link, spotify_link, tags];
     return db.query(query, params).then((results) => {
+        console.log(results.rows[0]);
         return results.rows[0];
     });
 };
 
 const getLatestUsers = (id) => {
     const query = `
-        SELECT  users.id, artists.artist_id, users.first, users.last, favorites.artist, favorites.sender_id, favorites.is_favorite, users.profile_picture_url 
+        SELECT  users.id, artists.artist_id, artists.instrument, users.first, users.last, favorites.artist, favorites.sender_id, favorites.is_favorite, users.profile_picture_url 
         FROM artists
         JOIN users
         ON (artists.artist_id=users.id)

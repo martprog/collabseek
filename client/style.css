@@ -92,14 +92,17 @@ body {
 .musician-pic-wrapper {
     position: relative;
     text-align: center;
-    color: white;
+    color: black;
+    /* font-size: 20px; */
 }
 
 .mus-pic-text {
     position: absolute;
-    top: 50%;
+    top: 28%;
     left: 50%;
     transform: translate(-50%, -50%);
+    font-size: 20px;
+
 }
 
 .formLogin {
@@ -263,19 +266,28 @@ body {
     height: 30px;
     width: 250px;
     padding: 12px;
-    border: 1px solid gray;
+    /* border: 0.4px solid gray; */
     border-radius: 25px;
     z-index: 10;
-}
-
-input:focus {
-    outline: 4px solid rgb(189, 209, 221);
+    box-shadow: 0px 2px 5px 0px rgb(194, 192, 192);
     transition: all 200ms;
 }
 
+.searchbar:hover{
+    box-shadow: 0px 3px 7px 0px rgb(172, 170, 170);
+
+}
+
+
+
+/* input:focus {
+    outline: 4px solid rgb(189, 209, 221);
+    transition: all 200ms;
+} */
+
 .finded-users-search-bar {
-    padding: 12px;
     display: flex;
+    padding: 12px;
     gap: 8px;
 }
 
@@ -289,11 +301,11 @@ input:focus {
     width: 40px;
 }
 
-.finded-users {
+/* .finded-users {
     display: flex;
     gap: 5px;
     border-radius: 5px solid;
-}
+} */
 
 .finded-users img {
     height: 40px;
@@ -330,7 +342,7 @@ input:focus {
     right: 35px;
     display: flex;
     flex-direction: column;
-    min-height: 200px;
+    min-height: 120px;
     width: 150px;
     border: 0.2px solid rgb(220, 215, 215);
     border-radius: 20px;
@@ -366,6 +378,14 @@ input:focus {
     border-top: 0.4px solid;
     /* align-items: center; */
     z-index: 10;
+    margin: 5px;
+}
+
+.read{
+    /* background-color: #ff416c; */
+    background-color: #d6d3d3;
+
+    border-radius: 15px;
 }
 
 .private-msg-container {
@@ -489,6 +509,27 @@ input:focus {
     flex-direction: column;
     align-items: center;
     padding: 25px;
+    
+}
+
+.profile-card-main h3{
+    margin-bottom: 2px;
+    padding-bottom: 1px;
+    color: black;
+}
+
+
+.profile-card-main p{
+    margin-top: 9px;
+    margin-bottom: 25px;
+    font-size: 16px;
+    color: rgb(111, 110, 110);
+
+}
+
+.other-profile-img-div img{
+    width: 200px;
+    
 }
 
 .finded-users {
@@ -503,7 +544,7 @@ input:focus {
     object-fit: cover;
 }
 
-.profile-card-main-btn {
+.profile-card-main-btn, .btnFriendship {
     outline: none;
     border: none;
     width: 160px;
@@ -512,6 +553,29 @@ input:focus {
     cursor: pointer;
     padding: 5px;
     background: linear-gradient(to right, #ff4b2b, #ff416c);
+    font-family: "Bebas Neue", cursive;
+}
+
+.btnFavorite{
+  outline: none;
+    border: none;
+    width: 160px;
+    border-radius: 15px;
+    color: white;
+    cursor: pointer;
+    padding: 5px;
+    background-color: #838484;
+    font-family: "Bebas Neue", cursive;
+}
+
+.btnFavorite:hover{
+    background-color: rgb(94, 178, 94);
+}
+
+.other-profile-btns-wrapper{
+    display: flex;
+    gap: 12px;
+    margin: 20px;
 }
 
 .profileContainer {
@@ -672,6 +736,12 @@ input:focus {
 
 .rating span {
     cursor: pointer;
+    
+}
+
+.stars:hover{
+    color: rgb(212, 180, 0);
+
 }
 
 .rating span:hover ~ span {

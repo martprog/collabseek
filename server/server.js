@@ -124,21 +124,31 @@ app.post(
 app.post("/users/artist/new", (req, res) => {
     const { userId } = req.session;
 
-    const { bio, spotify, youtube, tagsList } = req.body;
+    const { bio, instrument, spotify, youtube, tagsList } = req.body;
     // console.log(req.body);
 
     // if (!email || !password) {
     //     res.json({ succes: false });
     //     return;
     // }
-    createArtistProfile(userId, bio, spotify || null, youtube || null, tagsList)
+    createArtistProfile(
+        userId,
+        bio,
+        instrument || null,
+        spotify || null,
+        youtube || null,
+        tagsList
+    )
         .then((data) => {
-            data.tags.forEach((element) => {
-                addTagInTagsTable(data.artist_id, element).then(() =>
-                    console.log("it´s all good!")
-                );
-            });
-            res.json({ message: "ok" });
+            console.log(data);
+            if (data.tags) {
+                data.tags.forEach((element) => {
+                    addTagInTagsTable(data.artist_id, element).then(() =>
+                        console.log("it´s all good!")
+                    );
+                });
+                res.json({ message: "ok" });
+            }
         })
         .catch(() => res.json({ message: "error" }));
 });
@@ -312,13 +322,13 @@ io.on("connection", async function (socket) {
         let sender = sender_id !== userId ? sender_id : recipient_id;
 
         const readRes = await setReadMsgs(userId, sender);
-        socket.emit("no-notifications", {message: 'ok'})
+        socket.emit("no-notifications", { message: "ok" });
     });
 
     const userId = socket.request.session.userId;
 
     const unreadMsgs = await getUnreadMsgs(userId);
-    console.log('lectureee,', unreadMsgs);
+    console.log("lectureee,", unreadMsgs);
 
     if (unreadMsgs[0].count > 0) {
         socket.emit("notifications", unreadMsgs[0]);
