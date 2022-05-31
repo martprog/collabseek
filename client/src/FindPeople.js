@@ -14,8 +14,6 @@ export default function FindPeople() {
         setSearch(e.target.value);
     };
 
-   
-
     useEffect(() => {
         let abort = false;
 
@@ -33,16 +31,14 @@ export default function FindPeople() {
     const mappedUsers = () => {
         return users.map((user) => {
             return (
-                <div key={user.id} onClick={()=>console.log('clicked')}>
+                <div key={user.id} onClick={() => console.log("clicked")}>
                     <Link
                         style={{ textDecoration: "none" }}
                         to={`/users/${user.id}`}
                     >
                         <div className="finded-users-search-bar">
                             <img
-                                src={
-                                    user.profile_picture_url || "/default.png"
-                                }
+                                src={user.profile_picture_url || "/default.png"}
                             />
                             <h3>
                                 {user.first} {user.last}
@@ -55,46 +51,36 @@ export default function FindPeople() {
     };
 
     // let showResults = !isFocused ? "hidden-results" : search ? "results": "hidden-results";
-    let showResults = !search ? "hidden-results" : "results";
-
-    function onSubmit() {
-        console.log("juan", users);
-    }
+    let showResults = !search ? "hidden-results" : "results-wrapper";
 
     return (
         <>
-            <div
-            // className="wrapper"
-            >
-                <form></form>
-
+            <div className="search-container">
                 <div className="form-group fg--search">
                     <input
                         className="searchbar search-field"
-                        onFocus={(e)=>{
-                            setIsHidden(false)
+                        onFocus={(e) => {
+                            setIsHidden(false);
                         }}
                         onBlur={(e) => {
                             // setTimeout(()=>setIsHidden(true), 100);
                             setTimeout(() => setSearch(""), 100);
-
                         }}
                         onChange={handleChange}
                         placeholder="Search artist"
                     ></input>
                     <button
-                        onClick={()=>history.push(`/search?s=${search}`)}
+                        onClick={() => history.push(`/search?s=${search}`)}
                         className="search-button"
                         type="submit"
                     >
                         <img src="/search.png" className="fa fa-search" />
                     </button>
                 </div>
-                {/* <button>go!</button> */}
-                <div className="results-wrapper">
-                    {/* <div className={`${isHidden ? "hidden-results": search ? "results": ""}`}> */}
-                    <div className={showResults}>
 
+                <div className={showResults}>
+                    {/* <div className={`${isHidden ? "hidden-results": search ? "results": ""}`}> */}
+                    <div className="results">
                         {users.length >= 1 ? (
                             mappedUsers()
                         ) : (

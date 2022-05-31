@@ -14,15 +14,7 @@ export default function NewArtists(props) {
                 setUsers(results);
                 setIsChanged(false);
             });
-
-        // fetch("/favorites/all")
-        //     .then((res) => res.json())
-        //     .then((results) => {
-        //         setUsers([...users, results]);
-        //     });
     }, [isChanged]);
-
-    // console.log("new artists", users);
 
     const changeFav = async (e, otherUserId, is_favorite) => {
         console.log();
@@ -108,7 +100,7 @@ export default function NewArtists(props) {
 
     return (
         <>
-            <div>
+            <div className="new-artists-main-wrapper">
                 <h2>Discover recent Artists</h2>
                 <div>{/* <p>&laquo</p> */}</div>
                 <div className="new-artists-wrapper">

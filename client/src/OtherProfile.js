@@ -48,7 +48,7 @@ export default function OtherProfile() {
             >
                 <div>
                     <div className="profileContainer">
-                        <div className="profileRectangle"></div>
+                        
                         <div className="about">
                             <div>
                                 <img

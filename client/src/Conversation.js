@@ -1,9 +1,4 @@
 import { useEffect, useRef, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-// import {   } from "./redux/messages/slice";
-// import { getPrivateMessages, addMessage } from "./redux/private-messages/slice";
-// import { getUserId } from "./redux/sessionId/slice";
-// import { getOnlineUsers } from "./redux/online-users/slice";
 import { Link } from "react-router-dom";
 import { useParams, useHistory } from "react-router";
 import ChatMessages from "./ChatMessages";
@@ -15,27 +10,20 @@ export default function Conversation() {
     const { otherUserId } = useParams();
     const [otherProfile, setOtherProfile] = useState({});
     const [user, setUser] = useState({});
-    const [userId, setUserId] = useState(null)
-    const [privateMsgs, setPrivateMsgs] = useState([])
-    
+    const [userId, setUserId] = useState(null);
+    const [privateMsgs, setPrivateMsgs] = useState([]);
+
     function formatDate(timestamp) {
         const date = new Date(timestamp);
         return `${date.toDateString()}`;
     }
-
-    // const privateMsgs = useSelector(
-    //     (state) => state.privateMsgs && state.privateMsgs
-    // );
-
-    // const userId = useSelector((state) => state.userId && state.userId);
 
     useEffect(() => {
         (async () => {
             const res = await fetch("/user/id.json");
             const data = await res.json();
             // setUser(data);
-            setUserId(data.userId)
-            // dispatch(getUserId(data.userId));
+            setUserId(data.userId);
         })();
 
         (async () => {
@@ -51,8 +39,6 @@ export default function Conversation() {
             const data = await res.json();
             setPrivateMsgs(data);
             socket.emit("readMsgs", data[0]);
-
-            // dispatch(getPrivateMessages(data));
         })();
 
         fetch(`/api/users/${+otherUserId}`)
@@ -60,7 +46,6 @@ export default function Conversation() {
             .then((data) => {
                 setOtherProfile(data);
             });
-
     }, [otherUserId]);
 
     useEffect(() => {
@@ -69,7 +54,6 @@ export default function Conversation() {
         }
 
         // socket.emit("message", privateMsgs)
-        
     }, [privateMsgs]);
 
     async function handleSubmit(e) {
@@ -84,15 +68,11 @@ export default function Conversation() {
             body: JSON.stringify({ msg: newMsg }),
         });
         const data = await res.json();
-        
-        setPrivateMsgs([...privateMsgs, data])
+
+        setPrivateMsgs([...privateMsgs, data]);
         // socket.emit("message", data)
         e.target.text.value = "";
-
-        // dispatch(addMessage(data));
     }
-
-    // console.log("private msgs:", privateMsgs);
 
     const msgs = privateMsgs.map((message) => {
         return (
@@ -101,47 +81,48 @@ export default function Conversation() {
                 key={message.id}
                 ref={lastMessageRef}
             >
-                <img
-                    src={
+                <Link
+                    style={{ textDecoration: "none" }}
+                    to={
                         userId == message.sender_id
-                            ? user.profile_picture_url
-                            : otherProfile.profile_picture_url
+                            ? "/"
+                            : `/users/${message.sender_id}`
                     }
-                />
+                >
+                    <div className="date-chat">
+                        <font size="1">{formatDate(message.created_at)}</font>
+                    </div>
+                    <div className="imga">
+                        <img
+                            src={
+                                userId == message.sender_id
+                                    ? user.profile_picture_url
+                                    : otherProfile.profile_picture_url
+                            }
+                        />
+                    </div>
+                </Link>
 
                 <div className="msg-details">
-                    <Link
-                        style={{ textDecoration: "none" }}
-                        to={
-                            userId == message.sender_id
-                                ? "/"
-                                : `/users/${message.sender_id}`
-                        }
-                    >
-                        <div className="msg-row">
-                            <p>
-                                {userId == message.sender_id ? (
-                                    <strong>You</strong>
-                                ) : (
-                                    <strong>
-                                        {otherProfile.first} {otherProfile.last}
-                                    </strong>
-                                )}
-                            </p>
-                            <p>{message.text}</p>
+                    <div className="msg-row">
+                        <p>
+                            {userId == message.sender_id ? (
+                                <strong>You</strong>
+                            ) : (
+                                <strong>
+                                    {otherProfile.first} {otherProfile.last}
+                                </strong>
+                            )}
+                        </p>
+                        <p className="chat-text">{message.text}</p>
 
-                            <p
-                                className="datechat"
-                                style={{
-                                    marginLeft: ".8rem",
-                                }}
-                            >
-                                <font size="1">
-                                    {formatDate(message.created_at)}
-                                </font>
-                            </p>
-                        </div>
-                    </Link>
+                        <p
+                            className="datechat"
+                            style={{
+                                marginLeft: ".8rem",
+                            }}
+                        ></p>
+                    </div>
                 </div>
             </div>
         );
@@ -159,7 +140,7 @@ export default function Conversation() {
             <h1>Chat Room</h1>
             <div className="inbox-wrapper">
                 <ChatMessages privateMsgs={privateMsgs}></ChatMessages>
-                <div>
+                <div className="private-msgs-multiwrapper">
                     <h3>{chatUser}</h3>
                     <div className="private-msgs-wrapper">
                         <div className="chatroom-wrapper">

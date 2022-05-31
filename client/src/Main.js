@@ -18,19 +18,8 @@ export default function Main({
 }) {
     return (
         <div className="mainWrapper">
-            <div className="profileWrapper">
-                {/* <Login
-                    // openModal={openModal}
-                    bio={bio}
-                    onClick={openLoginModal}
-                    // onBioUpload={this.onBioUpload}>
-                />
-                <Link to="/login" onClick={openLoginModal}>Login</Link> */}
-            </div>
-            <div>
-                <NewArtists isConnected={isConnected}></NewArtists>
-                <TagsMain isConnected={isConnected}></TagsMain>
-            </div>
+            <NewArtists isConnected={isConnected}></NewArtists>
+            <TagsMain isConnected={isConnected}></TagsMain>
         </div>
     );
 }

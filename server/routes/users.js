@@ -10,11 +10,9 @@ const {
     insertTags,
 } = require("../../database/db");
 
-router.put("/user/profile_bio", (req, res) => {
+router.post("/user/profile_bio", (req, res) => {
     const { bio, tags, newTube, newSpot } = req.body;
     const { userId } = req.session;
-
-    // console.log('body', req.body);
 
     updateBio(bio, tags, newTube, newSpot, userId).then((results) => {
         if (!results) {
@@ -22,11 +20,14 @@ router.put("/user/profile_bio", (req, res) => {
             res.json(results);
             return;
         } else {
-            results.tags.forEach((element) => {
-                insertTags(userId, element).then((data) =>
-                    console.log("tag updated", data)
-                );
+            deleteTagsByUpdate(userId).then(() => {
+                results.tags.forEach((element) => {
+                    insertTags(userId, element).then((data) =>
+                        console.log("tag updated", data)
+                    );
+                });
             });
+
             res.json(results);
         }
     });

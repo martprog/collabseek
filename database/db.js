@@ -194,16 +194,14 @@ const deleteTagsByUpdate = (id) => {
 };
 
 const insertTags = (id, tag) => {
-    return deleteTagsByUpdate(id).then(() => {
-        const query = `
+    const query = `
             INSERT INTO tags (artist_id, tag)
             VALUES($1, $2)
             RETURNING *
         `;
 
-        return db.query(query, [id, tag]).then((results) => {
-            return results.rows[0];
-        });
+    return db.query(query, [id, tag]).then((results) => {
+        return results.rows[0];
     });
 };
 
@@ -563,7 +561,7 @@ const addRatingById = (id, otherUserId, text, rating) => {
 const getUnreadMsgs = (id) => {
     const query = `
         SELECT COUNT(*) FROM messages 
-        WHERE recipient_id=$1 AND is_read=false
+        WHERE recipient_id=$1 AND is_read is not true
     `;
 
     return db.query(query, [id]).then((results) => {
@@ -572,7 +570,7 @@ const getUnreadMsgs = (id) => {
     });
 };
 
-const setReadMsgs = (id, otherUserId) =>{
+const setReadMsgs = (id, otherUserId) => {
     const query = `
         UPDATE messages 
         SET is_read=true
@@ -623,5 +621,6 @@ module.exports = {
     getRatingById,
     addRatingById,
     getUnreadMsgs,
-    setReadMsgs
+    setReadMsgs,
+    
 };

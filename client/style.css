@@ -85,6 +85,10 @@ body {
     /* background-color: rgba(0, 0, 0, 0.7); */
 }
 
+.mainWrapper {
+    margin: 40px;
+}
+
 .musician-pic-wrapper {
     position: relative;
     text-align: center;
@@ -187,22 +191,35 @@ body {
     transition: box-shadow 200ms ease-in-out;
 }
 
-.hovering-header:hover{
+.hovering-header:hover {
     background-color: #d8d9dd;
     border: 0.2px solid rgb(220, 215, 215);
     border-radius: 35px;
     cursor: pointer;
 }
 
-
-
 .results-wrapper {
     position: absolute;
-    top: 70px;
+    top: 45px;
     width: 100%;
     overflow: scroll;
-    height: 300px;
-    z-index: 10;
+    max-height: 270px;
+    z-index: 7;
+    border-radius: 12px;
+    background-color: white;
+    box-shadow: 0px 5px 10px 0px black;
+}
+
+.new-artists-main-wrapper {
+    margin-bottom: 80px;
+}
+
+.search-container {
+    align-self: center;
+    position: absolute;
+    top: 30px;
+    left: -100px;
+    max-height: 400px;
 }
 
 .find-people-search {
@@ -214,13 +231,14 @@ body {
 }
 
 .hidden-results {
-    visibility: hidden;
+    /* visibility: hidden;
+    height: 10px; */
+    display: none;
 }
 
 .results {
-    background-color: rgb(219, 208, 208);
-
-    border: 1px solid;
+    overflow: scroll;
+    max-height: 270px;
 }
 
 .search-button {
@@ -229,7 +247,7 @@ body {
     border: none;
     outline: none;
     position: absolute;
-    top: 30px;
+    top: 5px;
     margin-left: -33px;
 }
 
@@ -251,13 +269,18 @@ body {
 }
 
 input:focus {
-    outline: 7px solid rgb(6, 127, 202);
+    outline: 4px solid rgb(189, 209, 221);
     transition: all 200ms;
 }
 
 .finded-users-search-bar {
+    padding: 12px;
     display: flex;
-    gap: 5px;
+    gap: 8px;
+}
+
+.finded-users-search-bar:hover {
+    background-color: #d8d9dd;
 }
 
 .finded-users-search-bar img {
@@ -288,9 +311,8 @@ input:focus {
     cursor: pointer;
 }
 
-.select-miniwrapper:hover{
+.select-miniwrapper:hover {
     box-shadow: 0px 1px 3px 0px rgb(78, 77, 77);
-
 }
 
 .select-list img {
@@ -301,7 +323,7 @@ input:focus {
 }
 
 .header-list-menu {
-    z-index: 10 !important;
+    z-index: 11 !important;
     padding-top: 5px;
     position: absolute;
     top: 85px;
@@ -325,7 +347,7 @@ input:focus {
     cursor: pointer;
 }
 
-.menu-links  {
+.menu-links {
     color: black;
     text-decoration: none;
 }
@@ -339,24 +361,30 @@ input:focus {
 .msg-container,
 .private-msg-container {
     display: flex;
-    border-top: 1px solid;
-    align-items: center;
+    padding: 15px;
+    gap: 15px;
+    border-top: 0.4px solid;
+    /* align-items: center; */
+    z-index: 10;
 }
 
 .private-msg-container {
     width: 100%;
+    position: relative;
+}
+
+.chatroom-multiwrapper {
+    border: 1px solid;
+    width: 300px;
 }
 
 .chat-wrapper {
     overflow: scroll;
 }
 
-.chatroom-wrapper {
-    /* width: 250px; */
-    height: 300px;
-    overflow: scroll;
+.chat-inpBtn {
+    display: flex;
 }
-
 .chat-inpBtn input {
     outline: none;
     border: none;
@@ -369,16 +397,22 @@ input:focus {
     z-index: 10;
 }
 
+.private-msgs-multiwrapper {
+    border-top: 0.4px solid rgb(221, 214, 214);
+}
+
 .private-msgs-wrapper {
-    width: 350px;
+    width: 400px;
+    height: 400px;
     overflow: scroll;
-    border: 1px solid pink;
+    border: 0.4px solid rgb(221, 214, 214);
 }
 
 .msg-container img,
 .private-msg-container img {
-    height: 60px;
-    width: 60px;
+    height: 50px;
+    width: 50px;
+
     border-radius: 50%;
 }
 
@@ -386,6 +420,28 @@ input:focus {
 .private-msg-details {
     display: flex;
     flex-direction: column;
+    color: black;
+}
+
+.imga {
+    padding-top: 12px;
+    display: flex;
+    flex-direction: column;
+    height: 100px;
+}
+.date-chat {
+    position: absolute;
+    top: -30px;
+    left: 125px;
+    color: rgb(185, 15, 15);
+    background-color: white;
+    padding: 10px;
+    margin: 10px;
+}
+
+.chat-text {
+    color: #636569;
+    font-size: 14px;
 }
 
 .artist-post-wrapper {
@@ -422,13 +478,17 @@ input:focus {
 }
 
 .profile-card-main {
-    z-index: 5;
+    z-index: 3;
     position: relative;
     width: 250px;
-    border: 1px solid yellowgreen;
+    /* border: 1px solid yellowgreen; */
+    border-radius: 20px;
+    background-color: rgb(249, 247, 247);
+    box-shadow: 0px 1px 3px 0px rgb(189, 187, 187);
     display: flex;
     flex-direction: column;
     align-items: center;
+    padding: 25px;
 }
 
 .finded-users {
@@ -454,8 +514,95 @@ input:focus {
     background: linear-gradient(to right, #ff4b2b, #ff416c);
 }
 
+.profileContainer {
+    z-index: 11 !important;
+    display: flex;
+    border: 1px solid;
+    justify-content: space-between;
+    padding: 12px;
+    min-height: 400px;
+    margin: 20px;
+}
+
+.profile-minicontainer {
+    display: flex;
+    flex-direction: column;
+}
+
+.profilePic {
+    max-height: 250px;
+}
+
+.profile-onEdit {
+    /* display: flex; */
+}
+
+.btns {
+    margin-top: 10px;
+    outline: none;
+    border: none;
+    height: 30px;
+    width: 130px;
+    background-color: #d5d6d6;
+    border-radius: 15px;
+    color: #ffffff;
+    font-size: 20px;
+    cursor: pointer;
+    transition: all 200ms;
+    font-family: "Bebas Neue", cursive;
+}
+
+#editBtn:hover {
+    background-color: #838484;
+}
+
+#ok-edit-btn:hover{
+    background-color: #ff416c;
+}
+
+#cancel-edit-btn:hover{
+    background-color: rgb(60, 58, 58);
+}
+
+.code-red {
+    border: 1px solid;
+    border-radius: 20px;
+    background-color: #ff4b2b;
+    background-color: rgba(78, 77, 77);
+    padding: 0 6px 0 6px;
+}
+
+.textContainer {
+    display: flex;
+    flex-direction: column;
+}
+
+.tags-onEdit input {
+    cursor: pointer;
+    font-family: "Bebas Neue", cursive;
+    max-width: 80px;
+    border: none;
+}
+
+.tags-wrapper {
+    display: flex;
+    gap: 5px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+.about {
+    display: flex;
+    flex-direction: column;
+}
+
+.edit-links {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
 .hidden {
-    visibility: hidden;
+    visibility: none;
 }
 
 .active {
@@ -463,24 +610,29 @@ input:focus {
 }
 
 .tags-in-profile {
-    border: 1px solid;
     border-radius: 20px;
     background-color: #ff4b2b;
     padding: 0 6px 0 6px;
 }
 
+.tags-in-profile p {
+    cursor: pointer;
+    margin: 0;
+}
+
 .tags-profile-wrapper {
     display: flex;
+
     gap: 5px;
 }
 
 .tags-selection {
     display: flex;
     gap: 10px;
+    padding: 12px 0;
 }
 
 .tags-single {
-    border: 1px solid;
     background-color: #ff416c;
     border-radius: 20px;
     padding: 0 12px;
@@ -488,7 +640,7 @@ input:focus {
 
 .new-artists-wrapper {
     display: flex;
-    gap: 8px;
+    gap: 20px;
 }
 
 .hoverNselect-tag {
@@ -497,11 +649,17 @@ input:focus {
 
 .links-container {
     display: flex;
+    gap: 10px;
+    margin: 14px;
 }
 
 .links-container img {
     height: 35px;
-    width: 200px;
+    max-width: 150px;
+}
+
+#spotify-logo {
+    width: 70px;
 }
 
 .heart-fav {

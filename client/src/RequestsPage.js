@@ -11,7 +11,7 @@ import { getPrivateMessages } from "./redux/private-messages/slice";
 
 export default function RequestsPage() {
     // const [isOpen, setIsOpen] = useState(false);
-    const history = useHistory()
+    const history = useHistory();
     const [chatMessages, setChatMessages] = useState([]);
 
     useEffect(() => {
@@ -20,7 +20,7 @@ export default function RequestsPage() {
             const data = await res.json();
             if (data.length >= 1) {
                 setChatMessages(data[0].userid);
-                console.log(data);
+
                 // const chatId = chatMessages && parseInt(chatMessages[0].id);
             }
         })();

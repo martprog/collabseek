@@ -10,6 +10,7 @@ export default class BioEditor extends Component {
             oldTags: [],
             newArrTags: [],
             showResults: true,
+            activeIndex: [],
         };
         this.renderForm = this.renderForm.bind(this);
         this.isEditing = this.isEditing.bind(this);
@@ -17,6 +18,7 @@ export default class BioEditor extends Component {
         this.notEditing = this.notEditing.bind(this);
         this.handleTags = this.handleTags.bind(this);
         this.handleTagChange = this.handleTagChange.bind(this);
+        this.removeNewTag = this.removeNewTag.bind(this);
     }
 
     onSubmit(e) {
@@ -28,7 +30,7 @@ export default class BioEditor extends Component {
         console.log("new arr tags, ", this.state.newArrTags);
 
         fetch("/user/profile_bio", {
-            method: "PUT",
+            method: "POST",
             headers: {
                 "Content-Type": "application/json",
             },
@@ -48,18 +50,35 @@ export default class BioEditor extends Component {
                     data.tags
                 );
                 this.setState({ editingBio: false });
-                
             });
     }
 
-    handleTags(e) {
+    handleTags(e, i, tag) {
         let newArr = [];
+        const included = this.state.activeIndex.includes(tag);
+        let newAdded;
+        let newFiltered;
+
+        console.log(newAdded, newFiltered);
+
         this.state.newArrTags.forEach((tag) => {
             if (tag !== e.target.value) {
                 newArr.push(tag);
             }
-            this.setState({ newArrTags: newArr });
+            return newArr;
         });
+        if (included) {
+            this.setState({
+                newArrTags: newArr,
+                activeIndex: newArr,
+            });
+        } else {
+            this.setState({
+                newArrTags: newArr,
+                activeIndex: newArr,
+            });
+        }
+        console.log(included, this.state.activeIndex);
     }
 
     handleTagChange(e) {
@@ -78,6 +97,7 @@ export default class BioEditor extends Component {
                 .then((results) => {
                     if (results.length < 1) {
                         this.setState({ resTags: this.state.tag });
+                        // console.log("resTags:", this.state.resTags, results);
                     } else {
                         this.setState({ resTags: results });
                         this.setState({ isOpen: true });
@@ -107,6 +127,7 @@ export default class BioEditor extends Component {
         return this.state.resTags.map((user) => {
             return (
                 <div className="hoverNselect-tag" key={user.id}>
+                    {console.log("que est esto?", user)}
                     <div
                         onClick={() =>
                             this.setState({
@@ -123,53 +144,59 @@ export default class BioEditor extends Component {
     }
 
     renderForm() {
-        console.log("on bio Upload, ", this.props.onBioUpload);
         return (
             <form onSubmit={this.onSubmit}>
-                {this.props.tags
-                    ? this.props.tags.map((tag, i) => {
-                          //   return (
-                          //       <div
-                          //           onClick={this.handleTags}
-                          //           key={i}
-                          //           className="tags-profile-wrapper"
-                          //       >
-                          //           <div className="tags-in-profile">{tag}</div>
-                          //       </div>
-                          //   );
-                          return (
-                              <input
-                                  key={i}
-                                  name={`tag${i}`}
-                                  defaultValue={tag}
-                                  readOnly="readonly"
-                                  onClick={this.handleTags}
-                              />
-                          );
-                      })
-                    : ""}
-
                 <textarea name="bio" defaultValue={this.props.bio}></textarea>
-                <input
-                    name="spotify"
-                    type="text"
-                    placeholder="spotify"
-                    id="spotify"
-                    defaultValue={this.props.spotify_link}
-                />
-                <input
-                    name="youtube"
-                    type="text"
-                    placeholder="youtube"
-                    id="youtube"
-                    defaultValue={this.props.youtube_link}
-                />
+                <div className="tags-onEdit">
+                    <p>Eliminate tags:</p>
+                    {this.props.tags
+                        ? this.props.tags.map((tag, i) => {
+                              return (
+                                  <input
+                                      key={i}
+                                      name={`tag${i}`}
+                                      defaultValue={tag}
+                                      readOnly="readonly"
+                                      onClick={(e, i) =>
+                                          this.handleTags(e, i, tag)
+                                      }
+                                      className={
+                                          !this.state.activeIndex.includes(tag)
+                                              ? "tags-in-profile"
+                                              : "code-red"
+                                      }
+                                  />
+                              );
+                          })
+                        : ""}
+                </div>
+                {console.log(this.state.activeIndex)}
+                <p>Add some tags</p>
+                <div className="tags-selection">
+                    {this.state.newTags &&
+                        this.state.newTags.map((tag, i) => {
+                            return (
+                                <div
+                                    onClick={() => this.removeNewTag(tag, i)}
+                                    className="tags-in-profile"
+                                    key={i}
+                                >
+                                    <p>{tag}</p>
+                                </div>
+                            );
+                        })}
+                </div>
                 <input
                     onChange={this.handleTagChange}
                     onBlur={(e) => {
-                        this.setState({
-                            isOpen: false,
-                        });
+                        setTimeout(
+                            () =>
+                                this.setState({
+                                    isOpen: false,
+                                    resTags: "",
+                                }),
+                            300
+                        );
                     }}
                     onFocus={(e) => {
                         this.setState({ isOpen: true });
@@ -179,21 +206,32 @@ export default class BioEditor extends Component {
                     name="tag"
                 ></input>
                 <div>{this.state.resTags && this.mappedUsers()}</div>
+                {console.log("resTags:", this.state.resTags)}
 
-                <div className="tags-selection">
-                    {this.state.newTags &&
-                        this.state.newTags.map((tag, i) => {
-                            return (
-                                <div className="tags-single" key={i}>
-                                    <p>{tag}</p>
-                                </div>
-                            );
-                        })}
+                <div className="edit-links">
+                    <input
+                        name="spotify"
+                        type="text"
+                        placeholder="spotify"
+                        id="spotify"
+                        defaultValue={this.props.spotify_link}
+                    />
+                    <input
+                        name="youtube"
+                        type="text"
+                        placeholder="youtube"
+                        id="youtube"
+                        defaultValue={this.props.youtube_link}
+                    />
                 </div>
+
                 <div className="textareaBtns">
-                    <button className="btns">Done!</button>
+                    <button id="ok-edit-btn" className="btns">
+                        Done!
+                    </button>
                     <button
                         className="btns"
+                        id="cancel-edit-btn"
                         type="button"
                         onClick={this.notEditing}
                     >
@@ -204,8 +242,14 @@ export default class BioEditor extends Component {
         );
     }
 
+    removeNewTag(tag, i) {
+        const newArr = this.state.newTags.filter((item) => item !== tag);
+
+        this.setState({ newTags: newArr });
+    }
+
     notEditing() {
-        this.setState({ editingBio: false });
+        this.setState({ editingBio: false, activeIndex: [] });
     }
 
     isEditing() {
@@ -225,22 +269,42 @@ export default class BioEditor extends Component {
                 {this.state.editingBio ? (
                     this.renderForm()
                 ) : (
-                    <div>
-                        {this.props.tags
-                            ? this.props.tags.map((tag, i) => {
-                                  return (
-                                      <div
-                                          key={i}
-                                          className="tags-profile-wrapper"
-                                      >
-                                          <div className="tags-in-profile">
-                                              {tag}
-                                          </div>
-                                      </div>
-                                  );
-                              })
-                            : ""}
+                    <div className="profile-minicontainer">
                         <p>{this.props.bio}</p>
+                        <div className="tags-wrapper">
+                            {this.props.tags
+                                ? this.props.tags.map((tag, i) => {
+                                      return (
+                                          <div
+                                              key={i}
+                                              className="tags-profile-wrapper"
+                                          >
+                                              <div className="tags-in-profile">
+                                                  {tag}
+                                              </div>
+                                          </div>
+                                      );
+                                  })
+                                : ""}
+                        </div>
+                        <div className="links-container">
+                            {this.props.spotify_link ? (
+                                <a href={this.props.spotify_link}>
+                                    {" "}
+                                    <img id="spotify-log" src="/spotify.png" />
+                                </a>
+                            ) : (
+                                ""
+                            )}
+                            {this.props.youtube_link ? (
+                                <a href={this.props.youtube_link}>
+                                    {" "}
+                                    <img id="youtube-logo" src="/youtube.png" />
+                                </a>
+                            ) : (
+                                ""
+                            )}
+                        </div>
                         <button
                             className="btns"
                             id="editBtn"

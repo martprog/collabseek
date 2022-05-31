@@ -29,8 +29,6 @@ export default function Profile({
             appear
         >
             <div className="profileContainer">
-                <div className="profileRectangle"></div>
-                <ProfilePic url={profile_picture_url} openModal={openModal} />
                 <div className="about">
                     <h2>
                         {first} {last}
@@ -46,25 +44,9 @@ export default function Profile({
                         first={first}
                         onBioUpload={onBioUpload}
                     />
-                    <div className="links-container">
-                        {spotify_link ? (
-                            <a href={spotify_link}>
-                                {" "}
-                                <img id="spotify-log" src="./spotify.png" />
-                            </a>
-                        ) : (
-                            ""
-                        )}
-                        {youtube_link ? (
-                            <a href={youtube_link}>
-                                {" "}
-                                <img id="youtube-logo" src="./youtube.png" />
-                            </a>
-                        ) : (
-                            ""
-                        )}
-                    </div>
+                    
                 </div>
+                <ProfilePic className="profile-pic" spotify_link={spotify_link} youtube_link={youtube_link} url={profile_picture_url} openModal={openModal} />
             </div>
         </CSSTransition>
     );
