@@ -170,7 +170,6 @@ export default class BioEditor extends Component {
                           })
                         : ""}
                 </div>
-                {console.log(this.state.activeIndex)}
                 <p>Add some tags</p>
                 <div className="tags-selection">
                     {this.state.newTags &&
@@ -300,7 +299,10 @@ export default class BioEditor extends Component {
                             {this.props.youtube_link ? (
                                 <a href={this.props.youtube_link}>
                                     {" "}
-                                    <img id="youtube-logo" src="/youtube.png" />
+                                    <img
+                                        id="youtube-logo"
+                                        src="/youtube1.png"
+                                    />
                                 </a>
                             ) : (
                                 ""

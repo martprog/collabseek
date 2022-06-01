@@ -86,8 +86,12 @@ app.get("/user/me.json", (req, res) => {
     const { userId } = req.session;
 
     isArtist(userId).then((data) => {
+        console.log(data);
         if (!data) {
             getUserById(userId).then((results) => {
+                if(!results){
+                    return;
+                }
                 res.json(results);
             });
             return;

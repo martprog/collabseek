@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import { CSSTransition } from "react-transition-group";
 import { useParams, useHistory } from "react-router";
 
-
 export default class ArtistPost extends Component {
     constructor() {
         super();
@@ -170,9 +169,12 @@ export default class ArtistPost extends Component {
                                             <input
                                                 onChange={this.handleTagChange}
                                                 onBlur={(e) => {
-                                                    this.setState({
-                                                        isOpen: false,
-                                                    });
+                                                    setTimeout(() => {
+                                                        this.setState({
+                                                            isOpen: false,
+                                                            resTags: ""
+                                                        });
+                                                    }, 300);
                                                 }}
                                                 onFocus={(e) => {
                                                     this.setState({

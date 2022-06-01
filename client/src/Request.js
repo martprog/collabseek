@@ -48,18 +48,23 @@ export default function Request() {
 
     return (
         <>
-            <div className="find-megawrapper">
-                <h1>Request</h1>
-                <p>Tell the artist about yourself and what project do you have in mind</p>
-                <form onSubmit={onSubmit}>
-                    <textarea name="text"></textarea>
-                    <div className="textareaBtns">
-                        <button className="btns">Done!</button>
-                        <button className="btns" type="button">
-                            Cancel
-                        </button>
-                    </div>
-                </form>
+            <div className="request-megawrapper">
+                <div className="request-wrapper">
+                    <h1>Request</h1>
+                    <p>
+                        Tell the artist about yourself and what project do you
+                        have in mind
+                    </p>
+                    <form onSubmit={onSubmit}>
+                        <textarea name="text"></textarea>
+                        <div className="textareaBtns">
+                            <button id="done-request-btn" className="btns">Done!</button>
+                            <button id="cancel-request-btn" className="btns" type="button">
+                                Cancel
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </>
     );

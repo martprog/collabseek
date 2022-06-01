@@ -38,7 +38,7 @@ export default function TagsMain() {
         <>
             <div>
                 <h2>Artists by Tag</h2>
-                <div className="new-artists-wrapper">
+                <div className="new-tag-wrapper">
                     {tags.length >= 1 ? mappedUsers() : <p>no matches found</p>}
                 </div>
             </div>

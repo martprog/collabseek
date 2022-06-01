@@ -96,8 +96,8 @@ export default function Conversation() {
                         <img
                             src={
                                 userId == message.sender_id
-                                    ? user.profile_picture_url
-                                    : otherProfile.profile_picture_url
+                                    ? user.profile_picture_url || "/default.png"
+                                    : otherProfile.profile_picture_url || "/default.png"
                             }
                         />
                     </div>

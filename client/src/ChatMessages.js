@@ -59,7 +59,7 @@ export default function ChatMessages({ privateMsgs, otherUserId }) {
                 key={message.id}
                 ref={lastMessageRef}
             >
-                <img src={message.profile_picture_url} />
+                <img src={message.profile_picture_url || "/default.png"} />
                 {console.log(message)}
                 <div className="msg-details">
                     <Link

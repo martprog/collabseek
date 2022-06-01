@@ -68,6 +68,9 @@ export default class App extends Component {
         fetch("/user/me.json")
             .then((res) => res.json())
             .then((data) => {
+                if(!data){
+                    return
+                }
                 if (data.profile_picture_url) {
                     this.setState(data);
                 } else {
