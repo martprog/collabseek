@@ -37,6 +37,7 @@ const {
     addRatingById,
     getUnreadMsgs,
     setReadMsgs,
+    getArtistsBySimilarTag
 } = require("../database/db");
 const multer = require("multer");
 const uidSafe = require("uid-safe");
@@ -227,6 +228,15 @@ app.get("/tags/:tags", (req, res) => {
     const { userId } = req.session;
 
     getArtistsByTag(userId, tags).then((data) => {
+        res.json(data);
+    });
+});
+
+app.get("/similartags/:tags", (req, res) => {
+    const { tags } = req.params;
+    const { userId } = req.session;
+
+    getArtistsBySimilarTag(userId, tags).then((data) => {
         res.json(data);
     });
 });

@@ -241,6 +241,25 @@ const getLatestUsers = (id) => {
         left join favorites on favorites.artist=artists.artist_id and favorites.sender_id=$1
         group by users.id, artists.artist_id, artists.instrument, favorites.artist, favorites.is_favorite, favorites.sender_id, artists.created_at 
         ORDER BY artists.created_at DESC
+        LIMIT 4
+    `;
+
+    return db.query(query, [id]).then((results) => {
+        return results.rows;
+    });
+};
+
+const getFeaturedUsers = (id) => {
+    const query = `
+        SELECT  users.id, artists.artist_id, artists.instrument, ROUND(AVG(rating), 0) as art_rating, users.first, users.last, favorites.artist, favorites.sender_id, favorites.is_favorite, users.profile_picture_url 
+        FROM artists
+        full outer JOIN ratings 
+        on artists.artist_id=ratings.artist
+        JOIN users
+        ON (artists.artist_id=users.id)
+        left join favorites on favorites.artist=artists.artist_id and favorites.sender_id=$1
+        group by users.id, artists.artist_id, artists.instrument, favorites.artist, favorites.is_favorite, favorites.sender_id, artists.created_at 
+        ORDER BY RANDOM() 
         
     `;
 
@@ -284,7 +303,7 @@ const getUsersByQuery = (id, search) => {
 
 const getOtherUserProfile = (id) => {
     const query = `
-        SELECT users.first, users.last, users.profile_picture_url, artists.artist_id, artists.bio,
+        SELECT users.first, users.last, users.profile_picture_url, artists.artist_id, artists.bio, artists.instrument,
         artists.youtube_link, artists.spotify_link, artists.tags  FROM users
         JOIN ARTISTS
         ON users.id= artists.artist_id
@@ -507,6 +526,26 @@ const getArtistsByTag = (userId, tag) => {
     });
 };
 
+const getArtistsBySimilarTag = (userId, tag) => {
+    const query = `
+    SELECT  tags.tag, tags.artist_id, users.id, artists.artist_id, artists.instrument, ROUND(AVG(rating), 0) as art_rating, users.first, users.last, favorites.artist, favorites.sender_id, favorites.is_favorite, users.profile_picture_url 
+        FROM tags
+        JOIN artists
+        ON artists.artist_id = tags.artist_id
+        JOIN users
+        ON (artists.artist_id=users.id)
+        full outer JOIN ratings 
+        on artists.artist_id=ratings.artist
+        left join favorites on favorites.artist=artists.artist_id and favorites.sender_id=$1 
+        WHERE tag=any(array$2)
+        group by  tags.id, users.id,  artists.artist_id, artists.instrument, favorites.artist, favorites.is_favorite, favorites.sender_id
+    `;
+
+    return db.query(query, [userId, tag]).then((results) => {
+        return results.rows;
+    });
+};
+
 const requestSent = (id, otherUserId) => {
     const query = `
     SELECT  DISTINCT ON (sender_id) * FROM messages 
@@ -658,4 +697,6 @@ module.exports = {
     addRatingById,
     getUnreadMsgs,
     setReadMsgs,
+    getFeaturedUsers,
+    getArtistsBySimilarTag
 };

@@ -129,78 +129,85 @@ export default class ArtistPost extends Component {
                         appear
                     >
                         <div className={this.state.error ? "wronglog" : ""}>
-                            <div className="artist-post-wrapper">
-                                <h1>Create artist page</h1>
-                                {this.state.error && (
-                                    <p className="p_log">
-                                        Oops, something went wrong!
-                                    </p>
-                                )}
-                                <div className="">
-                                    <form
-                                        className="form-artist-wrapper"
-                                        onSubmit={this.handleSubmit}
-                                    >
-                                        <input
-                                            onChange={this.handleChange}
-                                            placeholder="tell us about yourself"
-                                            type="text"
-                                            name="bio"
-                                        ></input>
-                                        <input
-                                            onChange={this.handleChange}
-                                            placeholder="What instrument do you play?"
-                                            type="text"
-                                            name="instrument"
-                                        ></input>
-                                        <input
-                                            onChange={this.handleChange}
-                                            placeholder="spotify"
-                                            type="text"
-                                            name="spotify"
-                                        ></input>
-                                        <input
-                                            onChange={this.handleChange}
-                                            placeholder="youtube"
-                                            type="email"
-                                            name="youtube"
-                                        ></input>
-                                        <input
-                                            onChange={this.handleTagChange}
-                                            onBlur={(e) => {
-                                                this.setState({
-                                                    isOpen: false,
-                                                });
-                                            }}
-                                            onFocus={(e) => {
-                                                this.setState({ isOpen: true });
-                                            }}
-                                            placeholder="tags"
-                                            type="tag"
-                                            name="tag"
-                                        ></input>
-                                        <div>
-                                            {this.state.resTags &&
-                                                this.mappedUsers()}
-                                        </div>
+                            {/* <div className="artist-post-wrapper"> */}
+                            <div className="log-multiwrapper">
+                                <div className="log-miniwrapper">
+                                    <h1>Create artist page</h1>
+                                    {this.state.error && (
+                                        <p className="p_log">
+                                            Oops, something went wrong!
+                                        </p>
+                                    )}
+                                    <div className="">
+                                        <form
+                                            className="form-artist-wrapper"
+                                            onSubmit={this.handleSubmit}
+                                        >
+                                            <input
+                                                onChange={this.handleChange}
+                                                placeholder="tell us about yourself"
+                                                type="text"
+                                                name="bio"
+                                            ></input>
+                                            <input
+                                                onChange={this.handleChange}
+                                                placeholder="What instrument do you play?"
+                                                type="text"
+                                                name="instrument"
+                                            ></input>
+                                            <input
+                                                onChange={this.handleChange}
+                                                placeholder="spotify"
+                                                type="text"
+                                                name="spotify"
+                                            ></input>
+                                            <input
+                                                onChange={this.handleChange}
+                                                placeholder="youtube"
+                                                type="text"
+                                                name="youtube"
+                                            ></input>
+                                            <input
+                                                onChange={this.handleTagChange}
+                                                onBlur={(e) => {
+                                                    this.setState({
+                                                        isOpen: false,
+                                                    });
+                                                }}
+                                                onFocus={(e) => {
+                                                    this.setState({
+                                                        isOpen: true,
+                                                    });
+                                                }}
+                                                placeholder="tags"
+                                                type="tag"
+                                                name="tag"
+                                            ></input>
+                                            <div>
+                                                {this.state.resTags &&
+                                                    this.mappedUsers()}
+                                            </div>
 
-                                        <div className="tags-selection">
-                                            {this.state.tagsList &&
-                                                this.state.tagsList.map(
-                                                    (tag, i) => {
-                                                        return (
-                                                            <div
-                                                                className="tags-single"
-                                                                key={i}
-                                                            >
-                                                                <p>{tag}</p>
-                                                            </div>
-                                                        );
-                                                    }
-                                                )}
-                                        </div>
-                                        <button id="submitReg">SUBMIT</button>
-                                    </form>
+                                            <div className="tags-selection">
+                                                {this.state.tagsList &&
+                                                    this.state.tagsList.map(
+                                                        (tag, i) => {
+                                                            return (
+                                                                <div
+                                                                    className="tags-single"
+                                                                    key={i}
+                                                                >
+                                                                    <p>{tag}</p>
+                                                                </div>
+                                                            );
+                                                        }
+                                                    )}
+                                            </div>
+                                            <button id="submitReg">
+                                                SUBMIT
+                                            </button>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>

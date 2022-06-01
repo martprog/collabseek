@@ -7,6 +7,7 @@ const {
     updateBio,
     deleteTagsByUpdate,
     getFavoriteState,
+    getFeaturedUsers,
     insertTags,
 } = require("../../database/db");
 
@@ -86,6 +87,13 @@ router.get("/users/newartists", async (req, res) => {
     //         ? newMapped.push({ ...item, isFavorite: true })
     //         : newMapped.push(usuario);
     // });
+
+    res.json(users);
+});
+
+router.get("/users/featuredartists", async (req, res) => {
+    const { userId } = req.session;
+    const users = await getFeaturedUsers(userId);
 
     res.json(users);
 });

@@ -29,26 +29,38 @@ export default function Profile({
             classNames="profile-transition"
             appear
         >
-            <div className="profileContainer">
-                <div className="about">
+            <div className="profile-megawrapper-components-self">
+                <div className="profile-multiwrapper">
                     <h2>
                         {first} {last}
                     </h2>
-                    <p>ABOUT ME</p>
+                    <div className="profileContainer">
+                        <div className="about">
+                            <ProfilePic
+                                className="profile-pic"
+                                spotify_link={spotify_link}
+                                youtube_link={youtube_link}
+                                url={profile_picture_url}
+                                openModal={openModal}
+                            />
+                            <div>
+                                <p>ABOUT ME</p>
 
-                    <BioEditor
-                        spotify_link={spotify_link}
-                        youtube_link={youtube_link}
-                        tags={tags}
-                        last={last}
-                        bio={bio}
-                        first={first}
-                        instrument={instrument}
-                        onBioUpload={onBioUpload}
-                    />
-                    {console.log(first, bio)}
+                                <BioEditor
+                                    spotify_link={spotify_link}
+                                    youtube_link={youtube_link}
+                                    tags={tags}
+                                    last={last}
+                                    bio={bio}
+                                    first={first}
+                                    instrument={instrument}
+                                    onBioUpload={onBioUpload}
+                                />
+                                {console.log(first, bio)}
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <ProfilePic className="profile-pic" spotify_link={spotify_link} youtube_link={youtube_link} url={profile_picture_url} openModal={openModal} />
             </div>
         </CSSTransition>
     );

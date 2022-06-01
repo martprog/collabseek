@@ -327,7 +327,7 @@ export default class App extends Component {
                                 </Route>
 
                                 <Route path="/users/:otherUserId">
-                                    <OtherProfile />
+                                    <OtherProfile  isConnected={this.state.isConnected}/>
                                 </Route>
                                 <Route path="/search">
                                     <SearchResult

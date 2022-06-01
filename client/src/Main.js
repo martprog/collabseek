@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
-import Login from "./login";
-import Registration from "./registration";
+
 import { Link } from "react-router-dom";
 import NewArtists from "./NewArtists";
-import ArtistsByTag from "./ArtistsByTag";
 import TagsMain from "./TagsMain";
+import FeaturedArtists from "./FeaturedArtists";
+// import ArtistsByTag from "./ArtistsByTag";
 
 export default function Main({
     first,
@@ -18,6 +18,7 @@ export default function Main({
 }) {
     return (
         <div className="mainWrapper">
+            <FeaturedArtists isConnected={isConnected} />
             <NewArtists isConnected={isConnected}></NewArtists>
             <TagsMain isConnected={isConnected}></TagsMain>
         </div>
