@@ -43,7 +43,7 @@ router.get("/users", (req, res) => {
         // });
         return;
     } else if (search) {
-        getUsersByQuery(search).then((users) => {
+        getUsersByQuery(userId, search).then((users) => {
             const filteredId = users.filter((user) => user.id !== userId);
             res.json(filteredId);
         });

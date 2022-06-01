@@ -79,7 +79,6 @@ export default class App extends Component {
             });
 
         socket.on("notifications", ({ count }) => {
-            console.log(count);
             this.setState({ notifications: true, notifications_count: count });
         });
         socket.on("no-notifications", (data) => {
@@ -331,10 +330,14 @@ export default class App extends Component {
                                     <OtherProfile />
                                 </Route>
                                 <Route path="/search">
-                                    <SearchResult />
+                                    <SearchResult
+                                        isConnected={this.state.isConnected}
+                                    />
                                 </Route>
                                 <Route path="/artistsbytags/:tags">
-                                    <ArtistsByTag />
+                                    <ArtistsByTag
+                                        isConnected={this.state.isConnected}
+                                    />
                                 </Route>
 
                                 <Route path="/aboutme">

@@ -4,9 +4,11 @@ import { useEffect, useState } from "react";
 // import { getFriends, accept, unfriend } from "./redux/friends-and-reqs/slice";
 import { Link } from "react-router-dom";
 import swal from "sweetalert";
+import ProfilCard from "./Profile-card";
 
-export default function Favorites() {
+export default function Favorites(props) {
     const [favorites, setFavorites] = useState("");
+    const [isChanged, setIsChanged] = useState(false);
 
     useEffect(() => {
         (async () => {
@@ -14,13 +16,34 @@ export default function Favorites() {
             const data = await res.json();
             setFavorites(data);
         })();
-    }, []);
+    }, [isChanged]);
+
+    function onRatingUpload() {
+        if (!isChanged) {
+            setIsChanged({ isChanged: true });
+        } else {
+            setIsChanged({ isChanged: false });
+        }
+    }
 
     const mappedFavorites = () => {
         return favorites.map((favorite) => {
             return (
                 <div className="profile-card-main" key={favorite.id}>
-                    <Link
+                    {console.log(favorite)}
+                    <ProfilCard
+                        id={favorite.id}
+                        is_favorite={favorite.is_favorite}
+                        instrument={favorite.instrument}
+                        otherUserId={favorite.id}
+                        isConnected={props.isConnected}
+                        first={favorite.first}
+                        last={favorite.last}
+                        sender_id={favorite.sender_id}
+                        profile_picture_url={favorite.profile_picture_url}
+                        onRatingUpload={onRatingUpload}
+                    />
+                    {/* <Link
                         style={{ textDecoration: "none" }}
                         to={`/users/${favorite.id}`}
                     >
@@ -35,7 +58,7 @@ export default function Favorites() {
                                 {favorite.first} {favorite.last}
                             </h3>
                         </div>
-                    </Link>
+                    </Link> */}
                 </div>
             );
         });
@@ -44,8 +67,7 @@ export default function Favorites() {
     return (
         <>
             <h1>Favorites</h1>
-            <p>juanes</p>
-            
+
             <div className="new-artists-wrapper">
                 {favorites.length >= 1 ? (
                     mappedFavorites()

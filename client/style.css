@@ -700,6 +700,11 @@ body {
     gap: 20px;
 }
 
+.search-results-wrapper{
+   display: flex;
+    gap: 20px; 
+}
+
 .hoverNselect-tag {
     cursor: pointer;
 }

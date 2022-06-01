@@ -6,7 +6,6 @@ import Star from "./icons/Star";
 export default function Rating({ otherUserId }) {
     // const [rating, setRating] = useState([]);
     const location = useLocation();
-
     const [clicked, setClicked] = useState([false, false, false, false, false]);
 
     const [isChanged, setIsChanged] = useState(false);
@@ -15,7 +14,6 @@ export default function Rating({ otherUserId }) {
         fetch(`/users/rating/${otherUserId}`)
             .then((res) => res.json())
             .then(({ round }) => {
-                console.log("ratings, ", typeof round);
                 if (!round) {
                     return;
                 } else if (round == "1") {
@@ -41,6 +39,7 @@ export default function Rating({ otherUserId }) {
             // if (i <= index) clickStates[i] = true;
             // else clickStates[i] = false;
         }
+
         const res = await fetch(`/users/rating/post/${otherUserId}`, {
             method: "POST",
             headers: {
@@ -49,7 +48,6 @@ export default function Rating({ otherUserId }) {
             body: JSON.stringify({ rating: count }),
         });
         const data = await res.json();
-        console.log("ratinggggg: ", data);
         setIsChanged(true);
         setClicked(clickStates);
     };

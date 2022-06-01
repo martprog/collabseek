@@ -148,7 +148,6 @@ const updateBio = (bio, tags, youtube, spotify, id) => {
     return db
         .query(query, [bio, tags, youtube, spotify, id])
         .then((results) => {
-            // console.log("resultados update", results.rows[0]);
             return results.rows[0];
         });
 };
@@ -218,9 +217,15 @@ const createArtistProfile = (
             VALUES($1, $2, $3, $4, $5, $6)
             RETURNING *
             `;
-    const params = [artist_id, bio, instrument, youtube_link, spotify_link, tags];
+    const params = [
+        artist_id,
+        bio,
+        instrument,
+        youtube_link,
+        spotify_link,
+        tags,
+    ];
     return db.query(query, params).then((results) => {
-        console.log(results.rows[0]);
         return results.rows[0];
     });
 };
@@ -236,24 +241,43 @@ const getLatestUsers = (id) => {
         left join favorites on favorites.artist=artists.artist_id and favorites.sender_id=$1
         group by users.id, artists.artist_id, artists.instrument, favorites.artist, favorites.is_favorite, favorites.sender_id, artists.created_at 
         ORDER BY artists.created_at DESC
-        LIMIT 3
+        
     `;
 
     return db.query(query, [id]).then((results) => {
-        // console.log("latest artists", results.rows, id);
-
         return results.rows;
     });
 };
 
-const getUsersByQuery = (search) => {
+// const getUsersByQuery = (search) => {
+//     const query = `
+//         SELECT * FROM  ARTISTS
+//         JOIN artists
+//         ON users.id= artists.artist_id
+//         WHERE first ILIKE $1
+//     `;
+//     // AND id not in($2)
+
+//     return db.query(query, [search + "%"]).then((results) => {
+//         return results.rows;
+//     });
+// };
+
+const getUsersByQuery = (id, search) => {
     const query = `
-        SELECT * FROM  USERS
-        WHERE first ILIKE $1 
+        SELECT  users.id, artists.artist_id, artists.instrument, ROUND(AVG(rating), 0) as art_rating, users.first, users.last, favorites.artist, favorites.sender_id, favorites.is_favorite, users.profile_picture_url 
+        FROM artists
+        full outer JOIN ratings 
+        on artists.artist_id=ratings.artist
+        JOIN users
+        ON (artists.artist_id=users.id)
+        left join favorites on favorites.artist=artists.artist_id and favorites.sender_id=$1
+        WHERE users.first ILIKE $2 
+        group by users.id, artists.artist_id, artists.instrument, favorites.artist, favorites.is_favorite, favorites.sender_id, artists.created_at 
     `;
     // AND id not in($2)
 
-    return db.query(query, [search + "%"]).then((results) => {
+    return db.query(query, [id, search + "%"]).then((results) => {
         return results.rows;
     });
 };
@@ -463,17 +487,22 @@ const getAllTags = () => {
     });
 };
 
-const getArtistsByTag = (tag) => {
+const getArtistsByTag = (userId, tag) => {
     const query = `
-    SELECT * FROM tags 
-    JOIN artists 
-    ON artists.artist_id = tags.artist_id
-    JOIN users 
-    ON artists.artist_id = users.id
-    WHERE tag=$1
+    SELECT  tags.tag, tags.artist_id, users.id, artists.artist_id, artists.instrument, ROUND(AVG(rating), 0) as art_rating, users.first, users.last, favorites.artist, favorites.sender_id, favorites.is_favorite, users.profile_picture_url 
+        FROM tags
+        JOIN artists
+        ON artists.artist_id = tags.artist_id
+        JOIN users
+        ON (artists.artist_id=users.id)
+        full outer JOIN ratings 
+        on artists.artist_id=ratings.artist
+        left join favorites on favorites.artist=artists.artist_id and favorites.sender_id=$1 
+        WHERE tag=$2
+        group by  tags.id, users.id,  artists.artist_id, artists.instrument, favorites.artist, favorites.is_favorite, favorites.sender_id
     `;
 
-    return db.query(query, [tag]).then((results) => {
+    return db.query(query, [userId, tag]).then((results) => {
         return results.rows;
     });
 };
@@ -491,12 +520,15 @@ const requestSent = (id, otherUserId) => {
 
 const getFavorites = (id) => {
     const query = `
-    SELECT users.first, users.last, users.profile_picture_url, artists.artist_id as id, artists.bio, artists.tags FROM favorites
+    SELECT users.first, users.last, favorites.sender_id,  favorites.is_favorite, artists.instrument, ROUND(AVG(rating), 0) as art_rating, users.profile_picture_url, artists.artist_id as id, artists.tags FROM favorites
     JOIN artists 
     ON artists.artist_id = favorites.artist
+    full outer JOIN ratings 
+        on artists.artist_id=ratings.artist
     join users 
     ON artists.artist_id = users.id
     WHERE sender_id=$1 
+     group by users.id, artists.artist_id, favorites.artist, artists.tags, favorites.is_favorite, favorites.sender_id, artists.instrument
     `;
 
     return db.query(query, [id]).then((results) => {
@@ -584,7 +616,6 @@ const setReadMsgs = (id, otherUserId) => {
     `;
 
     return db.query(query, [id, otherUserId]).then((results) => {
-        console.log("ACTUALIZADO", results.rows);
         return results.rows;
     });
 };
@@ -627,5 +658,4 @@ module.exports = {
     addRatingById,
     getUnreadMsgs,
     setReadMsgs,
-    
 };

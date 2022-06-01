@@ -140,7 +140,6 @@ app.post("/users/artist/new", (req, res) => {
         tagsList
     )
         .then((data) => {
-            console.log(data);
             if (data.tags) {
                 data.tags.forEach((element) => {
                     addTagInTagsTable(data.artist_id, element).then(() =>
@@ -158,7 +157,6 @@ app.post("/users/request/:otherUserId", (req, res) => {
     const { otherUserId } = req.params;
     const { userId } = req.session;
     newArtistRequest(otherUserId, userId, text).then((data) => {
-        // console.log(data);
         res.json({ message: "ok" });
     });
 });
@@ -194,7 +192,6 @@ app.post("/users/newMsg/:otherUserId", (req, res) => {
 app.get("/users/conversations/all", (req, res) => {
     const { userId } = req.session;
     getAllConversations(userId).then((data) => {
-        // console.log('all conversations:', data);
         res.json(data);
     });
 });
@@ -229,7 +226,7 @@ app.get("/tags/:tags", (req, res) => {
     const { tags } = req.params;
     const { userId } = req.session;
 
-    getArtistsByTag(tags).then((data) => {
+    getArtistsByTag(userId, tags).then((data) => {
         res.json(data);
     });
 });
@@ -269,7 +266,6 @@ app.post("/favorites/add/:otherUserId", (req, res) => {
     const { otherUserId } = req.params;
     const { userId } = req.session;
     addFavorite(userId, otherUserId).then((data) => {
-        console.log("resultadossssss", data);
         res.json(data);
         // res.json({ message: "ok" });
     });
@@ -279,8 +275,6 @@ app.post("/favorites/remove/:otherUserId", (req, res) => {
     const { otherUserId } = req.params;
     const { userId } = req.session;
     removeFavorite(userId, otherUserId).then((data) => {
-        console.log("rremovidos", data);
-
         res.json(data);
         // res.json({ message: "removed" });
     });
@@ -289,6 +283,10 @@ app.post("/favorites/remove/:otherUserId", (req, res) => {
 app.get("/users/rating/:otherUserId", (req, res) => {
     const { otherUserId } = req.params;
     getRatingById(otherUserId).then((data) => {
+        if (!data) {
+            res.json({ round: null });
+            return;
+        }
         res.json(data);
     });
 });
