@@ -19,6 +19,7 @@ import ArtistPost from "./ArtistPost";
 import SearchResult from "./SearchResult";
 import ArtistsByTag from "./ArtistsByTag";
 import HamburgerMenu from "./HamburgerMenu";
+import Footer from "./Footer";
 import { socket } from "./start";
 
 export default class App extends Component {
@@ -389,6 +390,7 @@ export default class App extends Component {
                                 )}
                             </div>
                         </div>
+                        <Footer />
                     </div>
                 </BrowserRouter>
             </>

@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import NewArtists from "./NewArtists";
 import TagsMain from "./TagsMain";
 import FeaturedArtists from "./FeaturedArtists";
+import Footer from "./Footer";
 // import ArtistsByTag from "./ArtistsByTag";
 
 export default function Main({
@@ -21,6 +22,7 @@ export default function Main({
             <FeaturedArtists isConnected={isConnected} />
             <NewArtists isConnected={isConnected}></NewArtists>
             <TagsMain isConnected={isConnected}></TagsMain>
+            {/* <Footer /> */}
         </div>
     );
 }

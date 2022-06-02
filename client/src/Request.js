@@ -7,24 +7,7 @@ export default function Request() {
     const { otherUserId } = useParams();
     // const [search, setSearch] = useState("");
     // const [users, setUsers] = useState([]);
-
-    // const handleChange = (e) => {
-    //     setSearch(e.target.value);
-    // };
-
-    // useEffect(() => {
-    //     let abort = false;
-
-    //     fetch(`/users?search=${search}`)
-    //         .then((res) => res.json())
-    //         .then((results) => {
-    //             if (!abort) {
-    //                 setUsers(results);
-    //             }
-    //         });
-
-    //     return () => (abort = true);
-    // }, [search]);
+    const history = useHistory()
 
     function onSubmit(e) {
         const newText = e.target.text.value;
@@ -59,7 +42,7 @@ export default function Request() {
                         <textarea name="text"></textarea>
                         <div className="textareaBtns">
                             <button id="done-request-btn" className="btns">Done!</button>
-                            <button id="cancel-request-btn" className="btns" type="button">
+                            <button id="cancel-request-btn" className="btns" type="button" onClick={()=> history.goBack("/")}>
                                 Cancel
                             </button>
                         </div>
