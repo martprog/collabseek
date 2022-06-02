@@ -259,7 +259,7 @@ export default class App extends Component {
                                             style={{ textDecoration: "none" }}
                                             className="menu-links"
                                         >
-                                            Other
+                                            Your Inbox
                                         </Link>
                                     </div>
                                 </div>

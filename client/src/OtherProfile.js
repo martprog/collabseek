@@ -16,23 +16,29 @@ export default function OtherProfile() {
     const [transition, setTransition] = useState(true);
 
     const { otherUserId } = useParams();
-    console.log(otherProfile);
+    console.log("tor", otherProfile);
     const history = useHistory();
 
     useEffect(() => {
-        fetch(`/api/users/${+otherUserId}`)
-            .then((res) => res.json())
-            .then((data) => {
-                if (data.error) {
-                    history.push("/");
-                    return;
-                }
-                setOtherProfile(data);
-            });
-    }, []);
+        let abort = false;
+        if (!abort) {
+            fetch(`/api/users/${+otherUserId}`)
+                .then((res) => res.json())
+                .then((data) => {
+                    if (!abort) {
+                        if (data.error) {
+                            history.push("/");
+                            return;
+                        }
+                        setOtherProfile(data);
+                    }
+                });
+        }
+        return () => (abort = true);
+    }, [otherProfile]);
 
     // }, [otherProfile]);
-    console.log(otherProfile.tags);
+    console.log("tur", otherProfile.tags);
     const tags =
         otherProfile.tags &&
         otherProfile.tags.map((tag, i) => {
@@ -80,17 +86,55 @@ export default function OtherProfile() {
 
                                 <div>
                                     <p>ABOUT ME</p>
-                                    <p className="bio-text">{otherProfile.bio}</p>
+                                    <p className="bio-text">
+                                        {otherProfile.bio}
+                                    </p>
                                     <div className="tags-profile-wrapper">
                                         {otherProfile.tags ? tags : ""}
                                     </div>
 
                                     <Rating otherUserId={otherUserId} />
+                                    <div className="links-container">
+                                        {otherProfile.spotify_link ? (
+                                            <a
+                                                href={otherProfile.spotify_link}
+                                                rel="noreferrer"
+                                                target="_blank"
+                                            >
+                                                {" "}
+                                                <img
+                                                    id="spotify-log"
+                                                    src="/spotify.png"
+                                                />
+                                            </a>
+                                        ) : (
+                                            ""
+                                        )}
+                                        {otherProfile.youtube_link ? (
+                                            <a
+                                                href={otherProfile.youtube_link}
+                                                rel="noreferrer"
+                                                target="_blank"
+                                            >
+                                                {" "}
+                                                <img
+                                                    id="youtube-logo"
+                                                    src="/youtube1.png"
+                                                />
+                                            </a>
+                                        ) : (
+                                            ""
+                                        )}
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                        {console.log(otherProfile)}
                     </div>
-                    <ArtistsBySimilarTag tags={otherProfile.tags} otherUserId={otherUserId}/>
+                    <ArtistsBySimilarTag
+                        tags={otherProfile.tags}
+                        otherUserId={otherUserId}
+                    />
                 </div>
             </CSSTransition>
         </>

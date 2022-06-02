@@ -208,12 +208,12 @@ const createArtistProfile = (
     artist_id,
     bio,
     instrument,
-    youtube_link,
     spotify_link,
+    youtube_link,
     tags
 ) => {
     const query = `
-            INSERT INTO artists (artist_id, bio, instrument, youtube_link, spotify_link, tags)
+            INSERT INTO artists (artist_id, bio, instrument, spotify_link, youtube_link, tags)
             VALUES($1, $2, $3, $4, $5, $6)
             RETURNING *
             `;
@@ -221,8 +221,8 @@ const createArtistProfile = (
         artist_id,
         bio,
         instrument,
-        youtube_link,
         spotify_link,
+        youtube_link,
         tags,
     ];
     return db.query(query, params).then((results) => {
@@ -258,29 +258,16 @@ const getFeaturedUsers = (id) => {
         JOIN users
         ON (artists.artist_id=users.id)
         left join favorites on favorites.artist=artists.artist_id and favorites.sender_id=$1
+        WHERE users.id > 198 AND users.id < 209
         group by users.id, artists.artist_id, artists.instrument, favorites.artist, favorites.is_favorite, favorites.sender_id, artists.created_at 
-        ORDER BY RANDOM() 
         
-    `;
+        `;
+    // ORDER BY RANDOM()
 
     return db.query(query, [id]).then((results) => {
         return results.rows;
     });
 };
-
-// const getUsersByQuery = (search) => {
-//     const query = `
-//         SELECT * FROM  ARTISTS
-//         JOIN artists
-//         ON users.id= artists.artist_id
-//         WHERE first ILIKE $1
-//     `;
-//     // AND id not in($2)
-
-//     return db.query(query, [search + "%"]).then((results) => {
-//         return results.rows;
-//     });
-// };
 
 const getUsersByQuery = (id, search) => {
     const query = `
@@ -698,5 +685,5 @@ module.exports = {
     getUnreadMsgs,
     setReadMsgs,
     getFeaturedUsers,
-    getArtistsBySimilarTag
+    getArtistsBySimilarTag,
 };

@@ -9,7 +9,6 @@ export default function FindPeople() {
     // const [clicked, setClicked] = useState(false);
     const history = useHistory();
     const handleChange = (e) => {
-        console.log(e.target.value);
         setIsFocused(true);
         setSearch(e.target.value);
     };

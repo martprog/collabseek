@@ -51,7 +51,6 @@ export default class Login extends Component {
     render() {
         return (
             <>
-                {console.log("papas bravas")}
                 {this.state.isOn && (
                     <CSSTransition
                         in={this.state.isOn}

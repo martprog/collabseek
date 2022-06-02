@@ -21,7 +21,7 @@ export default function ArtistsBySimilarTag({
             .then((results) => {
                 // if (!abort) {
                 // }
-                console.log("lala", results);
+                
                 setUsers(results);
                 setIsChanged(false);
             });
@@ -64,7 +64,7 @@ export default function ArtistsBySimilarTag({
 
     return (
         <div>
-            <h2>Other artists in: {searchTags} </h2>
+            <h2>Other artists in: &quot;{searchTags}&quot; </h2>
 
             <div className="similar-tags-wrapper">
                 {users.length >= 1 ? mappedUsers() : <p>no matches found</p>}

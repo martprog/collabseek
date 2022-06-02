@@ -168,6 +168,10 @@ body {
     font-size: 20px;
 }
 
+#submitPic:hover {
+    cursor: pointer;
+}
+
 .closeBtn {
     background-color: #72767d;
     width: 50px;
@@ -185,7 +189,7 @@ body {
     transition: opacity 100ms;
 }
 
-#closeBtn:hover {
+.closeBtn:hover {
     opacity: 1;
     cursor: pointer;
 }
@@ -566,6 +570,8 @@ textarea {
     flex-wrap: wrap;
     margin-right: 10px;
     max-width: 400px;
+    max-height: 100vh;
+    overflow: scroll;
 }
 
 .similar-tags-wrapper div {
@@ -703,6 +709,7 @@ textarea {
 
 .profilePic {
     max-height: 250px;
+    cursor: pointer;
 }
 
 .profile-onEdit {
@@ -819,14 +826,14 @@ textarea {
     gap: 20px;
 }
 
-.new-tag-wrapper{
+.new-tag-wrapper {
     display: flex;
     gap: 20px;
     /* width: 100px; */
     flex-wrap: wrap;
 }
 
-.new-tag-wrapper div{
+.new-tag-wrapper div {
     width: 100px;
 }
 
@@ -887,4 +894,73 @@ textarea {
 
 .clickedstar {
     color: rgb(212, 180, 0);
+}
+
+.login-transition-enter,
+.login-transition-appear {
+    opacity: 0;
+    /* left: 45px; */
+
+    /* position: absolute; 
+    top: -200px;  */
+    /* transform: translateX(60%); */
+}
+/* This is where we can add the transition */
+.login-transition-enter-active,
+.login-transition-appear-active {
+    opacity: 1;
+    /* position: absolute;  */
+    /* top: 20px;
+    left: 45px; */
+
+    /* transform: translateX(60%); */
+
+    transition: all 800ms;
+}
+
+.registration-transition-enter,
+.registration-transition-appear {
+    opacity: 0;
+    /* position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center; */
+    /* top: -200px;
+    left: 45px; */
+    /* transform: translateX(100%); */
+}
+/* This is where we can add the transition */
+.registration-transition-enter-active,
+.registration-transition-appear-active {
+    opacity: 1;
+    /* position: absolute; */
+
+    /* left: 45px; 
+
+    top: 50px; */
+
+    transition: all 800ms;
+}
+
+.list-transition-enter,
+.list-transition-appear {
+    transform: scale(0);
+}
+/* This is where we can add the transition*/
+.list-transition-enter-active,
+.list-transition-appear-active {
+    transform: scale(1);
+    transition: transform 350ms;
+}
+
+.profile-transition-enter,
+.profile-transition-appear {
+    opacity: 0;
+}
+
+.profile-transition-enter-active,
+.profile-transition-appear-active {
+    opacity: 1;
+
+    transition: opacity 1400ms, transform 500ms;
 }

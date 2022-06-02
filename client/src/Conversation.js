@@ -97,7 +97,8 @@ export default function Conversation() {
                             src={
                                 userId == message.sender_id
                                     ? user.profile_picture_url || "/default.png"
-                                    : otherProfile.profile_picture_url || "/default.png"
+                                    : otherProfile.profile_picture_url ||
+                                      "/default.png"
                             }
                         />
                     </div>
@@ -139,8 +140,11 @@ export default function Conversation() {
         <>
             <h1>Chat Room</h1>
             <div className="inbox-wrapper">
-                <ChatMessages otherUserId={otherUserId} privateMsgs={privateMsgs}></ChatMessages>
-                    {/* <h3>{chatUser}</h3> */}
+                <ChatMessages
+                    otherUserId={otherUserId}
+                    privateMsgs={privateMsgs}
+                ></ChatMessages>
+                {/* <h3>{chatUser}</h3> */}
                 <div className="private-msgs-multiwrapper">
                     <div className="private-msgs-wrapper">
                         <div className="chatroom-wrapper">
@@ -169,7 +173,7 @@ export default function Conversation() {
                     </form>
                 </div>
 
-                <div>Other module</div>
+                <div>{""}</div>
             </div>
         </>
     );

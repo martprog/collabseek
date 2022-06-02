@@ -51,31 +51,6 @@ router.get("/users", (req, res) => {
     }
 });
 
-// router.get("/users/newartists", (req, res) => {
-//     const { userId } = req.session;
-
-//     let newMapped = [];
-//    return getLatestUsers().then((users) => {
-//         users.forEach((item) => {
-//             let usuario = item;
-//             getFavoriteState(userId, item.id).then((data) =>
-
-//             {
-
-//                 if (data.length >= 1) {
-//                     newMapped.push({ ...item, isFavorite: true });
-//                 } else {
-//                     newMapped.push(usuario);
-//                 }
-//             });
-
-//         });
-//         console.log("mapa", newMapped);
-
-//         res.json(newMapped);
-//     });
-// });
-
 let newMapped = [];
 router.get("/users/newartists", async (req, res) => {
     const { userId } = req.session;

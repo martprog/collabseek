@@ -56,7 +56,6 @@ export default function Profile({
                                     instrument={instrument}
                                     onBioUpload={onBioUpload}
                                 />
-                                {console.log(first, bio)}
                             </div>
                         </div>
                     </div>
