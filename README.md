@@ -21,10 +21,11 @@ If the user wishes to appear available for the community, they must create a pag
 
 ## Worktools
 
-<span><img src="https://img.shields.io/badge/JavaScript-yellow?style=flat-square&logo=javascript&logoColor=white"></span>
 <span><img src="https://img.shields.io/badge/React.js-black?style=flat-square&logo=react"></span>
 <span><img src="https://img.shields.io/badge/Express-lightgrey?style=flat-square&logo=express"></span>
 <span><img src="https://img.shields.io/badge/Node.js-green?style=flat-square&logo=nodedotjs"></span>
+<span><img src="https://img.shields.io/badge/JavaScript-yellow?style=flat-square&logo=javascript&logoColor=white"></span>
+<span><img src="https://img.shields.io/badge/-socket.io-black?style=flat-square&logo=socketdotio"></span>
 <span><img src="https://img.shields.io/badge/PostgreSQL-9cf?style=flat-square&logo=postgresql"></span>
 <span><img src="https://img.shields.io/badge/S3-important?style=flat-square&logo=amazons3&logoColor=white"></span>
 
