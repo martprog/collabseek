@@ -1,7 +1,3 @@
-# collabseek
-Collabseek is a networking App for musicians, where people can promote themselves and search for other musicians for jobs, projects and so on.
-
-
 # Collabseek
 
 ## About
