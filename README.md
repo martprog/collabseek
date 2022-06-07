@@ -26,22 +26,14 @@ If the user wishes to appear available for the community, they must create a pag
 <span><img src="https://img.shields.io/badge/S3-important?style=flat-square&logo=amazons3&logoColor=white"></span>
 
 ## Preview
-![collabseek-login](https://user-images.githubusercontent.com/98027815/172363869-956d97d0-8d5e-447e-8990-d38827150733.gif)
+
+# Login and layout
+
+![collabseek-login](https://user-images.githubusercontent.com/98027815/172364954-acaced00-49fa-4a93-b5d2-78d39c55d7ff.gif)
 
 
-## Development
+# Add/remove tags
 
-To fork and work with this project follow these steps:
- 
-**Clone the repository:**
-<br>git clone https://github.com/martprog/collabseek.git
+![tag-edit](https://user-images.githubusercontent.com/98027815/172365951-323d1d36-8a1f-4246-b537-84049414c3ce.gif)
 
-**Go inside the directory:**
-<br>cd collabseek
-
-**Install dependencies:**
-<br>npm install
-
-**Start development server:**
-<br>npm start
 
