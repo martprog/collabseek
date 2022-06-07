@@ -25,6 +25,10 @@ If the user wishes to appear available for the community, they must create a pag
 <span><img src="https://img.shields.io/badge/PostgreSQL-9cf?style=flat-square&logo=postgresql"></span>
 <span><img src="https://img.shields.io/badge/S3-important?style=flat-square&logo=amazons3&logoColor=white"></span>
 
+## Preview
+![collabseek-login](https://user-images.githubusercontent.com/98027815/172363869-956d97d0-8d5e-447e-8990-d38827150733.gif)
+
+
 ## Development
 
 To fork and work with this project follow these steps:
