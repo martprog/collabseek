@@ -27,12 +27,12 @@ If the user wishes to appear available for the community, they must create a pag
 
 ## Preview
 
-# Login and layout
+### Login and layout
 
 ![collabseek-login](https://user-images.githubusercontent.com/98027815/172364954-acaced00-49fa-4a93-b5d2-78d39c55d7ff.gif)
 
 
-# Add/remove tags
+### Add/remove tags
 
 ![tag-edit](https://user-images.githubusercontent.com/98027815/172365951-323d1d36-8a1f-4246-b537-84049414c3ce.gif)
 
