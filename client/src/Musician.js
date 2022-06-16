@@ -1,9 +1,3 @@
-import { useState, useEffect } from "react";
-import Login from "./login";
-import Registration from "./registration";
-import { Link } from "react-router-dom";
-
-
 export default function Musician() {
     return (
         <div className="musician-pic-wrapper">

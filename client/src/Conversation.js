@@ -129,12 +129,6 @@ export default function Conversation() {
         );
     });
 
-    let chatUser;
-    const chatUsermethod = privateMsgs.filter((msg) => {
-        if (msg.userid !== userId) {
-            return (chatUser = msg.first);
-        }
-    });
 
     return (
         <>

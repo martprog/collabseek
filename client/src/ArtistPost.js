@@ -1,7 +1,5 @@
 import { Component } from "react";
-import { Link } from "react-router-dom";
 import { CSSTransition } from "react-transition-group";
-import { useParams, useHistory } from "react-router";
 
 export default class ArtistPost extends Component {
     constructor() {
@@ -128,7 +126,6 @@ export default class ArtistPost extends Component {
                         appear
                     >
                         <div className={this.state.error ? "wronglog" : ""}>
-                            {/* <div className="artist-post-wrapper"> */}
                             <div className="log-multiwrapper">
                                 <div className="log-miniwrapper">
                                     <h1>Create artist page</h1>
@@ -168,15 +165,15 @@ export default class ArtistPost extends Component {
                                             ></input>
                                             <input
                                                 onChange={this.handleTagChange}
-                                                onBlur={(e) => {
+                                                onBlur={() => {
                                                     setTimeout(() => {
                                                         this.setState({
                                                             isOpen: false,
-                                                            resTags: ""
+                                                            resTags: "",
                                                         });
                                                     }, 300);
                                                 }}
-                                                onFocus={(e) => {
+                                                onFocus={() => {
                                                     this.setState({
                                                         isOpen: true,
                                                     });

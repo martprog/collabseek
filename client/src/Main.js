@@ -1,11 +1,6 @@
-import { useState, useEffect } from "react";
-
-import { Link } from "react-router-dom";
 import NewArtists from "./NewArtists";
 import TagsMain from "./TagsMain";
 import FeaturedArtists from "./FeaturedArtists";
-import Footer from "./Footer";
-// import ArtistsByTag from "./ArtistsByTag";
 
 export default function Main({
     first,

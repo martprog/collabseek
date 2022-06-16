@@ -18,8 +18,6 @@ export default function NewArtists(props) {
             });
     }, [isChanged]);
 
-   
- 
     function onRatingUpload() {
         if (!isChanged) {
             setIsChanged({ isChanged: true });
@@ -45,53 +43,6 @@ export default function NewArtists(props) {
                         onRatingUpload={onRatingUpload}
                     />
                 </div>
-                // <div className="profile-card-main" key={user.id}>
-                //     <form>
-                //         <div
-                //             onClick={(e) =>
-                //                 changeFav(e, user.id, user.is_favorite)
-                //             }
-                //             className="heart-fav"
-                //         >
-                //             {user.sender_id ? (
-                //                 // <div className="heart"></div>
-                //                 <HeartFull />
-                //             ) : (
-                //                 <HeartEmpty />
-                //                 // <div className="heart nofav"></div>
-                //             )}
-                //         </div>
-                //     </form>
-                //     <Link
-                //         style={{ textDecoration: "none" }}
-                //         to={`/users/${user.id}`}
-                //     >
-                //         <div className="finded-users">
-                //             <img
-                //                 src={
-                //                     user.profile_picture_url || "./default.png"
-                //                 }
-                //             />
-
-                //             <h3>
-                //                 {user.first} {user.last}
-                //             </h3>
-                //             <p>{user.instrument}</p>
-                //         </div>
-                //     </Link>
-                //     <Rating otherUserId={user.artist_id} />
-                //     {console.log('turcooo', typeof user.artist_id)}
-
-                //     <Link
-                //         style={{ textDecoration: "none", textAlign: "center" }}
-                //         to={
-                //             props.isConnected ? `/request/${user.id}` : "/login"
-                //         }
-                //         className="profile-card-main-btn"
-                //     >
-                //         Send request
-                //     </Link>
-                // </div>
             );
         });
     };

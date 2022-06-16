@@ -1,22 +1,5 @@
 import { Component } from "react";
 
-// export default function ProfilePic (props) {
-//     function onHover(){
-
-//     }
-//     return (
-//         <>
-
-//             <img
-//                 id="profilePic"
-//                 src={props.url}
-//                 onClick={props.openModal}
-//             />
-
-//         </>
-//     );
-// }
-
 export default class ProfilePic extends Component {
     constructor(props) {
         super(props);

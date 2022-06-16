@@ -78,7 +78,6 @@ export default function FindPeople() {
                 </div>
 
                 <div className={showResults}>
-                    {/* <div className={`${isHidden ? "hidden-results": search ? "results": ""}`}> */}
                     <div className="results">
                         {users.length >= 1 ? (
                             mappedUsers()

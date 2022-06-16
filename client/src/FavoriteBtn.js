@@ -46,7 +46,7 @@ export default function FavoriteBtn({ otherUserId }) {
                     },
                 })
                     .then((res) => res.json())
-                    .then((data) => {
+                    .then(() => {
                         setBtnText("Remove from favorites");
                         return;
                     });
@@ -58,7 +58,7 @@ export default function FavoriteBtn({ otherUserId }) {
                     },
                 })
                     .then((res) => res.json())
-                    .then((data) => {
+                    .then(() => {
                         setBtnText("Add to favorites");
                         return;
                     });

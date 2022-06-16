@@ -1,13 +1,11 @@
 import { useEffect, useRef, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { getMessages, addMessage } from "./redux/messages/slice";
-import { getUserId } from "./redux/sessionId/slice";
+
 // import { getOnlineUsers } from "./redux/online-users/slice";
 import { Link } from "react-router-dom";
 import ChatMessages from "./ChatMessages";
 import Conversation from "./Conversation";
-import { useParams, useHistory } from "react-router";
-import { getPrivateMessages } from "./redux/private-messages/slice";
+import {  useHistory } from "react-router";
+
 
 export default function RequestsPage() {
     // const [isOpen, setIsOpen] = useState(false);

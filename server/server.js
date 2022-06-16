@@ -330,7 +330,6 @@ io.on("connection", async function (socket) {
     const userId = socket.request.session.userId;
 
     const unreadMsgs = await getUnreadMsgs(userId);
-    console.log("lectureee,", unreadMsgs);
 
     if (unreadMsgs[0].count > 0) {
         socket.emit("notifications", unreadMsgs[0]);

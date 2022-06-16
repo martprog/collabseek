@@ -1,5 +1,4 @@
 import { Component } from "react";
-import Profile from "./Profile";
 
 export default class BioEditor extends Component {
     constructor(props) {
