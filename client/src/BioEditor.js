@@ -7,7 +7,6 @@ export default class BioEditor extends Component {
         this.state = {
             editingBio: false,
             newTags: [],
-            oldTags: [],
             newArrTags: [],
             showResults: true,
             activeIndex: [],
@@ -27,7 +26,6 @@ export default class BioEditor extends Component {
         const newTube = e.target.youtube.value;
         const newBio = e.target.bio.value;
         const changedTags = [...this.state.newTags, ...this.state.newArrTags];
-        console.log("new arr tags, ", this.state.newArrTags);
 
         fetch("/user/profile_bio", {
             method: "POST",
@@ -56,10 +54,6 @@ export default class BioEditor extends Component {
     handleTags(e, i, tag) {
         let newArr = [];
         const included = this.state.activeIndex.includes(tag);
-        let newAdded;
-        let newFiltered;
-
-        console.log(newAdded, newFiltered);
 
         this.state.newArrTags.forEach((tag) => {
             if (tag !== e.target.value) {
@@ -78,7 +72,6 @@ export default class BioEditor extends Component {
                 activeIndex: newArr,
             });
         }
-        console.log(included, this.state.activeIndex);
     }
 
     handleTagChange(e) {
@@ -86,7 +79,7 @@ export default class BioEditor extends Component {
             {
                 tag: e.target.value,
             },
-            () => console.log(this.state)
+            () => console.log("tag:", this.state.tag)
         );
     }
 
@@ -97,7 +90,6 @@ export default class BioEditor extends Component {
                 .then((results) => {
                     if (results.length < 1) {
                         this.setState({ resTags: this.state.tag });
-                        // console.log("resTags:", this.state.resTags, results);
                     } else {
                         this.setState({ resTags: results });
                         this.setState({ isOpen: true });
@@ -127,7 +119,6 @@ export default class BioEditor extends Component {
         return this.state.resTags.map((user) => {
             return (
                 <div className="hoverNselect-tag" key={user.id}>
-                    {console.log("que est esto?", user)}
                     <div
                         onClick={() =>
                             this.setState({
@@ -170,7 +161,7 @@ export default class BioEditor extends Component {
                           })
                         : ""}
                 </div>
-                <p>Add some tags</p>
+                <p>Add some tags:</p>
                 <div className="tags-selection">
                     {this.state.newTags &&
                         this.state.newTags.map((tag, i) => {
@@ -187,7 +178,7 @@ export default class BioEditor extends Component {
                 </div>
                 <input
                     onChange={this.handleTagChange}
-                    onBlur={(e) => {
+                    onBlur={() => {
                         setTimeout(
                             () =>
                                 this.setState({
@@ -197,7 +188,7 @@ export default class BioEditor extends Component {
                             300
                         );
                     }}
-                    onFocus={(e) => {
+                    onFocus={() => {
                         this.setState({ isOpen: true });
                     }}
                     placeholder="tags"
@@ -205,7 +196,6 @@ export default class BioEditor extends Component {
                     name="tag"
                 ></input>
                 <div>{this.state.resTags && this.mappedUsers()}</div>
-                {console.log("resTags:", this.state.resTags)}
 
                 <div className="edit-links">
                     <input
@@ -243,7 +233,6 @@ export default class BioEditor extends Component {
 
     removeNewTag(tag, i) {
         const newArr = this.state.newTags.filter((item) => item !== tag);
-
         this.setState({ newTags: newArr });
     }
 

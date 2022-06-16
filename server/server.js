@@ -37,7 +37,7 @@ const {
     addRatingById,
     getUnreadMsgs,
     setReadMsgs,
-    getArtistsBySimilarTag
+    getArtistsBySimilarTag,
 } = require("../database/db");
 const multer = require("multer");
 const uidSafe = require("uid-safe");
@@ -89,7 +89,7 @@ app.get("/user/me.json", (req, res) => {
         console.log(data);
         if (!data) {
             getUserById(userId).then((results) => {
-                if(!results){
+                if (!results) {
                     return;
                 }
                 res.json(results);
@@ -130,12 +130,7 @@ app.post("/users/artist/new", (req, res) => {
     const { userId } = req.session;
 
     const { bio, instrument, spotify, youtube, tagsList } = req.body;
-    // console.log(req.body);
 
-    // if (!email || !password) {
-    //     res.json({ succes: false });
-    //     return;
-    // }
     createArtistProfile(
         userId,
         bio,
@@ -161,7 +156,7 @@ app.post("/users/request/:otherUserId", (req, res) => {
     const { text } = req.body;
     const { otherUserId } = req.params;
     const { userId } = req.session;
-    newArtistRequest(otherUserId, userId, text).then((data) => {
+    newArtistRequest(otherUserId, userId, text).then(() => {
         res.json({ message: "ok" });
     });
 });
@@ -206,9 +201,6 @@ app.get("/users/tags", (req, res) => {
     const { userId } = req.session;
 
     if (!search) {
-        // getLatestUsers().then((users) => {
-        //     res.json(users);
-        // });
         return;
     } else if (search) {
         getTagsBySearch(search).then((users) => {
@@ -281,7 +273,6 @@ app.post("/favorites/add/:otherUserId", (req, res) => {
     const { userId } = req.session;
     addFavorite(userId, otherUserId).then((data) => {
         res.json(data);
-        // res.json({ message: "ok" });
     });
 });
 
@@ -290,7 +281,6 @@ app.post("/favorites/remove/:otherUserId", (req, res) => {
     const { userId } = req.session;
     removeFavorite(userId, otherUserId).then((data) => {
         res.json(data);
-        // res.json({ message: "removed" });
     });
 });
 

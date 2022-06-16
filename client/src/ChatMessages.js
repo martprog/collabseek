@@ -19,7 +19,6 @@ export default function ChatMessages({ privateMsgs, otherUserId }) {
     const [chatMessages, setChatMessages] = useState([]);
 
     socket.on("welcome", function (data) {
-        console.log("churrito", data);
         socket.emit("thanks", {
             message: "Thank you. It is great to be here.",
         });
@@ -50,20 +49,22 @@ export default function ChatMessages({ privateMsgs, otherUserId }) {
 
     // }, [chatMessages]);
 
-    
-
     const msgs = chatMessages.map((message) => {
         return (
             <div
-                className={message.userid == otherUserId? "msg-container read":"msg-container"}
+                className={
+                    message.userid == otherUserId
+                        ? "msg-container read"
+                        : "msg-container"
+                }
                 key={message.id}
                 ref={lastMessageRef}
             >
                 <img src={message.profile_picture_url || "/default.png"} />
-                {console.log(message)}
+
                 <div className="msg-details">
                     <Link
-                        style={{ textDecoration: "none", color:"black" }}
+                        style={{ textDecoration: "none", color: "black" }}
                         to={`/conversation/${message.userid}`}
                     >
                         <div>

@@ -4,6 +4,8 @@ import { useParams, useHistory } from "react-router";
 
 export default function TagsMain() {
     const [tags, setTags] = useState([]);
+    // const [bgColor, setBgColor] = useState(["red", "green", "pink", "blue"]);
+    // const [selectedColor, setSelectedColor] = useState("");
     // const { tags } = useParams();
 
     useEffect(() => {
@@ -16,10 +18,20 @@ export default function TagsMain() {
             });
     }, []);
 
+    // const getRandomColor = () => {
+    //     var item =
+    //         bgColor[Math.floor(Math.random() * bgColor.length)];
+    //     return setSelectedColor(item);
+    // };
+
     const mappedUsers = () => {
         return tags.map((elem) => {
             return (
-                <div className="profile-card-main" key={elem.tag}>
+                <div
+                    className="profile-card-main"
+                    // style={{ backgroundColor: { selectedColor} }}
+                    key={elem.tag}
+                >
                     <Link
                         style={{ textDecoration: "none" }}
                         to={`/artistsbytags/${elem.tag}`}

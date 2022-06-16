@@ -14,20 +14,19 @@ export default function ArtistsBySimilarTag({
     const searchTags = tags && tags[0];
 
     useEffect(() => {
-        // let abort = false;
+        let abort = false;
 
         fetch(`/tags/${searchTags}`)
             .then((res) => res.json())
             .then((results) => {
-                // if (!abort) {
-                // }
-                
-                setUsers(results);
-                setIsChanged(false);
+                if (!abort) {
+                    setUsers(results);
+                    setIsChanged(false);
+                }
             });
 
-        // return () => (abort = true);
-    }, [searchTags]);
+        return () => (abort = true);
+    }, [users]);
 
     function onRatingUpload() {
         if (!isChanged) {

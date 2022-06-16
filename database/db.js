@@ -163,22 +163,7 @@ function selectTag(id, tag) {
     });
 }
 
-// const deleteTagsByUpdate = (id, tag) => {
-//     return selectTag(id, tag).then((data) => {
-//         if (!data) {
-//             const query = `
-//             DELETE from tags
-//             WHERE artist_id=$1 and tag <> $2
-//             RETURNING *
-//         `;
 
-//             return db.query(query, [id, tag]).then((results) => {
-//                 return results.rows[0];
-//             });
-//         }
-//         return null;
-//     });
-// };
 
 const deleteTagsByUpdate = (id) => {
     const query = `
@@ -234,11 +219,11 @@ const getLatestUsers = (id) => {
     const query = `
         SELECT  users.id, artists.artist_id, artists.instrument, ROUND(AVG(rating), 0) as art_rating, users.first, users.last, favorites.artist, favorites.sender_id, favorites.is_favorite, users.profile_picture_url 
         FROM artists
-        full outer JOIN ratings 
-        on artists.artist_id=ratings.artist
+        LEFT JOIN ratings 
+        ON artists.artist_id=ratings.artist
         JOIN users
         ON (artists.artist_id=users.id)
-        left join favorites on favorites.artist=artists.artist_id and favorites.sender_id=$1
+        LEFT JOIN favorites on favorites.artist=artists.artist_id and favorites.sender_id=$1
         group by users.id, artists.artist_id, artists.instrument, favorites.artist, favorites.is_favorite, favorites.sender_id, artists.created_at 
         ORDER BY artists.created_at DESC
         LIMIT 4
@@ -253,11 +238,11 @@ const getFeaturedUsers = (id) => {
     const query = `
         SELECT  users.id, artists.artist_id, artists.instrument, ROUND(AVG(rating), 0) as art_rating, users.first, users.last, favorites.artist, favorites.sender_id, favorites.is_favorite, users.profile_picture_url 
         FROM artists
-        full outer JOIN ratings 
-        on artists.artist_id=ratings.artist
+        LEFT JOIN ratings 
+        ON artists.artist_id=ratings.artist
         JOIN users
         ON (artists.artist_id=users.id)
-        left join favorites on favorites.artist=artists.artist_id and favorites.sender_id=$1
+        LEFT JOIN favorites on favorites.artist=artists.artist_id and favorites.sender_id=$1
         WHERE users.id > 198 AND users.id < 209
         group by users.id, artists.artist_id, artists.instrument, favorites.artist, favorites.is_favorite, favorites.sender_id, artists.created_at 
         
@@ -273,11 +258,11 @@ const getUsersByQuery = (id, search) => {
     const query = `
         SELECT  users.id, artists.artist_id, artists.instrument, ROUND(AVG(rating), 0) as art_rating, users.first, users.last, favorites.artist, favorites.sender_id, favorites.is_favorite, users.profile_picture_url 
         FROM artists
-        full outer JOIN ratings 
+        LEFT JOIN ratings 
         on artists.artist_id=ratings.artist
         JOIN users
         ON (artists.artist_id=users.id)
-        left join favorites on favorites.artist=artists.artist_id and favorites.sender_id=$1
+        LEFT JOIN favorites on favorites.artist=artists.artist_id and favorites.sender_id=$1
         WHERE users.first ILIKE $2 
         group by users.id, artists.artist_id, artists.instrument, favorites.artist, favorites.is_favorite, favorites.sender_id, artists.created_at 
     `;
@@ -501,9 +486,9 @@ const getArtistsByTag = (userId, tag) => {
         ON artists.artist_id = tags.artist_id
         JOIN users
         ON (artists.artist_id=users.id)
-        full outer JOIN ratings 
-        on artists.artist_id=ratings.artist
-        left join favorites on favorites.artist=artists.artist_id and favorites.sender_id=$1 
+        LEFT JOIN ratings 
+        ON artists.artist_id=ratings.artist
+        LEFT JOIN favorites on favorites.artist=artists.artist_id and favorites.sender_id=$1 
         WHERE tag=$2
         group by  tags.id, users.id,  artists.artist_id, artists.instrument, favorites.artist, favorites.is_favorite, favorites.sender_id
     `;
@@ -521,9 +506,9 @@ const getArtistsBySimilarTag = (userId, tag) => {
         ON artists.artist_id = tags.artist_id
         JOIN users
         ON (artists.artist_id=users.id)
-        full outer JOIN ratings 
-        on artists.artist_id=ratings.artist
-        left join favorites on favorites.artist=artists.artist_id and favorites.sender_id=$1 
+        LEFT JOIN ratings 
+        ON artists.artist_id=ratings.artist
+        LEFT JOIN favorites on favorites.artist=artists.artist_id and favorites.sender_id=$1 
         WHERE tag=any(array$2)
         group by  tags.id, users.id,  artists.artist_id, artists.instrument, favorites.artist, favorites.is_favorite, favorites.sender_id
     `;
@@ -549,9 +534,9 @@ const getFavorites = (id) => {
     SELECT users.first, users.last, favorites.sender_id,  favorites.is_favorite, artists.instrument, ROUND(AVG(rating), 0) as art_rating, users.profile_picture_url, artists.artist_id as id, artists.tags FROM favorites
     JOIN artists 
     ON artists.artist_id = favorites.artist
-    full outer JOIN ratings 
-        on artists.artist_id=ratings.artist
-    join users 
+    LEFT JOIN ratings 
+        ON artists.artist_id=ratings.artist
+    JOIN users 
     ON artists.artist_id = users.id
     WHERE sender_id=$1 
      group by users.id, artists.artist_id, favorites.artist, artists.tags, favorites.is_favorite, favorites.sender_id, artists.instrument
@@ -600,7 +585,7 @@ const removeFavorite = (id, otherUserId) => {
 const getRatingById = (id) => {
     const query = `
         SELECT artist, ROUND(AVG(rating), 0) FROM ratings
-        where artist=$1
+        WHERE artist=$1
         GROUP BY artist
     `;
 

@@ -18,37 +18,8 @@ export default function NewArtists(props) {
             });
     }, [isChanged]);
 
-    // const changeFav = async (e, otherUserId, is_favorite) => {
-    //     console.log();
-    //     e.preventDefault();
-    //     const artist = otherUserId;
-    //     if (!props.isConnected) {
-    //         location.replace("/login");
-    //         return;
-    //     }
-    //     if (is_favorite) {
-    //         const res = await fetch(`/favorites/remove/${otherUserId}`, {
-    //             method: "POST",
-    //             headers: {
-    //                 "Content-Type": "application/json",
-    //             },
-    //             body: JSON.stringify({ artist: artist }),
-    //         });
-    //         const data = await res.json();
-    //         setIsChanged(true);
-    //         return;
-    //     } else {
-    //         const res = await fetch(`/favorites/add/${otherUserId}`, {
-    //             method: "POST",
-    //             headers: {
-    //                 "Content-Type": "application/json",
-    //             },
-    //             body: JSON.stringify({ artist: artist }),
-    //         });
-    //         const data = await res.json();
-    //     }
-    //     setIsChanged(true);
-    // };
+   
+ 
     function onRatingUpload() {
         if (!isChanged) {
             setIsChanged({ isChanged: true });

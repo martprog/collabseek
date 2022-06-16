@@ -10,13 +10,13 @@ import FavoriteBtn from "./FavoriteBtn";
 import Rating from "./Rating";
 import ArtistsBySimilarTag from "./ArtistsBySimilarTag";
 
-export default function OtherProfile() {
+export default function OtherProfile({isConnected}) {
     // const dispatch = useDispatch();
     const [otherProfile, setOtherProfile] = useState({});
     const [transition, setTransition] = useState(true);
 
     const { otherUserId } = useParams();
-    console.log("tor", otherProfile);
+
     const history = useHistory();
 
     useEffect(() => {
@@ -38,7 +38,9 @@ export default function OtherProfile() {
     }, [otherProfile]);
 
     // }, [otherProfile]);
-    console.log("tur", otherProfile.tags);
+
+   
+
     const tags =
         otherProfile.tags &&
         otherProfile.tags.map((tag, i) => {
@@ -129,11 +131,11 @@ export default function OtherProfile() {
                                 </div>
                             </div>
                         </div>
-                        {console.log(otherProfile)}
                     </div>
                     <ArtistsBySimilarTag
                         tags={otherProfile.tags}
                         otherUserId={otherUserId}
+                        isConnected = {isConnected}
                     />
                 </div>
             </CSSTransition>
