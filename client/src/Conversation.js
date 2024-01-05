@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { useParams, useHistory } from "react-router";
+import { useParams } from "react-router";
 import ChatMessages from "./ChatMessages";
 import { socket } from "./start";
 

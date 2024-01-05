@@ -1,8 +1,4 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import HeartFull from "./icons/HeartFull";
-import HeartEmpty from "./icons/HeartEmpty";
-import Rating from "./Rating";
 import ProfileCard from "./Profile-card";
 
 export default function NewArtists(props) {

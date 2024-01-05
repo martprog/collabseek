@@ -1,9 +1,6 @@
 const { Router } = require("express");
 const router = Router();
-const {
-    createUser,
-    login,
-} = require("../../database/db");
+const { createUser, login } = require("../../database/db");
 
 router.post("/login", (req, res) => {
     const { email, password } = req.body;
@@ -16,7 +13,7 @@ router.post("/login", (req, res) => {
     login(email, password).then((user) => {
         if (!user) {
             res.json({ succes: false });
-            
+
             return;
         }
         req.session.userId = user.id;
@@ -33,6 +30,7 @@ router.post("/register", (req, res) => {
         });
         return;
     }
+
     createUser(first, last, email, password)
         .then((newUser) => {
             if (newUser) {
@@ -45,8 +43,7 @@ router.post("/register", (req, res) => {
         .catch((e) => console.log("error creating user: ", e));
 });
 
-
-router.get("/logout", (req, res)=>{
+router.get("/logout", (req, res) => {
     req.session = null;
     res.redirect("/");
 });
