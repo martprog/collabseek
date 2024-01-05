@@ -1,0 +1,63 @@
+version: "3"
+services:
+    app:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        command: >
+            sh -c './wait-for-it.sh db:5432  && PGPASSWORD=$$DB_PASS  psql -h db -U $$DB_USER -d $$DB_NAME -f /app/database/collabseek-full.sql &&  npm run dev '
+        ports:
+            - "3001:3001"
+            - "3002:3002"
+        environment:
+            - NODE_ENV=development
+            - DATABASE_URL=postgres://postgres:password@db:5432/collabseek?sslmode=require
+            - REACT_APP_API_URL=http://app:3001
+            - DB_HOST=db
+            - DB_USER=postgres
+            - DB_NAME=collabseek
+            - COOKIE_SECRET=cookiesecret
+            - DB_PASS=password
+            - MINIO_ROOT_USER=mydevaccesskey
+            - MINIO_ROOT_PASSWORD=mydevsecretkey
+        depends_on:
+            - db
+    db:
+        image: postgres:16-alpine
+        environment:
+            - POSTGRES_DB=collabseek
+            - POSTGRES_USER=postgres
+            - POSTGRES_PASSWORD=password
+        ports:
+            - "3005:5432"
+        volumes:
+            - ./database/collabseek-full.sql:/docker-entrypoint-initdb.d/collabseek-full.sql
+            - dev-db-data:/var/lib/postgresql/data
+    s3mock:
+        image: minio/minio:latest
+        environment:
+            MINIO_ROOT_USER: mydevaccesskey
+            MINIO_ROOT_PASSWORD: mydevsecretkey
+        ports:
+            - "9000:9000" #S3-API
+            - "9090:9090" #console
+        volumes:
+            - data_minio:/data
+        command: server --console-address ":9090" /data
+        #entrypoint: /bin/sh -c 'mc mb s3mock/spicedling && mc policy set public s3mock/spicedling && tail -f /dev/null'
+
+    createbuckets:
+        image: minio/mc
+        depends_on:
+            - s3mock
+        entrypoint: >
+            /bin/sh -c "
+            /usr/bin/mc alias set myminio http://s3mock:9000 mydevaccesskey mydevsecretkey;
+            /usr/bin/mc mb myminio/spicedling;
+            /usr/bin/mc anonymous set public myminio/spicedling;
+            exit 0;
+            "
+
+volumes:
+    dev-db-data:
+    data_minio:

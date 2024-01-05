@@ -1,5 +1,17 @@
-const spicedPg = require("spiced-pg");
-const db = spicedPg("postgres:postgres:postgres@localhost:5432/collabseek");
+const spicedPg = require("./spiced-pg/index");
+
+let dbUrl;
+if (process.env.DATABASE_URL) {
+    // Use the provided DATABASE_URL if it exists (Docker Compose case)
+    dbUrl = process.env.DATABASE_URL;
+} else {
+    // Use local connection parameters if DATABASE_URL is not provided
+    //const db = spicedPg("postgres:postgres:postgres@localhost:5432/collabseek");
+    dbUrl = "postgres:postgres:postgres@localhost:5432/collabseek";
+}
+
+const db = spicedPg(dbUrl);
+
 const bcrypt = require("bcryptjs");
 
 function hashPassword(password) {
@@ -16,9 +28,12 @@ const createUser = (first, last, email, password) => {
             RETURNING *
             `;
         const params = [first, last, email, hashed];
-        return db.query(query, params).then((results) => {
-            return results.rows[0];
-        });
+        return db
+            .query(query, params)
+            .then((results) => {
+                return results.rows[0];
+            })
+            .catch((e) => console.log(e));
     });
 };
 
@@ -101,7 +116,7 @@ const setNewPass = (password, email) => {
 };
 
 const getUserById = (id) => {
-    const query = `SELECT * FROM users 
+    const query = `SELECT * FROM users
         WHERE id=$1
     `;
 
@@ -113,7 +128,7 @@ const getUserById = (id) => {
 const getUserArtistById = (id) => {
     const query = `
         SELECT users.first, users.last, users.profile_picture_url, artists.artist_id, artists.bio,
-        artists.youtube_link, artists.spotify_link, artists.tags  FROM users 
+        artists.youtube_link, artists.spotify_link, artists.tags  FROM users
         JOIN artists
         ON users.id= artists.artist_id
         WHERE users.id=$1
@@ -126,7 +141,7 @@ const getUserArtistById = (id) => {
 
 const uploadProfilePic = (url, id) => {
     const query = `
-        UPDATE users 
+        UPDATE users
         SET profile_picture_url=$1
         WHERE id=$2
         RETURNING *
@@ -162,8 +177,6 @@ function selectTag(id, tag) {
         return results.rows[0];
     });
 }
-
-
 
 const deleteTagsByUpdate = (id) => {
     const query = `
@@ -217,14 +230,14 @@ const createArtistProfile = (
 
 const getLatestUsers = (id) => {
     const query = `
-        SELECT  users.id, artists.artist_id, artists.instrument, ROUND(AVG(rating), 0) as art_rating, users.first, users.last, favorites.artist, favorites.sender_id, favorites.is_favorite, users.profile_picture_url 
+        SELECT  users.id, artists.artist_id, artists.instrument, ROUND(AVG(rating), 0) as art_rating, users.first, users.last, favorites.artist, favorites.sender_id, favorites.is_favorite, users.profile_picture_url
         FROM artists
-        LEFT JOIN ratings 
+        LEFT JOIN ratings
         ON artists.artist_id=ratings.artist
         JOIN users
         ON (artists.artist_id=users.id)
         LEFT JOIN favorites on favorites.artist=artists.artist_id and favorites.sender_id=$1
-        group by users.id, artists.artist_id, artists.instrument, favorites.artist, favorites.is_favorite, favorites.sender_id, artists.created_at 
+        group by users.id, artists.artist_id, artists.instrument, favorites.artist, favorites.is_favorite, favorites.sender_id, artists.created_at
         ORDER BY artists.created_at DESC
         LIMIT 4
     `;
@@ -236,16 +249,16 @@ const getLatestUsers = (id) => {
 
 const getFeaturedUsers = (id) => {
     const query = `
-        SELECT  users.id, artists.artist_id, artists.instrument, ROUND(AVG(rating), 0) as art_rating, users.first, users.last, favorites.artist, favorites.sender_id, favorites.is_favorite, users.profile_picture_url 
+        SELECT  users.id, artists.artist_id, artists.instrument, ROUND(AVG(rating), 0) as art_rating, users.first, users.last, favorites.artist, favorites.sender_id, favorites.is_favorite, users.profile_picture_url
         FROM artists
-        LEFT JOIN ratings 
+        LEFT JOIN ratings
         ON artists.artist_id=ratings.artist
         JOIN users
         ON (artists.artist_id=users.id)
         LEFT JOIN favorites on favorites.artist=artists.artist_id and favorites.sender_id=$1
         WHERE users.id > 198 AND users.id < 209
-        group by users.id, artists.artist_id, artists.instrument, favorites.artist, favorites.is_favorite, favorites.sender_id, artists.created_at 
-        
+        group by users.id, artists.artist_id, artists.instrument, favorites.artist, favorites.is_favorite, favorites.sender_id, artists.created_at
+
         `;
     // ORDER BY RANDOM()
 
@@ -256,15 +269,15 @@ const getFeaturedUsers = (id) => {
 
 const getUsersByQuery = (id, search) => {
     const query = `
-        SELECT  users.id, artists.artist_id, artists.instrument, ROUND(AVG(rating), 0) as art_rating, users.first, users.last, favorites.artist, favorites.sender_id, favorites.is_favorite, users.profile_picture_url 
+        SELECT  users.id, artists.artist_id, artists.instrument, ROUND(AVG(rating), 0) as art_rating, users.first, users.last, favorites.artist, favorites.sender_id, favorites.is_favorite, users.profile_picture_url
         FROM artists
-        LEFT JOIN ratings 
+        LEFT JOIN ratings
         on artists.artist_id=ratings.artist
         JOIN users
         ON (artists.artist_id=users.id)
         LEFT JOIN favorites on favorites.artist=artists.artist_id and favorites.sender_id=$1
-        WHERE users.first ILIKE $2 
-        group by users.id, artists.artist_id, artists.instrument, favorites.artist, favorites.is_favorite, favorites.sender_id, artists.created_at 
+        WHERE users.first ILIKE $2
+        group by users.id, artists.artist_id, artists.instrument, favorites.artist, favorites.is_favorite, favorites.sender_id, artists.created_at
     `;
     // AND id not in($2)
 
@@ -322,9 +335,9 @@ const getAllConversations = (id) => {
         ON messages.sender_id=users.id or messages.recipient_id=users.id
          JOIN artists
         ON artists.artist_id=messages.recipient_id
-        where (messages.sender_id=$1 or messages.recipient_id=$1) 
+        where (messages.sender_id=$1 or messages.recipient_id=$1)
         ORDER BY created_at DESC
-        
+
     `;
     return db.query(query, [id]).then((results) => {
         const otherUsers = results.rows.filter((element) => {
@@ -354,10 +367,10 @@ const getAllMessages = (userId, otherUserId) => {
         SELECT users.id as userid,  messages.id, messages.sender_id, messages.recipient_id, messages.text, messages.created_at FROM messages
          JOIN users
         ON messages.sender_id=users.id or messages.recipient_id=users.id
-        
+
         where (messages.sender_id=$1 and messages.recipient_id=$2) or (messages.sender_id=$2 and messages.recipient_id=$1)
         ORDER BY created_at DESC
-        
+
     `;
     return db.query(query, [userId, otherUserId]).then((results) => {
         const uniqueIds = [];
@@ -444,7 +457,7 @@ const newArtistRequest = (otherUserId, userId, text) => {
 
 const getTagsBySearch = (search) => {
     const query = `
-    SELECT DISTINCT ON (tag) * from TAGS 
+    SELECT DISTINCT ON (tag) * from TAGS
     WHERE tag ILIKE $1`;
 
     return db.query(query, [search + "%"]).then((results) => {
@@ -467,10 +480,10 @@ const addTagInTagsTable = (id, tag) => {
 const getAllTags = () => {
     const query = `
     SELECT  tag, count(tag) AS amount_tags
-    FROM tags 
-    GROUP BY tag 
+    FROM tags
+    GROUP BY tag
     ORDER BY amount_tags DESC;
-    
+
     `;
 
     return db.query(query).then((results) => {
@@ -480,15 +493,15 @@ const getAllTags = () => {
 
 const getArtistsByTag = (userId, tag) => {
     const query = `
-    SELECT  tags.tag, tags.artist_id, users.id, artists.artist_id, artists.instrument, ROUND(AVG(rating), 0) as art_rating, users.first, users.last, favorites.artist, favorites.sender_id, favorites.is_favorite, users.profile_picture_url 
+    SELECT  tags.tag, tags.artist_id, users.id, artists.artist_id, artists.instrument, ROUND(AVG(rating), 0) as art_rating, users.first, users.last, favorites.artist, favorites.sender_id, favorites.is_favorite, users.profile_picture_url
         FROM tags
         JOIN artists
         ON artists.artist_id = tags.artist_id
         JOIN users
         ON (artists.artist_id=users.id)
-        LEFT JOIN ratings 
+        LEFT JOIN ratings
         ON artists.artist_id=ratings.artist
-        LEFT JOIN favorites on favorites.artist=artists.artist_id and favorites.sender_id=$1 
+        LEFT JOIN favorites on favorites.artist=artists.artist_id and favorites.sender_id=$1
         WHERE tag=$2
         group by  tags.id, users.id,  artists.artist_id, artists.instrument, favorites.artist, favorites.is_favorite, favorites.sender_id
     `;
@@ -500,15 +513,15 @@ const getArtistsByTag = (userId, tag) => {
 
 const getArtistsBySimilarTag = (userId, tag) => {
     const query = `
-    SELECT  tags.tag, tags.artist_id, users.id, artists.artist_id, artists.instrument, ROUND(AVG(rating), 0) as art_rating, users.first, users.last, favorites.artist, favorites.sender_id, favorites.is_favorite, users.profile_picture_url 
+    SELECT  tags.tag, tags.artist_id, users.id, artists.artist_id, artists.instrument, ROUND(AVG(rating), 0) as art_rating, users.first, users.last, favorites.artist, favorites.sender_id, favorites.is_favorite, users.profile_picture_url
         FROM tags
         JOIN artists
         ON artists.artist_id = tags.artist_id
         JOIN users
         ON (artists.artist_id=users.id)
-        LEFT JOIN ratings 
+        LEFT JOIN ratings
         ON artists.artist_id=ratings.artist
-        LEFT JOIN favorites on favorites.artist=artists.artist_id and favorites.sender_id=$1 
+        LEFT JOIN favorites on favorites.artist=artists.artist_id and favorites.sender_id=$1
         WHERE tag=any(array$2)
         group by  tags.id, users.id,  artists.artist_id, artists.instrument, favorites.artist, favorites.is_favorite, favorites.sender_id
     `;
@@ -520,7 +533,7 @@ const getArtistsBySimilarTag = (userId, tag) => {
 
 const requestSent = (id, otherUserId) => {
     const query = `
-    SELECT  DISTINCT ON (sender_id) * FROM messages 
+    SELECT  DISTINCT ON (sender_id) * FROM messages
     WHERE sender_id=$1 AND recipient_id=$2
     `;
 
@@ -532,13 +545,13 @@ const requestSent = (id, otherUserId) => {
 const getFavorites = (id) => {
     const query = `
     SELECT users.first, users.last, favorites.sender_id,  favorites.is_favorite, artists.instrument, ROUND(AVG(rating), 0) as art_rating, users.profile_picture_url, artists.artist_id as id, artists.tags FROM favorites
-    JOIN artists 
+    JOIN artists
     ON artists.artist_id = favorites.artist
-    LEFT JOIN ratings 
+    LEFT JOIN ratings
         ON artists.artist_id=ratings.artist
-    JOIN users 
+    JOIN users
     ON artists.artist_id = users.id
-    WHERE sender_id=$1 
+    WHERE sender_id=$1
      group by users.id, artists.artist_id, favorites.artist, artists.tags, favorites.is_favorite, favorites.sender_id, artists.instrument
     `;
 
@@ -572,7 +585,7 @@ const addFavorite = (id, otherUserId) => {
 
 const removeFavorite = (id, otherUserId) => {
     const query = `
-    DELETE FROM favorites 
+    DELETE FROM favorites
     WHERE sender_id=$1 AND artist=$2
     RETURNING *
     `;
@@ -608,7 +621,7 @@ const addRatingById = (id, otherUserId, text, rating) => {
 
 const getUnreadMsgs = (id) => {
     const query = `
-        SELECT COUNT(*) FROM messages 
+        SELECT COUNT(*) FROM messages
         WHERE recipient_id=$1 AND is_read is not true
     `;
 
@@ -620,7 +633,7 @@ const getUnreadMsgs = (id) => {
 
 const setReadMsgs = (id, otherUserId) => {
     const query = `
-        UPDATE messages 
+        UPDATE messages
         SET is_read=true
         WHERE recipient_id=$1 AND sender_id=$2
         RETURNING *

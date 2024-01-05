@@ -107,9 +107,15 @@ app.post(
     uploader.single("image"),
     s3.upload,
     (req, res) => {
+        console.log("we went further!!");
         const { userId } = req.session;
         const { filename } = req.file;
-        let url = `https://s3.amazonaws.com/spicedling/${filename}`;
+        let url;
+        if (process.env.MINIO_ROOT_USER) {
+            url = `http://127.0.0.1:9090/spicedling/${filename}`; //`https://s3.amazonaws.com/spicedling/${filename}`;
+        } else {
+            url = `https://s3.amazonaws.com/spicedling/${filename}`;
+        }
 
         if (req.file) {
             uploadProfilePic(url, userId)
@@ -211,8 +217,8 @@ app.get("/users/tags", (req, res) => {
 });
 
 app.get("/tags/all", (req, res) => {
-    const search = req.query.search;
-    const { userId } = req.session;
+    //const search = req.query.search;
+    //const { userId } = req.session;
 
     getAllTags().then((data) => {
         res.json(data);
@@ -324,6 +330,7 @@ io.on("connection", async function (socket) {
         let sender = sender_id !== userId ? sender_id : recipient_id;
 
         const readRes = await setReadMsgs(userId, sender);
+        console.log(readRes);
         socket.emit("no-notifications", { message: "ok" });
     });
 
@@ -336,6 +343,6 @@ io.on("connection", async function (socket) {
     }
 });
 
-server.listen(process.env.PORT || 3001, function () {
+server.listen(process.env.PORT || 3001, "0.0.0.0", function () {
     console.log("I'm listening.");
 });
