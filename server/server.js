@@ -42,7 +42,13 @@ const {
 const multer = require("multer");
 const uidSafe = require("uid-safe");
 const s3 = require("../s3");
-const secrets = require("../secrets");
+let secrets;
+if (process.env.MINIO_ROOT_USER) {
+    // if the app is run by docker, the secret comes from the env variables
+    secrets = { COOKIE_SECRET: process.env.COOKIE_SECRET };
+} else {
+    secrets = require("../secrets");
+}
 
 const storage = multer.diskStorage({
     destination: (req, file, callback) => {
